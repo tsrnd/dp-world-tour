@@ -1,4 +1,4 @@
 from django.contrib import admin
-from myapp.foo import models
+from myapp.models import stadiums
 
-admin.register(models.Foo)
+admin.register(stadiums.Stadium)
