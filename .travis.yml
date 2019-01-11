@@ -15,6 +15,6 @@ install:
 script:
   - docker-compose build app
   - sh ./scripts/lint-review.sh
-  - docker-compose run app manage.py test myapp
+  - docker-compose run app python3 manage.py test
 before_cache:
   - bash ./scripts/save-images.sh

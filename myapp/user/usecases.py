@@ -10,7 +10,7 @@ class UsecaseInterface(metaclass=ABCMeta):
 
 
 class UserUsecase(UsecaseInterface):
-    repo = inject.attr(UserRepository)
+    repo = inject.attr(RepositoryInterface)
 
     def create_user(self, user_name, email, password):
         # check user ton tai

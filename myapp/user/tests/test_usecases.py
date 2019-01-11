@@ -24,7 +24,7 @@ class RepositoryMock(RepositoryInterface):
         return self.user
 
 
-def CreateUserSuccessTestCase(TestCase):
+class CreateUserSuccessTestCase(TestCase):
     user = User(
         username='test',
         email='test@test.com',
@@ -32,17 +32,17 @@ def CreateUserSuccessTestCase(TestCase):
     )
     def setUp(self):
         inject.clear_and_configure(lambda binder: binder.bind(
-            RepositoryInterface, RepositoryMock(user, None, None)
+            RepositoryInterface, RepositoryMock(self.user, None, None)
         ))
 
     def test_create_user_success(self):
         userNew = UserUsecase().create_user("test", "test@test.com", "abcxyz")
-        self.assertEqual(user, userNew)
+        self.assertEqual(self.user, userNew)
 
     def tearDown(self):
         inject.clear()
 
-def CreateUserFailTestCase(TestCase):
+class CreateUserFailTestCase(TestCase):
     user = User(
         username='test',
         email='test@test.com',
@@ -50,7 +50,7 @@ def CreateUserFailTestCase(TestCase):
     )
     def setUp(self):
         inject.clear_and_configure(lambda binder: binder.bind(
-            RepositoryInterface, RepositoryMock(user, None, "can't create")
+            RepositoryInterface, RepositoryMock(self.user, None, "can't create")
         ))
 
     def test_create_user_fail(self):

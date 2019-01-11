@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 class AuthHandler(View):
-    usecase = inject.attr(UserUsecase)
+    usecase = inject.attr(UsecaseInterface)
     bh = inject.attr(BaseHandler)
 
     def post(self, request):
