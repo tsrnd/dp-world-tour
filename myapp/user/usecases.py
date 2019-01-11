@@ -13,4 +13,4 @@ class UserUsecase(UsecaseInterface):
     repo = inject.attr(UserRepository)
 
     def create_user(self, user_name, email, password):
-        pass
+        return self.repo.create_user(user_name, email, password)
