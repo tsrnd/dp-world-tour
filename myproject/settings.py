@@ -1,3 +1,4 @@
+import logging.config
 """
 Django settings for myproject project.
 
@@ -13,6 +14,8 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 import os
 import dj_database_url
 from dotenv import load_dotenv
+
+import datetime
 
 load_dotenv()
 
@@ -46,6 +49,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'myapp.providers.auth_jwt_middleware.jwt_authentication_middleware',
+    'myapp.providers.auth_jwt_middleware.JwtAuthenticationMiddleware',
 ]
 
 ROOT_URLCONF = 'myproject.urls'
@@ -127,7 +132,6 @@ STATIC_URL = '/static/'
 # Logging
 # https://docs.djangoproject.com/en/2.1/topics/logging/
 
-import logging.config
 
 logging.config.dictConfig({
     'version': 1,
@@ -163,3 +167,13 @@ logging.config.dictConfig({
         }
     }
 })
+
+
+JWT_AUTH = {
+
+    'JWT_VERIFY': True,
+    'JWT_VERIFY_EXPIRATION': True,
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=3000),
+    'JWT_AUTH_HEADER_PREFIX': 'Bearer',
+
+}
