@@ -20,12 +20,6 @@ class UserManager(BaseUserManager):
 
     def create_user(self, username, email, password=None):
         """Create and return a `User` with an email, username and password."""
-        if username is None:
-            raise TypeError('Users must have a username.')
-
-        if email is None:
-            raise TypeError('Users must have an email address.')
-
         user = self.model(username=username, email=self.normalize_email(email))
         user.set_password(password)
         user.save()
@@ -47,7 +41,7 @@ class UserManager(BaseUserManager):
         return user
 
 
-class UserJWT(User):
+class UserApp(User):
     # Tells Django that the UserManager class defined above should manage
     # objects of this type.
     class Meta:
@@ -71,14 +65,16 @@ class UserJWT(User):
         Generates a JSON Web Token that stores this user's ID and has an expiry
         date set to 60 days into the future.
         """
-        dt = datetime.now() + timedelta(days=60)
+        dt = datetime.now() + timedelta(minutes=settings.JWT_AUTH['JWT_EXPIRATION_DELTA'])
 
         token = jwt.encode({
             'id': self.pk,
             'exp': int(dt.strftime('%s'))
         },
             settings.SECRET_KEY,
-            algorithm='HS256')
+            algorithm='HS256', headers={
+            "typ": "JWT",
+            "alg": "HS256"
+        })
 
         return token.decode('utf-8')
-
