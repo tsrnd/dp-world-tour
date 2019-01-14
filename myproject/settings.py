@@ -49,8 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'myapp.providers.auth_jwt_middleware.jwt_authentication_middleware',
-    'myapp.providers.auth_jwt_middleware.JwtAuthenticationMiddleware',
+    'myapp.middleware.auth_jwt_middleware.JwtAuthenticationMiddleware',
 ]
 
 ROOT_URLCONF = 'myproject.urls'
@@ -173,7 +172,7 @@ JWT_AUTH = {
 
     'JWT_VERIFY': True,
     'JWT_VERIFY_EXPIRATION': True,
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=3000),
+    'JWT_EXPIRATION_DELTA': 60,
     'JWT_AUTH_HEADER_PREFIX': 'Bearer',
 
 }
