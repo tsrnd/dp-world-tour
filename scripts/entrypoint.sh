@@ -1,4 +1,8 @@
 #!/bin/sh
+
+# run apache as ground
+apache2ctl -D FOREGROUND
+
 set -e
 
 until psql "$DATABASE_URL" -c '\l'; do
