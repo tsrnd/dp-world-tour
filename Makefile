@@ -18,13 +18,19 @@ test: build
 	@open ./.tmp/reports/pytest/index.html
 
 migrations: up-data
-	@pipenv run python manage.py makemigrations
+	@pipenv run python manage.py makemigrations --settings=myproject.settings_myapp
 
 # additional commands
 
 up-data:
 	@docker-compose up -d data cache
 	@bash ./scripts/wait-data.sh
+
+logs-myapp:
+	docker logs -f dp-world-tour_app_1
+
+up-client:
+	@docker exec -it dp-world-tour_app_1 python3 manage.py runserver --settings=myproject.settings_client 0.0.0.0:8001
 
 clean:
 	@docker ps -aq -f status=exited | xargs docker rm

@@ -23,9 +23,6 @@ RUN set -ex \
         postgresql-client \
         redis
 
-RUN apt-get install -y apt-utils vim curl apache2 apache2-utils libapache2-mod-wsgi-py3
-
-ADD ./separate_app.conf /etc/apache2/sites-available/000-default.conf
 ADD ./scripts/entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 

@@ -10,7 +10,7 @@ class FindMatch(models.Model):
     AC = 'ACCEPTED'
     RJ = 'REJECTED'
     REQUEST_STATUS = (
-        (PD, 'Peding'),
+        (PD, 'Pending'),
         (AC, 'Accepted'),
         (RJ, 'Rejected'),
     )
