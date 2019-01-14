@@ -1,0 +1,252 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block style %}
+    {% include './index_css.html' %}
+{% endblock %}
+
+{% block pagecontent %}
+<!--// Main Banner \\-->
+<!-- <div class="clearfix"></div> -->
+<div class="ec-mainbanner">
+        <div class="flexslider">
+            <div class="flex-viewport" style="overflow: hidden; position: relative;">
+                <ul class="slides">
+                    <li style="display: block;">
+                        <img src="../../static/extra-images/banner-1.jpg" alt="">
+                        <span class="ec-transparent-color"></span>
+                        <div class="ec-caption">
+                            <div class="container">
+                                <div class="caption-inner-wrap" *ngIf="teamdisplay; else elseBlock">
+                                    <time class="ec-bgcolor" datetime="2008-02-14 20:00">Được thành lập từ 1997</time>
+                                    <div class="clearfix"></div>
+                                    <h1>Xin chào Manchester United</h1>
+                                    <p>Glory glory Man united, Glory glory Man united, Glory glory Man united</p>
+                                    <a class="ec-bgcolor">Xem thêm</a>
+                                </div>
+                                <ng-template #elseBlock>
+                                    <div class="caption-inner-wrap">
+                                        <div class="clearfix"></div>
+                                        <h1>Bạn chưa tham gia bất kỳ đội bóng nào..</h1>
+                                        <p>Nhấn vào tạo đội <a [routerLink]="['/createteam']" style="color:yellow">Tạo đội</a> để tạo đội bóng cho riêng mình</p>
+                                    </div>
+                                </ng-template>
+                                <div class="ec-caption-image"> <img src="../../static/extra-images/banner-static.png" alt=""> </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--// Main Banner \\-->
+    <!--// Main Content \\-->
+    <div class="ec-main-content">
+        <!--// Main Section \\-->
+        <div class="ec-main-section ec-newsticker-wrap">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="ec-newsticker" *ngIf="teamdisplay">
+                            <span class="ec-color"><small>Tin mới</small></span>
+                            <ul id="ec-news">
+                                <li><a href="#">1997 - Thành lập CLB Manchester United</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--// Main Section \\-->
+        <!--// Main Section \\-->
+        <div class="ec-main-section ec-promofull">
+            <div class="container">
+                <div class="row">
+                    <!--// Match Fixture \\-->
+                    <div class="col-md-6">
+                        <div class="ec-fancy-title">
+                            <h2>Danh sách trận đấu</h2>
+                        </div>
+                        <div class="ec-fixture-list">
+                            <ul>
+                                <li *ngFor="let match of matches; let i = index">
+                                    <div *ngIf="i < 4">
+                                        <div class="ec-cell"><span>1997</span></div>
+                                        <div class="ec-cell">
+                                            <a [routerLink]="['/teaminfor', match.team_a.team_id]" class="ec-fixture-flag"><img src="../../static/extra-images/fixer-flag-1.png" alt=""> {{match.team_a.acronym}}</a>
+                                            <span class="ec-fixture-vs"><small>vs</small></span>
+                                            <a [routerLink]="['/teaminfor', match.team_b.team_id]" class="ec-fixture-flag ec-next-flag"><img src="../../static/extra-images/fixer-flag-2.png" alt=""> {{match.team_b.acronym}}</a>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!--// TablePoint \\-->
+                    <div class="col-md-6">
+                        <div class="ec-fancy-title">
+                            <h2>Bảng xếp hạng</h2>
+                        </div>
+                        <div class="ec-table-point">
+                            <ul class="ec-table-head">
+                                <li>
+                                    <div class="ec-cell">S.#</div>
+                                    <div class="ec-cell">Team</div>
+                                    <div class="ec-cell">M</div>
+                                    <div class="ec-cell">W</div>
+                                    <div class="ec-cell">D</div>
+                                    <div class="ec-cell">L</div>
+                                </li>
+                            </ul>
+                            <ul class="ec-table-list">
+                                <li>
+                                    <div class="ec-cell">1</div>
+                                    <div class="ec-cell">Manchester United</div>
+                                    <div class="ec-cell">10</div>
+                                    <div class="ec-cell">28</div>
+                                    <div class="ec-cell">5</div>
+                                    <div class="ec-cell">5</div>
+                                </li>
+                                <li>
+                                    <div class="ec-cell">2</div>
+                                    <div class="ec-cell">Manchester City</div>
+                                    <div class="ec-cell">10</div>
+                                    <div class="ec-cell">28</div>
+                                    <div class="ec-cell">5</div>
+                                    <div class="ec-cell">5</div>
+                                </li>
+                                <li>
+                                    <div class="ec-cell">3</div>
+                                    <div class="ec-cell">Arsenal</div>
+                                    <div class="ec-cell">10</div>
+                                    <div class="ec-cell">28</div>
+                                    <div class="ec-cell">5</div>
+                                    <div class="ec-cell">5</div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!--// TablePoint \\-->
+                </div>
+            </div>
+        </div>
+        <!--// Main Section \\-->
+        <!--// Main Section \\-->
+        <div class="ec-main-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="ec-fancy-title">
+                            <h2>Trận đấu tiếp theo</h2>
+                        </div>
+                        <div class="ec-nextmatch">
+                            <div class="item" *ngFor="let match of matches; let i = index">
+                                <ul class="ec-team-matches" *ngIf="i<1">
+                                    <li>
+                                        <a href="#"><img src="../../static/extra-images/next-match-1.png" alt=""> 
+                                            <span>Team A</span>
+                                        </a>
+                                    </li>
+                                    <li><small>Old Trafford</small>
+                                        <time class="ec-color" datetime="2008-02-14 20:00">2018</time> <small>2019</small></li>
+                                    <li>
+                                        <a href="#"><img src="../../static/extra-images/next-match-2.png" alt="">
+                                            <span>Team B</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <span class="text-center" *ngIf="i<1"><count-down style="margin:auto;" class="text-center" [text]="text" units="Days | Hours | Minutes | Seconds" end="{{match.date_match}}"></count-down></span>
+                                <a href="#" class="ec-ticket-button" *ngIf="i<1">Old Trafford Stadium</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="ec-fancy-title">
+                            <h2>Trận đấu gần nhất</h2>
+                            <span>Đã diễn ra</span>
+                        </div>
+                        <div class="ec-latest-result-wrap">
+                            <div class="ec-latest-result">
+                                <ul *ngIf="lastresult">
+                                    <li>
+                                        <span>MU</span>
+                                        <img src="../../static/extra-images/latest-result-1.png" alt="">
+                                        <span>---</span>
+                                    </li>
+                                    <li>
+                                        <div class="ec-result-time">
+                                            <div class="ec-time-wrap" *ngIf="lastresult.date">
+                                                -:-
+                                                <small>11/12/2019</small>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <span>MC</span>
+                                        <img src="../../static/extra-images/latest-result-2.png" alt="">
+                                        <span>---</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="ec-skillst">
+                                <div class="skillbar" data-percent="40%">
+                                    <div class="count-bar">
+                                        <div class="count"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--// Main Section \\-->
+        <!--// Main Section \\-->
+        <div class="ec-main-section ec-full-counter">
+            <span class="ec-transparent-bg"></span>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="ec-counter">
+                            <ul class="row">
+                                <li class="col-md-3">
+                                    <i class="fa fa-globe"></i>
+                                    <div class="ec-counter-info">
+                                        <small>Bàn Thắng</small>
+                                        <span class="word-count ec-color">15,000</span>
+                                    </div>
+                                </li>
+                                <li class="col-md-3">
+                                    <i class="fa fa-glass"></i>
+                                    <div class="ec-counter-info">
+                                        <small>Vị trí &nbsp; &nbsp;</small>
+                                        <span class="word-count ec-color">7,000</span>
+                                    </div>
+                                </li>
+                                <li class="col-md-3">
+                                    <i class="fa fa-hand-o-right"></i>
+                                    <div class="ec-counter-info">
+                                        <small>Trận Thắng &nbsp; &nbsp; </small>
+                                        <span class="word-count ec-color">3,000</span>
+                                    </div>
+                                </li>
+                                <li class="col-md-3">
+                                    <i class="fa fa-heart-o"></i>
+                                    <div class="ec-counter-info">
+                                        <small>Thủng Lưới </small>
+                                        <span class="word-count ec-color">1,000</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--// Main Section \\-->
+    </div>
+    <!--// Main Content \\-->    
+{% endblock %}

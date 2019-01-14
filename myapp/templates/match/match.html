@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Find Match
+{% endblock %}
+
+{% block style %}
+    {% include './match_css.html' %}
+{% endblock %}
+
+{% block pagecontent %}
+<div class="notify"></div>
+<img src="../../static/extra-images/banner-ronaldo.jpg" style="opacity: 0.5;overflow: hidden;" alt="">
+<span id="blur" class=""></span>
+<div id="ec-caption" class="ec-caption">
+                <div class="row">  
+                <div class="col-md-6 col-md-offset-3" style="padding-right: 0px!important;padding-left: 0px!important;">
+                    <div class="panel-body" style="padding-right: 4px!important;padding-left: 4px!important;">
+                <form class="form-horizontal" method="post" id="login" name="login" role="form" onSubmit='' action="#" AUTOCOMPLETE="off">
+                    <fieldset  style="min-width: 0;padding:.35em .625em .75em!important;margin:0 2px;border: 2px solid silver!important;margin-bottom: 10em;box-shadow: -6px 15px 20px 0px;">
+                <legend id="first3" style="width: inherit;padding:inherit;border:2px solid silver;color:blanchedalmond;" class="legend">Worldtour</legend>
+                <div class="form-group" id="above" style="margin-bottom: 5px!important;">
+                                                    <div class="col-sm-1 col-md-2 col-lg-2 col-xs-1"></div>
+                                                    <output class="col-sm-10 col-md-8 col-lg-8 col-xs-10"
+                                                        id="responseFail" type="text"
+                                                        style="text-align: center; font-weight: bold; color: red;padding: 0px!important;" ></output>
+                                                    <div class="col-sm-1 col-md-2 col-lg-2 col-xs-1"></div>
+                                                </div>	
+                    <div class="form-group" style="margin-bottom: 5px!important;">
+                                        <div class="col-sm-12 col-md-12 col-lg-12 col-xs-12" id="message" style="font-weight: bold; text-align: center;font-size: 10pt;">
+                                        </div>
+                                            </div>
+                    <div class="form-group" id="first" style="margin-bottom: 0px!important;">
+                                                    <div class="col-sm-1 col-md-1 col-lg-1 col-xs-1"></div>
+                                                    <div
+                                                        class="col-sm-10 col-md-10 col-lg-10 col-xs-10 input-group">
+                                                        <span class="input-group-addon"><span class="glyphicon glyphicon-user" style="color: black;"></span></span> <input type="date"
+                                                            class="form-control" id="date-picker" placeholder="Choosing a date" [(ngModel)]="dateRequest" [ngModelOptions]="{standalone: true}" autocomplete="off">
+                                                    </div>
+                                                    <div class="col-sm-1 col-md-1 col-lg-1 col-xs-1"></div>
+                                                </div>
+                <div class="form-group" id="first2">
+                                                    <div class="col-sm-1 col-md-1 col-lg-1 col-xs-1"></div>
+                                                    <div class="col-sm-1 col-md-1 col-lg-1 col-xs-1"></div>
+                                                </div>	
+                <div class="form-group" id="first1">
+                                                    <div class="col-sm-1 col-md-1 col-lg-1 col-xs-1"></div>
+                                                    <div class="col-sm-11 col-md-11 col-lg-11 col-xs-10" style="text-align:center;">
+                                                        <button id="valuser" type="button" data-toggle="modal" (click)="showDialog()"
+                                                            class="btn btn-primary customizedPrimaryBtn">
+                                                            Tìm kiếm</button>
+                                                    </div>
+                
+                                                    <div class="col-sm-1 col-md-1 col-lg-1 col-xs-1"></div>
+                                                </div>	
+                            <div class="form-group" style="text-align:center;font-weight:bold;color:darkslategrey;">
+                                Vui lòng chọn ngày thi đấu và nhấn Tìm kiếm	
+                            </div>			
+                </fieldset>
+                </form>
+                </div>
+                </div>
+                </div>
+                <h2 style="text-align: center">Wourldtour - Climb to top of the world!</h2>
+                
+</div>
+
+<!-- Modal loading-->
+<div class="modal fade" id="myModal" role="dialog">
+<div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Worldtour - TÌM TRẬN ĐẤU</h4>
+    </div>
+    <div class="modal-body">
+        <div class=" col-lg-offset-9 col-lg-12">
+            <div class="loader"></div>
+            *Đang tìm trận đấu*
+            <div style="text-align: center;">
+                <span class="label label-default" style="font-size:90%">{{ minutes }} : {{ seconds }}</span>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Huỷ</button>
+    </div>
+    </div>
+    
+</div>
+</div>
+<!-- Modal-->
+
+<!-- Modal confirm -->
+<div class="modal fade" id="confirmModal">
+<div class="modal-dialog" style="z-index: 99999px;">
+    <div class="modal-content">
+    <div class="modal-header">
+        <h4 class="modal-title centered-text">Tìm thấy trận đấu</h4>
+    </div>
+    <div class="modal-body">
+            <div class="row">
+                <div class=" col-lg-offset-0 col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="row">
+                                        <div class="col-sm-offset-3 col-sm-6 col-md-offset-3 col-md-6 col-lg-offset-3 col-lg-6">
+                                            <img class="img-circle img-responsive" src="http://api.adorable.io/avatars/300/abott@adorable.png">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="row">
+                                        <div class="centered-text col-sm-offset-3 col-sm-6 col-md-offset-3 col-md-6 col-lg-offset-3 col-lg-6">
+                                            <div itemscope="" itemtype="http://schema.org/Person" *ngIf="competitor">
+                                                <h2> <span itemprop="name">Câu lạc bộ: Manchester United</span></h2>
+                                                <p itemprop="jobTitle">Thắng: 3</p>
+                                                <p><span itemprop="affiliation">Bại: 2</span></p>
+                                                <p>
+                                                    <i class="fa fa-map-marker"></i> <span itemprop="addressRegion">Liên Chiểu, Đà Nẵng</span>
+                                                </p>
+                                                <p>
+                                                    Thành lập: 2017
+                                                </p>
+                                                <p itemprop="email"> <i class="fa fa-envelope"> </i> <a href="mailto:you@somedomain.com">manchestercity@gmail.com</a> </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 centered-text">
+                                    Worldtour.vn - Climb to top of the world!
+                                </div>
+                            </div>
+                            <div class="progress">
+                                <div id ="progressbar" class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                                    <span id="second-count" class="sr-only"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>         
+    </div>
+    <div class="modal-footer">
+        <button id="acceptBtn" type="button" class="btn btn-primary">Chấp nhận</button>
+        <button id="cancelBtn" type="button" class="btn btn-secondary" data-dismiss="modal">Từ chối</button>
+    </div>
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- -->
+
+<!-- modal confirm -->
+<div class="modal fade" id="confirmBackground">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Đợi quá lâu?</h4>
+        </div>
+        <div class="modal-body">
+            <p>Bạn có muốn chúng tôi thay bạn đăng ký ngày thi đấu này và tự động ghép cặp đối thủ hay không?</p>
+            <div class="row">
+                <div class="col-12-xs text-center">
+                    <button id="yesBtn" class="btn btn-success btn-md">Yes</button>
+                    <button id="noBtn" class="btn btn-danger btn-md">No</button>
+                </div>
+            </div>
+        </div>
+        
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+<div class="modal fade" id="talktocaption">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Tìm thấy trận đấu</h4>
+        </div>
+        <div class="modal-body">
+            <p>Bạn có muốn xem thông tin đội hình đối thủ?</p>
+            <div class="row">
+                <div class="col-12-xs text-center">
+                    <a [routerLink]="['/teaminfor', competitorID]" class="btn btn-success btn-md" (click)="hideTalktocaption()">Yes</a>
+                    <a [routerLink]="['/home']" class="btn btn-danger btn-md" (click)="hideTalktocaption()">No</a>
+                </div>
+            </div>
+        </div>
+        
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+{% endblock %}

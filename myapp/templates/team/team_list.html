@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    My Teams
+{% endblock %}
+
+{% block style %}
+    {% include './team_list_css.html' %}
+{% endblock %}
+
+{% block pagecontent %}
+<div class="notify"></div>
+<!-- Team -->
+<section id="team" class="pb-5">
+    <div class="container">
+        <h5 class="section-title h1">THƯ MỜI</h5>
+        <!-- Box body-->
+        <div class="table-responsive mailbox-messages">
+            <table class="table table-hover table-striped">
+                <tbody>
+                    <tr>
+                        <th>STT</th>
+                        <th>Logo</th>
+                        <th>Tên Đội</th>
+                        <th>Thời Gian</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td class="mailbox-name">1</td>
+                        <td><img class="img-circle" style="width: 10%" src="{{invitation.team_image_profile_url}}"></td>
+                        <td class="mailbox-subject"><b>Manchester United</b></td>
+                        <td class="mailbox-date">2017</td>
+                        <td class="mailbox-attachment">
+                            <button (click)="accept($event, invitation.invitation_id)" type="button" class="btn btn-info btn-circle btn-xs fa fa-check-circle"></button>
+                            <button (click)="reject($event, invitation.invitation_id)" type="button" class="btn btn-danger btn-circle btn-xs fa fa-times-circle"></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table><!-- /.table -->
+            <ul class="pagination">
+                <li class="disabled" aria-disabled="true">
+                    <a >«</a>
+                </li>
+                <li class="active"><a>1<span class="sr-only">(current)</span></a></li>
+                <li class="disabled" aria-disabled="true">
+                    <a>»</a>
+                </li>
+            </ul>
+        </div><!-- /.mail-box-messages -->
+        <h5 class="section-title h1">ĐỘI BÓNG CỦA TÔI</h5>
+        <div class="row">
+            <!-- Team member -->
+            <div class="col-xs-12 col-sm-6 col-md-4" *ngFor="let team of teams">
+                <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
+                    <div class="mainflip">
+                        <div class="frontside">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <p><img class=" img-fluid" src="../../static/extra-images/fixer-flag-1.png" alt="card image"></p>
+                                    <h4 class="card-title">Manchester United</h4>
+                                    <p class="card-text">Worldtour - Climb to top of the world!</p>
+                                    <a href="#" class="btn btn-primary btn-sm">
+                                        <i class="fa fa-plus"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="backside">
+                            <div class="card">
+                                <div class="card-body text-center mt-4">
+                                    <h4 class="card-title" *ngIf="checkLeader(team.caption_id, userID); else elseBlock;">Đội Trưởng</h4>
+                                    <a routerLink="/invitemember" *ngIf="checkLeader(team.caption_id, userID); else elseBock;"><i class="btn btn-primary">Mời thành viên</i></a>
+                                    <p class="card-text" *ngIf="checkLeader(team.caption_id, userID); else elseBock;">Câu lạc bộ bóng đá {{team.team_name}} (viết tắt: team.acronym) là một câu lạc bộ bóng đá chuyên nghiệp có trụ sở tại Old Trafford, Greater Machester, Anh. Câu lạc bộ đang chơi tại Giải bóng đá Ngoại hạng Anh. Với biệt danh "Quỷ Đỏ", vào năm 1878 đổi tên thành Manchester United vào năm 1902 và chuyển đến sân vận động hiện tại là sân Old Trafford vào năm 1910.</p>
+                                    <ul class="list-inline">
+                                        <li class="list-inline-item">
+                                            <a class="social-icon text-xs-center" [routerLink]="['/teaminfor', team.team_id]">
+                                                Xem thông tin
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ./Team member -->
+        </div>
+    </div>
+</section>
+<!-- Team -->
+{% endblock %}
