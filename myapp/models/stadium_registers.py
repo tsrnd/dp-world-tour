@@ -11,7 +11,7 @@ class StadiumRegister(models.Model):
     PA = 'PAID'
     CA = 'CANCEL'
     REGISTER_STATUS = (
-        (PD, 'Peding'),
+        (PD, 'Pending'),
         (PA, 'Paid'),
         (CA, 'Cancel'),
     )
@@ -20,14 +20,14 @@ class StadiumRegister(models.Model):
     time_from = models.DateTimeField()
     time_to = models.DateTimeField()
     status = models.CharField(
-        max_length=2,
+        max_length=10,
         choices=REGISTER_STATUS,
         default=PD
     )
     total_price = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now_add=True, blank=True)
-    deleted_at = models.DateTimeField(blank=True)
+    deleted_at = models.DateTimeField(null=True)
 
     objects = models.Manager()
     custom_objects = StadiumRegisterManager()

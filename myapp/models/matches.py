@@ -10,7 +10,7 @@ class Match(models.Model):
     AC = 'ACCEPTED'
     RJ = 'REJECTED'
     MATCH_STATUS = (
-        (PD, 'Peding'),
+        (PD, 'Pending'),
         (AC, 'Accepted'),
         (RJ, 'Rejected'),
     )
@@ -18,7 +18,7 @@ class Match(models.Model):
     id_find_match_b = models.ForeignKey('FindMatch', on_delete=models.DO_NOTHING, related_name='team_b')
     date_match = models.DateTimeField()
     status = models.CharField(
-        max_length=2,
+        max_length=10,
         choices=MATCH_STATUS,
         default=PD
     )

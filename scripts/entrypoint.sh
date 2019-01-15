@@ -15,7 +15,7 @@ if [ "$CMD" = "python manage\.py runserver*" ]; then
   fi
 
   if [ "$AUTO_SEED" = '1' ]; then
-    python manage.py seed
+    python manage.py seed --settings=myproject.settings_myapp
   fi
 
   if [ "$AUTO_COLLECT_STATIC" = '1' ]; then
