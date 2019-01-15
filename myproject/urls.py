@@ -24,5 +24,6 @@ inject.configure_once(bh_config)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('myapp.urls'))
+    path('api/', include('myapp.urls')),
+    path('client/', include('clients.urls'))
 ]
