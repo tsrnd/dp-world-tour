@@ -8,15 +8,17 @@ services:
       - .:/code
     expose:
       - 8000
+      - 8001
     ports:
       - 8000:8000
+      - 8001:8001
     environment:
       DATABASE_URL: 'postgres://hello:django@data:5432/default'
       CACHE_URL: 'postgres://hello:django@data:5432/default'
     links:
       - data:data
       - cache:cache
-    command: [ "python", "manage.py", "runserver", "0.0.0.0:8000" ]
+    command: [ "python", "manage.py", "runserver", "--settings=myproject.settings_myapp", "0.0.0.0:8000" ]
 
   data:
     image: postgres:11.1-alpine

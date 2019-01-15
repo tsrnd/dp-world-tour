@@ -24,6 +24,7 @@ class StadiumRegister(models.Model):
         choices=REGISTER_STATUS,
         default=PD
     )
+    total_price = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now_add=True, blank=True)
     deleted_at = models.DateTimeField(blank=True)

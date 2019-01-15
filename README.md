@@ -36,6 +36,8 @@ $ make install
 | `make test` | Test app |
 | `make migrations` | Creating new migrations based on the changes you have made to your models |
 | `make up-data` | Up data services |
+| `make logs-myapp` | Logs myapp container |
+| `make up-client` | Up clientside and show logs (open new terminal) |
 | `make clean` | Remove exited containers, dangling images, Python cache |
 | `make clean-data` | Remove existed data of data services |
 
