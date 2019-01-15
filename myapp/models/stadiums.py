@@ -11,6 +11,7 @@ class Stadium(models.Model):
     lng = models.DecimalField(max_digits=9, decimal_places=6)
     phone_number = models.CharField(max_length=20)
     email = models.CharField(max_length=217)
+    price = models.IntegerField()
     bank_num = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now_add=True, blank=True)

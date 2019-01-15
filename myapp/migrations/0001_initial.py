@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('date_match', models.DateTimeField()),
-                ('status', models.CharField(choices=[('PENDING', 'Peding'), ('ACCEPTED', 'Accepted'), ('REJECTED', 'Rejected')], default='PENDING', max_length=2)),
+                ('status', models.CharField(choices=[('PENDING', 'Peding'), ('ACCEPTED', 'Accepted'), ('REJECTED', 'Rejected')], default='PENDING', max_length=10)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now_add=True)),
             ],
@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('date_match', models.DateTimeField()),
-                ('status', models.CharField(choices=[('PENDING', 'Peding'), ('ACCEPTED', 'Accepted'), ('REJECTED', 'Rejected')], default='PENDING', max_length=2)),
+                ('status', models.CharField(choices=[('PENDING', 'Peding'), ('ACCEPTED', 'Accepted'), ('REJECTED', 'Rejected')], default='PENDING', max_length=10)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now_add=True)),
                 ('id_find_match_a', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, related_name='team_a', to='myapp.FindMatch')),
@@ -57,7 +57,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('time_from', models.DateTimeField()),
                 ('time_to', models.DateTimeField()),
-                ('status', models.CharField(choices=[('PENDING', 'Peding'), ('PAID', 'Paid'), ('CANCEL', 'Cancel')], default='PENDING', max_length=2)),
+                ('status', models.CharField(choices=[('PENDING', 'Peding'), ('PAID', 'Paid'), ('CANCEL', 'Cancel')], default='PENDING', max_length=10)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now_add=True)),
                 ('deleted_at', models.DateTimeField(blank=True)),
@@ -82,7 +82,7 @@ class Migration(migrations.Migration):
             name='UserTeam',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('status', models.CharField(choices=[('PENDING', 'Peding'), ('ACCEPTED', 'Accepted'), ('REJECTED', 'Rejected')], default='PENDING', max_length=2)),
+                ('status', models.CharField(choices=[('PENDING', 'Peding'), ('ACCEPTED', 'Accepted'), ('REJECTED', 'Rejected')], default='PENDING', max_length=10)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now_add=True)),
                 ('deleted_at', models.DateTimeField(blank=True)),
