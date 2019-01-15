@@ -1,27 +1,27 @@
-swagger: "2.0"
+swagger: '2.0'
 info:
-  version: "1.0.0"
-  title: "WorldTour"
+  version: 1.0.0
+  title: WorldTour
 tags:
-- name: "User"
+  - name: User
 schemes:
-- "https"
-- "http"
+  - https
+  - http
 paths:
   /api/user/register:
     post:
       tags:
-      - "User"
-      summary: "Register user"
-      description: "Register new user"
-      operationId: "registerUser"
+        - User
+      summary: Register user
+      description: Register new user
+      operationId: registerUser
       consumes:
-      - "application/x-www-form-urlencoded"
+        - application/x-www-form-urlencoded
       parameters:
-      - $ref: '#/parameters/Username'
-      - $ref: '#/parameters/Email'
-      - $ref: '#/parameters/Password'
-      - $ref: '#/parameters/PhoneNumber'
+        - $ref: '#/parameters/Username'
+        - $ref: '#/parameters/Email'
+        - $ref: '#/parameters/Password'
+        - $ref: '#/parameters/PhoneNumber'
       responses:
         '200':
           description: Successful response
@@ -36,23 +36,23 @@ paths:
   /api/user/login:
     post:
       tags:
-      - "User"
-      summary: "Logs user into the system"
-      description: ""
-      operationId: "loginUser"
+        - User
+      summary: Logs user into the system
+      description: ''
+      operationId: loginUser
       produces:
-      - "application/json"
+        - application/json
       parameters:
-      - name: "username"
-        in: "query"
-        description: "The user name for login"
-        required: true
-        type: "string"
-      - name: "password"
-        in: "query"
-        description: "The password for login in clear text"
-        required: true
-        type: "string"
+        - name: username
+          in: query
+          description: The user name for login
+          required: true
+          type: string
+        - name: password
+          in: query
+          description: The password for login in clear text
+          required: true
+          type: string
       responses:
         '200':
           description: Successful response
@@ -70,21 +70,60 @@ paths:
           description: Internal server error response
           schema:
             $ref: '#/definitions/ErrorDetails'
+  /api/stadium/lists:
+    post:
+      tags:
+        - Stadium
+      summary: Booking stadium with dates
+      description: ''
+      operationId: bookingStadium
+      produces:
+        - application/json
+      parameters:
+        - name: start_date
+          in: query
+          description: Booking stadium with start date
+          required: true
+          type: string
+        - name: end_date
+          in: query
+          description: The date is used to limited stadiums
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            title: Successful response
+            type: object
+            properties:
+              stadiums:
+                type: array
+                items:
+                  $ref: '#/definitions/Stadium'
+        '400':
+          description: Bad request error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+        '500':
+          description: Internal server error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
 securityDefinitions:
   petstore_auth:
-    type: "oauth2"
-    authorizationUrl: "http://petstore.swagger.io/oauth/dialog"
-    flow: "implicit"
+    type: oauth2
+    authorizationUrl: 'http://petstore.swagger.io/oauth/dialog'
+    flow: implicit
     scopes:
-      write:pets: "modify pets in your account"
-      read:pets: "read your pets"
+      'write:pets': modify pets in your account
+      'read:pets': read your pets
   api_key:
-    type: "apiKey"
-    name: "api_key"
-    in: "header"
+    type: apiKey
+    name: api_key
+    in: header
 consumes:
-- "application/x-www-form-urlencoded"
-- "multipart/form-data"
+  - application/x-www-form-urlencoded
+  - multipart/form-data
 parameters:
   Username:
     name: username
@@ -104,12 +143,46 @@ parameters:
   PhoneNumber:
     name: phone_number
     in: formData
-    type: integer
+    type: string
     required: false
 definitions:
   Token:
     type: string
-    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.XbPfbIHMI6arZ3Y922BhjWgQzWXcXNrz0ogtVhfEd2o"
+    example: >-
+      eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.XbPfbIHMI6arZ3Y922BhjWgQzWXcXNrz0ogtVhfEd2o
+  Stadium:
+    title: Stadium
+    type: object
+    properties:
+      name:
+        type: string
+        description: stadium name
+      location: 
+        type: string
+        description: location
+      phone_number: 
+        $ref: '#/parameters/PhoneNumber'
+      email:
+        type: string
+        description: email
+      price: 
+        type: string
+        description: price
+      bank_number: 
+        type: string
+        description: bank_number
+      status:
+        type: string
+        enum: 
+          - pending
+          - paid
+          - cancel
+        description: >-
+          * `pending`: The user is waiting to be approved
+          
+          * `paid`: The user paid
+          
+          * `cancel`: The user cancel booked stadium
   ErrorDetails:
     title: Error details
     type: object
@@ -122,4 +195,3 @@ definitions:
         items:
           description: error detail
           type: string
-          
