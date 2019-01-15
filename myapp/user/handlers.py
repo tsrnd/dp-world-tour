@@ -11,7 +11,9 @@ from rest_framework import generics, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from myapp.models.user import UserSerializer
+from myapp.serializer.auth_serializer import UserSerializer
+from rest_framework.views import APIView
+from myapp.permissions.auth_permissions import IsAdminUser
 
 logger = logging.getLogger(__name__)
 
@@ -55,3 +57,12 @@ class UserRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
         serializer.save()
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class AdminView(APIView):
+    permission_classes = (IsAuthenticated & IsAdminUser,)
+
+    def get(self, request, format=None):
+        content = {
+            'message': "Admin View"
+        }
+        return Response(content)
