@@ -1,12 +1,37 @@
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
 from django.contrib.auth.models import User
+from django.utils.six import text_type
+
 
 class UserSerializer(serializers.ModelSerializer):
 
-     date_joined = serializers.ReadOnlyField()
+    date_joined = serializers.ReadOnlyField()
 
-     class Meta(object):
+    class Meta(object):
         model = User
         fields = ('id', 'email', 'first_name', 'last_name', 'date_joined',
                   'password')
-        extra_kwargs = {'password': {'write_only': True}} 
+        extra_kwargs = {'password': {'write_only': True}}
+
+
+class MyAppTokenObtainPairSerializer(TokenObtainPairSerializer):
+
+    @classmethod
+    def get_token(cls, user):
+        token = super(MyAppTokenObtainPairSerializer, cls).get_token(user)
+        return token
+
+    def validate(self, attrs):
+        super(MyAppTokenObtainPairSerializer, self).validate(attrs)
+
+        refresh = self.get_token(self.user)
+        data = {}
+        data['token'] = text_type(refresh.access_token)
+
+        return data
+
+
+class MyAppTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyAppTokenObtainPairSerializer
