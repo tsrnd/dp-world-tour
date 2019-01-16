@@ -21,8 +21,8 @@ class UserTeam(models.Model):
         (MB, 'Member'),
         (CN, 'Caption'),
     )
-    id_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
-    id_team = models.ForeignKey('Team', on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    team = models.ForeignKey('Team', on_delete=models.DO_NOTHING)
     roll = models.CharField(
         max_length=10,
         choices=ROLE_STATUS,
@@ -36,6 +36,9 @@ class UserTeam(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now_add=True, blank=True)
     deleted_at = models.DateTimeField(null=True)
+
+    class Meta:
+        unique_together = ('user', 'team', )
 
     objects = models.Manager()
     custom_objects = UserTeamManager()

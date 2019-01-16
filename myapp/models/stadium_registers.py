@@ -15,8 +15,8 @@ class StadiumRegister(models.Model):
         (PA, 'Paid'),
         (CA, 'Cancel'),
     )
-    id_stadium = models.ForeignKey('Stadium', on_delete=models.DO_NOTHING)
-    id_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    stadium = models.ForeignKey('Stadium', on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
     time_from = models.DateTimeField()
     time_to = models.DateTimeField()
     status = models.CharField(
@@ -28,6 +28,9 @@ class StadiumRegister(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now_add=True, blank=True)
     deleted_at = models.DateTimeField(null=True)
+
+    class Meta:
+        unique_together = ('user', 'stadium', 'time_from', )
 
     objects = models.Manager()
     custom_objects = StadiumRegisterManager()

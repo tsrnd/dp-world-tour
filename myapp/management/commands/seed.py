@@ -20,11 +20,19 @@ class Command(BaseCommand):
 
         from django_seed import Seed
         seeder = Seed.seeder()
-        seeder.add_entity(Stadium, 100)
-        seeder.add_entity(Team, 100)
+        seeder.add_entity(Stadium, 100, {
+            'deleted_at': lambda x: None,
+        })
+        seeder.add_entity(Team, 100, {
+            'deleted_at': lambda x: None,
+        })
         seeder.add_entity(User, 100)
-        seeder.add_entity(UserTeam, 100)
-        seeder.add_entity(StadiumRegister, 100)
+        seeder.add_entity(UserTeam, 100, {
+            'deleted_at': lambda x: None,
+        })
+        seeder.add_entity(StadiumRegister, 100, {
+            'deleted_at': lambda x: None,
+        })
         seeder.add_entity(FindMatch, 100)
         seeder.add_entity(Match, 100)
         seeder.execute()
