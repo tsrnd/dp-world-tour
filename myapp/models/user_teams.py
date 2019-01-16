@@ -11,20 +11,34 @@ class UserTeam(models.Model):
     AC = 'ACCEPTED'
     RJ = 'REJECTED'
     INVITE_STATUS = (
-        (PD, 'Peding'),
+        (PD, 'Pending'),
         (AC, 'Accepted'),
         (RJ, 'Rejected'),
     )
-    id_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
-    id_team = models.ForeignKey('Team', on_delete=models.DO_NOTHING)
+    MB = 'MEMBER'
+    CN = 'CAPTION'
+    ROLE_STATUS = (
+        (MB, 'Member'),
+        (CN, 'Caption'),
+    )
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    team = models.ForeignKey('Team', on_delete=models.DO_NOTHING)
+    roll = models.CharField(
+        max_length=10,
+        choices=ROLE_STATUS,
+        default=MB,
+    )
     status = models.CharField(
-        max_length=2,
+        max_length=10,
         choices=INVITE_STATUS,
         default=PD
     )
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now_add=True, blank=True)
-    deleted_at = models.DateTimeField(blank=True)
+    deleted_at = models.DateTimeField(null=True)
+
+    class Meta:
+        unique_together = ('user', 'team', )
 
     objects = models.Manager()
     custom_objects = UserTeamManager()

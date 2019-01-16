@@ -1,7 +1,7 @@
 from django.core import validators
-from django import forms
+from rest_framework import serializers
 
-class UserRegister(forms.Form):
-    user_name = forms.CharField(max_length=100)
-    email = forms.CharField(max_length=100,validators=[validators.validate_email])
-    password = forms.CharField(max_length=100)
+class UserRegister(serializers.Serializer):
+    user_name = serializers.CharField(max_length=100)
+    email = serializers.CharField(max_length=100,validators=[validators.validate_email])
+    password = serializers.CharField(max_length=100)

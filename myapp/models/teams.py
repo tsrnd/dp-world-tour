@@ -8,12 +8,11 @@ class TeamManager(models.Manager):
 
 class Team(models.Model):
     team_name = models.CharField(max_length=30)
-    caption_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
-    team_profile_image_url = models.CharField(max_length=217)
+    team_profile_image_url = models.CharField(max_length=217, null=True)
     acronym = models.CharField(max_length=10)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now_add=True, blank=True)
-    deleted_at = models.DateTimeField(blank=True)
+    deleted_at = models.DateTimeField(null=True)
 
     objects = models.Manager()
     custom_objects = TeamManager()
