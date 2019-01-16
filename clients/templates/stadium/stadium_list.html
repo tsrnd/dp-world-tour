@@ -28,16 +28,18 @@
                         <th>Giá</th>
                         <th>Trạng thái</th>
                     </tr>
+                    {% for stadium in stadiums %}
                     <tr>
                         <td class="mailbox-name">1</td>
-                        <td class="mailbox-subject"><b>Stamford Bridge</b></td>
+                        <td class="mailbox-subject"><b>{{ stadium.name }}</b></td>
                         <td class="mailbox-date">vị trí</td>
-                        <td class="mailbox-date">0123456789</td>
-                        <td class="mailbox-date">worldtour1@gmail.com</td>
-                        <td class="mailbox-date">10000000000000</td>
-                        <td class="mailbox-date">300000</td>
+                        <td class="mailbox-date">{{ stadium.phone_number }}</td>
+                        <td class="mailbox-date">{{ stadium.email }}</td>
+                        <td class="mailbox-date">{{ stadium.bank_num }}</td>
+                        <td class="mailbox-date">{{ stadium.price }}</td>
                         <td class="mailbox-date">Append</td>
                     </tr>
+                    {% endfor %}
                 </tbody>
             </table><!-- /.table -->
             <ul class="pagination">
