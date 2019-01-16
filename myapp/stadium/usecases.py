@@ -12,5 +12,5 @@ class UsecaseInterface(metaclass=ABCMeta):
 class StadiumUsecase(UsecaseInterface):
     repo = inject.attr(RepositoryInterface)
 
-    def get_list_stadium(self):
-        return self.repo.get_list_stadium()
+    def get_list_stadium(self, r):
+        return self.repo.get_list_stadium(r)

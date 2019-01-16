@@ -3589,3 +3589,7 @@ blockquote:after {
 	border-top: 10px solid #e95842;
 	border-left: 10px solid transparent;
 }
+.bootstrap-datetimepicker-widget {
+	z-index:9999999999999999999;
+	top: 100% !important;
+}

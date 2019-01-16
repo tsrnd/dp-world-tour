@@ -1,58 +1,75 @@
 {% extends 'base.html' %}
-
-{% block title %}
-    My Teams
-{% endblock %}
-
+{% load static %}
+{% block title %} My Teams {% endblock %}
 {% block style %}
-    {% include './stadium_list_css.html' %}
+{% include './stadium_list_css.html' %}
 {% endblock %}
-
 {% block pagecontent %}
+
 <div class="notify"></div>
 <!-- Team -->
 <section id="team" class="pb-5">
-    <div class="container">
-        <h5 class="section-title h1">DANH SÁCH SÂN VẬN ĐỘNG</h5>
-        <!-- Box body-->
-        <div class="table-responsive mailbox-messages">
-            <table class="table table-hover table-striped">
-                <tbody>
-                    <tr>
-                        <th>STT</th>
-                        <th>Tên sân vận động</th>
-                        <th>Vị trí</th>
-                        <th>Số điện thoại</th>
-                        <th>Email</th>
-                        <th>Số tài khoản</th>
-                        <th>Giá</th>
-                        <th>Trạng thái</th>
-                    </tr>
-                    {% for stadium in stadiums %}
-                    <tr>
-                        <td class="mailbox-name">1</td>
-                        <td class="mailbox-subject"><b>{{ stadium.name }}</b></td>
-                        <td class="mailbox-date">vị trí</td>
-                        <td class="mailbox-date">{{ stadium.phone_number }}</td>
-                        <td class="mailbox-date">{{ stadium.email }}</td>
-                        <td class="mailbox-date">{{ stadium.bank_num }}</td>
-                        <td class="mailbox-date">{{ stadium.price }}</td>
-                        <td class="mailbox-date">Append</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table><!-- /.table -->
-            <ul class="pagination">
-                <li class="disabled" aria-disabled="true">
-                    <a >«</a>
-                </li>
-                <li class="active"><a>1<span class="sr-only">(current)</span></a></li>
-                <li class="disabled" aria-disabled="true">
-                    <a>»</a>
-                </li>
-            </ul>
-        </div><!-- /.mail-box-messages -->
+  <div class="container">
+    <h5 class="section-title h1">DANH SÁCH SÂN VẬN ĐỘNG</h5>
+    <!-- Box body-->
+    <div class="table-responsive mailbox-messages">
+      <form class="example" action="{% url 'list' %}" method="POST">
+        {% csrf_token %}
+        <div class="input-group date" id="datetimepicker1">
+          <input type="datetime" class="form-control" name="time_from"/>
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"></span>
+          </span>
+        </div>
+        <div class="input-group date" id="datetimepicker2">
+          <input type="text" class="form-control" name="time_to"/>
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"></span>
+          </span>
+        </div>
+        <input type="text" placeholder="Chọn giá tiền.." name="price" />
+        <input type="submit" value="Search"/>
+      </form>
+      <table class="table table-hover table-striped">
+        <tbody>
+          <tr>
+            <th>STT</th>
+            <th>Tên sân vận động</th>
+            <th>Vị trí</th>
+            <th>Số điện thoại</th>
+            <th>Email</th>
+            <th>Số tài khoản</th>
+            <th>Giá</th>
+            <th>Trạng thái</th>
+          </tr>
+          {% for stadium in stadiums %}
+          <tr>
+            <td class="mailbox-name">1</td>
+            <td class="mailbox-subject">
+              <b>{{ stadium.name }}</b>
+            </td>
+            <td class="mailbox-date">vị trí</td>
+            <td class="mailbox-date">{{ stadium.phone_number }}</td>
+            <td class="mailbox-date">{{ stadium.email }}</td>
+            <td class="mailbox-date">{{ stadium.bank_num }}</td>
+            <td class="mailbox-date">{{ stadium.price }}</td>
+            <td class="mailbox-date">Append</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <!-- /.table -->
+      <ul class="pagination">
+        <li class="disabled" aria-disabled="true"><a>«</a></li>
+        <li class="active">
+          <a>1<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="disabled" aria-disabled="true"><a>»</a></li>
+      </ul>
     </div>
+    <!-- /.mail-box-messages -->
+  </div>
 </section>
 <!-- Team -->
 {% endblock %}
+  

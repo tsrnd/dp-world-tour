@@ -11,13 +11,18 @@
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" type="text/css" />
     <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}" type="text/css" />
     <link rel="stylesheet" href="{% static 'style.css' %}" type="text/css" />
+    <link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.css' %}" type="text/css" />
+
     <link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}" type="text/css" />
     <link rel="stylesheet" href="{% static 'css/color.css' %}" type="text/css" />
     <link rel="stylesheet" href="{% static 'css/dl-menu.css' %}" type="text/css" />
     <link rel="stylesheet" href="{% static 'css/flexslider.css' %}" type="text/css" />
     <link rel="stylesheet" href="{% static 'css/prettyphoto.css' %}" type="text/css" />
     <link rel="stylesheet" href="{% static 'css/responsive.css' %}" type="text/css" />
+    <!-- <link rel="stylesheet" href="{% static 'css/form-search.css' %}" type="text/css" /> -->
+ 
     {% block style %}{% endblock %}
+    {% block script %}{% endblock %}
   </head>
   <body>
         <div class="ec-main-wrapper">
@@ -210,6 +215,8 @@
     <script src="{% static 'scripts/skills.js' %}"></script> <!-- This is how to include a static file -->
     <script src="{% static 'scripts/functions.js' %}"></script> <!-- This is how to include a static file -->
     <script src="{% static 'scripts/loading.js' %}"></script> <!-- This is how to include a static file -->
+    <script src="{% static 'scripts/moment.js' %}"></script>
+    <script src="{% static 'scripts/bootstrap-datetimepicker.min.js' %}"></script> 
     <script>
         var options = {
             newsList: "#ec-news",
@@ -218,5 +225,12 @@
         }
         jQuery().newsTicker(options);
     </script>
+    <script type="text/javascript">
+    $(function () {
+        console.log($('#example'))
+      $("#datetimepicker1").datetimepicker({format: 'YYYY-MM-DD HH:mm:ss+00'});
+      $("#datetimepicker2").datetimepicker({format: 'YYYY-MM-DD HH:mm:ss+00'});
+    });
+  </script>
   </body>
 </html>
