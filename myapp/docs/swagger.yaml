@@ -23,7 +23,7 @@ paths:
         - $ref: '#/parameters/Password'
         - $ref: '#/parameters/PhoneNumber'
       responses:
-        '200':
+        '201':
           description: Successful response
         '400':
           description: Bad request error response
@@ -44,12 +44,12 @@ paths:
         - application/json
       parameters:
         - name: username
-          in: query
+          in: formData
           description: The user name for login
           required: true
           type: string
         - name: password
-          in: query
+          in: formData
           description: The password for login in clear text
           required: true
           type: string
@@ -71,23 +71,210 @@ paths:
           schema:
             $ref: '#/definitions/ErrorDetails'
   /api/stadium/list:
+    get:
+      tags:
+        - Stadium
+      summary: Get all ready stadium to book
+      description: |
+        "First": Collects all ready stadium from "time_from" to "time_to" in "stadium_registers" table or was registed before but now is canceled by query "(time_from < timeFrom < time_to OR time_from < timeTo < time_to) AND (status != CANCELED)"
+        "Second": Return all of this stadiums
+      operationId: list stadiums ready to book
+      produces:
+        - application/json
+      parameters:
+        - name: time_from
+          in: query
+          description: Booking stadium with start date
+          required: true
+          type: integer
+        - name: time_to
+          in: query
+          description: The date is used to limited stadiums.
+            Default is "time_from" + 1 hour
+          required: false
+          type: integer
+        - name: price
+          in: query
+          description: The price per hour of stadium
+          required: false
+          type: integer
+        - name: result_limit
+          in: query
+          description: The result listing per page. Default is 20
+          required: false
+          type: integer
+        - name: page
+          in: query
+          description: Page of listing's result
+          required: false
+          type: integer
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            title: Successful response
+            type: object
+            properties:
+              result_count:
+                type: integer
+                description: "result count"
+              next_page_flg:
+                type: boolean
+                description: "check has next page"
+              stadiums:
+                type: array
+                items:
+                  $ref: '#/definitions/Stadium'
+        '400':
+          description: Bad request error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+        '500':
+          description: Internal server error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+  /api/stadium/{id_stadium}/book:
     post:
       tags:
         - Stadium
       summary: Booking stadium with dates
-      description: ''
+      description: |
+        "First": Check stadium is ready or canceled between "time_from" and "time_to" by query "(time_from < timeFrom < time_to OR time_from < timeTo < time_to) AND (status != CANCELED)".
+          If this stadium is already booked and paid by another user, skip this process.
+        "Second":Register record to the "stadium_registers" table, with status is PENDING.
+        "Third": Have two options: pay now or pay later. -> WIP
       operationId: bookingStadium
       produces:
         - application/json
       parameters:
-        - name: start_date
-          in: query
+        - name: id_stadium
+          in: path
+          description: id of stadium user want to book
+          required: true
+          type: integer
+        - name: time_from
+          in: formData
           description: Booking stadium with start date
           required: true
-          type: string
-        - name: end_date
-          in: query
+          type: integer
+        - name: time_to
+          in: formData
           description: The date is used to limited stadiums
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            title: Successful response
+            type: object
+            properties:
+              message:
+                type: string
+                description: "Booking success"
+        '400':
+          description: Bad request error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+        '500':
+          description: Internal server error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+  /api/booking:
+    get:
+      tags:
+        - Stadium
+      summary: List all user's booking request
+      description: |
+        "First": Get all user booking request.
+      operationId: listBooking
+      produces:
+        - application/json
+      parameters:
+        - name: result_limit
+          in: query
+          description: The result listing per page. Default is 20
+          required: false
+          type: integer
+        - name: page
+          in: query
+          description: Page of listing's result
+          required: false
+          type: integer
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            title: Successful response
+            type: object
+            properties:
+              result_count:
+                type: integer
+                description: "result count"
+              next_page_flg:
+                type: boolean
+                description: "check has next page"
+              bookings:
+                type: array
+                items:
+                  $ref: '#/definitions/Booking'
+        '400':
+          description: Bad request error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+        '500':
+          description: Internal server error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+  /api/booking/{id_booking}/cancel:
+    put:
+      tags:
+        - Stadium
+      summary: Cancel booking's request
+      description: |
+        "First": Check status of booking's request. If current status is "PENDING" then update status to "CANCELED". Else, skip this processing.
+      operationId: cancelBooking
+      produces:
+        - application/json
+      parameters:
+        - name: id_booking
+          in: path
+          description: id of booking's request user want to cancel
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            title: Successful response
+            type: object
+            properties:
+              message:
+                type: string
+                description: "Canceled"
+        '400':
+          description: Bad request error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+        '500':
+          description: Internal server error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+  /api/team:
+    get:
+      tags:
+        - Team
+      summary: Get all teams of current user
+      description: |
+        "First": Get user's id from jwt token.
+        "Second": Filter and get all team which current user is a member.
+      operationId: getTeam
+      produces:
+        - application/json
+      parameters:
+        - name: team_name
+          in: query
+          description: name of team
           required: false
           type: string
       responses:
@@ -97,10 +284,206 @@ paths:
             title: Successful response
             type: object
             properties:
-              stadiums:
+              result_count:
+                type: integer
+                description: result count
+              teams:
                 type: array
                 items:
-                  $ref: '#/definitions/Stadium'
+                  $ref: '#/definitions/TeamCheckLead'
+        '400':
+          description: Bad request error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+        '500':
+          description: Internal server error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+  /api/team/create:
+    post:
+      tags:
+        - Team
+      summary: Create new team
+      description: |
+        "First": Get user's id from jwt token.
+        "Second": Check if current user is a member of any team with role LEAD. If true then skip this process.
+        "Third": Register data to "team" table
+      operationId: createTeam
+      produces:
+        - application/json
+      parameters:
+        - name: team_name
+          in: formData
+          description: name of team
+          required: true
+          type: string
+        - name: acronym
+          in: formData
+          description: the acronym of this team name user want to display
+          required: true
+          type: string
+        - name: image
+          in: formData
+          description: team profile image
+          required: false
+          type: file
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            title: Successful response
+            type: object
+            properties:
+              message:
+                type: string
+                description: "Create new team success"
+        '400':
+          description: Bad request error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+        '500':
+          description: Internal server error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+  /api/team/{id_team}/invite:
+    post:
+      tags:
+        - Team
+      summary: Invite member to user's team
+      description: |
+        "First": Get user's id from jwt token.
+        "Second": Check if current user is a member of this team with role LEAD. If FALSE then skip this process.
+        "Third": Register data to "team_register" table with default ROLE is MEMBER, default status is PENDING
+        "Fourd": Send mail to user's was invited with a link to approve
+      operationId: inviteTeam
+      produces:
+        - application/json
+      parameters:
+        - name: id_team
+          in: path
+          description: id of team
+          required: true
+          type: string
+        - name: id_user
+          in: formData
+          description: the id of user want to invite
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            title: Successful response
+            type: object
+            properties:
+              message:
+                type: string
+                description: "Invite success"
+        '400':
+          description: Bad request error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+        '500':
+          description: Internal server error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+  /api/team/invitations:
+    get:
+      tags:
+        - Team
+      summary: List all invitations of current user
+      description: |
+        "First": Get user's id from jwt token.
+        "Second": Get all invitations with status is PENDING in user_team.
+      operationId: invitationsTeam
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            title: Successful response
+            type: object
+            properties:
+              result_count:
+                type: integer
+                description: result count
+              invitations:
+                type: array
+                items:
+                  $ref: '#/definitions/Invitation'
+        '400':
+          description: Bad request error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+        '500':
+          description: Internal server error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+  /api/team/invitations/{id_invitation}/accept:
+    post:
+      tags:
+        - Team
+      summary: Accept invitation's request
+      description: |
+        "First": Get user's id from jwt token.
+        "Second": Check if user id is existed in id_invitation record.
+        "Third": Update status to ACCEPTED.
+      operationId: acceptTeam
+      produces:
+        - application/json
+      parameters:
+        - name: id_invitation
+          in: path
+          description: id of team
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            title: Successful response
+            type: object
+            properties:
+              message:
+                type: string
+                description: "Accept invitation success"
+        '400':
+          description: Bad request error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+        '500':
+          description: Internal server error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+  /api/team/invitations/{id_invitation}/reject:
+    post:
+      tags:
+        - Team
+      summary: Reject invitation's request
+      description: |
+        "First": Get user's id from jwt token.
+        "Second": Check if user id is existed in id_invitation record.
+        "Third": Update status to REJECTED.
+      operationId: rejectTeam
+      produces:
+        - application/json
+      parameters:
+        - name: id_invitation
+          in: path
+          description: id of team
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            title: Successful response
+            type: object
+            properties:
+              message:
+                type: string
+                description: "Reject invitation success"
         '400':
           description: Bad request error response
           schema:
@@ -154,12 +537,18 @@ definitions:
     title: Stadium
     type: object
     properties:
+      id:
+        type: integer
+        description: stadium id
       name:
         type: string
         description: stadium name
-      location: 
+      lat: 
         type: string
-        description: location
+        description: latitude
+      lng:
+        type: string
+        description: longtitude
       phone_number: 
         $ref: '#/parameters/PhoneNumber'
       email:
@@ -171,18 +560,89 @@ definitions:
       bank_number: 
         type: string
         description: bank_number
+  StadiumMinified:
+    title: StadiumMinified
+    type: object
+    properties:
+      id:
+        type: integer
+        description: stadium id
+      name:
+        type: string
+        description: stadium name
+      phone_number: 
+        $ref: '#/parameters/PhoneNumber'
+      email:
+        type: string
+        description: email
+      price: 
+        type: string
+        description: price
+  Booking:
+    title: Booking
+    type: object
+    properties:
+      id:
+        type: integer
+        description: booking request id
+      stadium: 
+        $ref: '#/definitions/StadiumMinified'
+      time_from:
+        type: integer
+        description: time from
+      time_to:
+        type: integer
+        description: time to
       status:
         type: string
-        enum: 
-          - pending
-          - paid
-          - cancel
-        description: >-
-          * `pending`: The user is waiting to be approved
-          
-          * `paid`: The user paid
-          
-          * `cancel`: The user cancel booked stadium
+        description: status of this booking request
+  Team:
+    title: Team
+    type: object
+    properties:
+      id:
+        type: integer
+        description: team id
+      team_name:
+        type: string
+        description: team name
+      acronym:
+        type: string
+        description: acronym of team name
+      team_profile_image_url:
+        type: string
+        description: team profile image
+  TeamCheckLead:
+    title: Team
+    type: object
+    properties:
+      id:
+        type: integer
+        description: team id
+      team_name:
+        type: string
+        description: team name
+      acronym:
+        type: string
+        description: acronym of team name
+      team_profile_image_url:
+        type: string
+        description: team profile image
+      is_leader:
+        type: boolean
+        description: check current user is leader
+  Invitation:
+    title: Invitation
+    type: object
+    properties:
+      id:
+        type: integer
+        description: invitation id
+      team: 
+        $ref: '#/definitions/Team'
+      time_invite:
+        type: integer
+        description: time of invitation
   ErrorDetails:
     title: Error details
     type: object
