@@ -1,10 +1,10 @@
-from myapp.serializer.auth_serializer import MyAppTokenObtainPairSerializer
+from myapp.serializer.auth_serializer import AuthenticateSerializer
 import inject
 
 
 class TokenBase:
     def generate_token(self, request):
-        serializer = MyAppTokenObtainPairSerializer(data=request)
+        serializer = AuthenticateSerializer(data=request)
         try:
             serializer.is_valid(raise_exception=True)
         except Exception as e:

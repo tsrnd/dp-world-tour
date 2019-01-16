@@ -35,40 +35,6 @@ class AuthHandler(TemplateView):
         return render(request, 'authen/register.html', context)
 
 
-class UserRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
-
-     # Allow only authenticated users to access this url
-    permission_classes = (IsAuthenticated, )
-    serializer_class = UserSerializer
-
-    def get(self, request, *args, **kwargs):
-        # serializer to handle turning our `User` object into something that
-        # can be JSONified and sent to the client.
-        serializer = self.serializer_class(request.user)
-
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def put(self, request, *args, **kwargs):
-        serializer_data = request.data.get('user', {})
-
-        serializer = UserSerializer(
-            request.user, data=serializer_data, partial=True)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-
-class AdminView(APIView):
-    permission_classes = (IsAuthenticated & IsAdminUser,)
-
-    def get(self, request, format=None):
-        content = {
-            'message': "Admin View"
-        }
-        return Response(content)
-
-
 class TokenView(APIView):
     token_base = inject.attr(TokenBase)
 

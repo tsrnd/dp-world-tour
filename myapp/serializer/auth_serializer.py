@@ -16,15 +16,15 @@ class UserSerializer(serializers.ModelSerializer):
         extra_kwargs = {'password': {'write_only': True}}
 
 
-class MyAppTokenObtainPairSerializer(TokenObtainPairSerializer):
+class AuthenticateSerializer(TokenObtainPairSerializer):
 
     @classmethod
     def get_token(cls, user):
-        token = super(MyAppTokenObtainPairSerializer, cls).get_token(user)
+        token = super(AuthenticateSerializer, cls).get_token(user)
         return token
 
     def validate(self, attrs):
-        super(MyAppTokenObtainPairSerializer, self).validate(attrs)
+        super(AuthenticateSerializer, self).validate(attrs)
 
         refresh = self.get_token(self.user)
         data = {}
@@ -33,5 +33,5 @@ class MyAppTokenObtainPairSerializer(TokenObtainPairSerializer):
         return data
 
 
-class MyAppTokenObtainPairView(TokenObtainPairView):
-    serializer_class = MyAppTokenObtainPairSerializer
+class AuthenticateSerializerView(TokenObtainPairView):
+    serializer_class = AuthenticateSerializer
