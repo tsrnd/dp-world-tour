@@ -2,7 +2,6 @@ import inject
 from abc import ABCMeta, abstractmethod
 from myapp.user.repositories import *
 
-
 class UsecaseInterface(metaclass=ABCMeta):
     @abstractmethod
     def create_user(self, user_name, email, password):
@@ -12,8 +11,8 @@ class UsecaseInterface(metaclass=ABCMeta):
 class UserUsecase(UsecaseInterface):
     repo = inject.attr(RepositoryInterface)
 
-    def create_user(self, user_name, email, password):
-        # check user ton tai
-        # self.repo.get_user()
-        # dang ky user vafo database
-        return self.repo.create_user(user_name, email, password)
+    def create_user(self, username, email, password):
+        user = self.repo.get_user(username)
+        if user is not None:
+            return None
+        return self.repo.create_user(username = username, email = email, password = password)

@@ -1,5 +1,6 @@
 import inject
 from abc import ABCMeta, abstractmethod
+from django.contrib.auth.models import User
 
 
 class RepositoryInterface(metaclass=ABCMeta):
@@ -8,15 +9,20 @@ class RepositoryInterface(metaclass=ABCMeta):
         pass
     
     @abstractmethod
-    def create_user(self, user_name, email, password):
+    def create_user(self, username, email, password):
         pass
 
 
 class UserRepository(RepositoryInterface):
     
     def get_user(self, user_name):
-        pass
+        user = User.objects.filter(username = user_name)
+        if len(user) == 0:
+            return None
+        return user
 
-    def create_user(self, user_name, email, password):
-        pass
+    def create_user(self, username, email, password):
+        user = User.objects.create_user(pk= 12,username = username,password = password,email = email)
+        user.save()
+        return user
 
