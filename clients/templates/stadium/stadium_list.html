@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    My Teams
+{% endblock %}
+
+{% block style %}
+    {% include './stadium_list_css.html' %}
+{% endblock %}
+
+{% block pagecontent %}
+<div class="notify"></div>
+<!-- Team -->
+<section id="team" class="pb-5">
+    <div class="container">
+        <h5 class="section-title h1">DANH SÁCH SÂN VẬN ĐỘNG</h5>
+        <!-- Box body-->
+        <div class="table-responsive mailbox-messages">
+            <table class="table table-hover table-striped">
+                <tbody>
+                    <tr>
+                        <th>STT</th>
+                        <th>Tên sân vận động</th>
+                        <th>Vị trí</th>
+                        <th>Số điện thoại</th>
+                        <th>Email</th>
+                        <th>Số tài khoản</th>
+                        <th>Giá</th>
+                        <th>Trạng thái</th>
+                    </tr>
+                    <tr>
+                        <td class="mailbox-name">1</td>
+                        <td class="mailbox-subject"><b>Stamford Bridge</b></td>
+                        <td class="mailbox-date">vị trí</td>
+                        <td class="mailbox-date">0123456789</td>
+                        <td class="mailbox-date">worldtour1@gmail.com</td>
+                        <td class="mailbox-date">10000000000000</td>
+                        <td class="mailbox-date">300000</td>
+                        <td class="mailbox-date">Append</td>
+                    </tr>
+                </tbody>
+            </table><!-- /.table -->
+            <ul class="pagination">
+                <li class="disabled" aria-disabled="true">
+                    <a >«</a>
+                </li>
+                <li class="active"><a>1<span class="sr-only">(current)</span></a></li>
+                <li class="disabled" aria-disabled="true">
+                    <a>»</a>
+                </li>
+            </ul>
+        </div><!-- /.mail-box-messages -->
+    </div>
+</section>
+<!-- Team -->
+{% endblock %}
