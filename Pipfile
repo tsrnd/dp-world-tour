@@ -24,6 +24,7 @@ djangorestframework = "~=3.9.0"
 inject = "~=3.4.0"
 djangorestframework-simplejwt = "*"
 requests = "~=2.21.0"
+django-seed = "*"
 
 [requires]
 python_version = "3.7"

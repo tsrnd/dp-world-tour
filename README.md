@@ -41,6 +41,11 @@ $ make install
 | `make clean` | Remove exited containers, dangling images, Python cache |
 | `make clean-data` | Remove existed data of data services |
 
+### Seed commands
+| Command | Description |
+|:-|:-|
+| `python3 manage.py seed --settings=myproject.settings_myapp` | Seed all tables |
+
 ### Docker Commands
 
 | Command | Description |
