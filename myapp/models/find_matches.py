@@ -14,15 +14,18 @@ class FindMatch(models.Model):
         (AC, 'Accepted'),
         (RJ, 'Rejected'),
     )
-    id_team = models.ForeignKey('Team', on_delete=models.DO_NOTHING)
+    team = models.ForeignKey('Team', on_delete=models.DO_NOTHING)
     date_match = models.DateTimeField()
     status = models.CharField(
-        max_length=2,
+        max_length=10,
         choices=REQUEST_STATUS,
         default=PD
     )
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now_add=True, blank=True)
+
+    class Meta:
+        unique_together = ('team', 'date_match', )
 
     objects = models.Manager()
     custom_objects = FindMatchManager()
