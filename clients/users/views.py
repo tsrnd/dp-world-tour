@@ -15,7 +15,11 @@ def create_user(request):
             'username': username,
             'password': password,
         })
-        response = r.json()
-        return render(request, 'authen/login.html', response)
+        status_code = r.status_code
+        if status_code == 200:
+            response = r.json()
+            return render(request, 'authen/login.html', response)
+        else:
+            return render(request, 'authen/register.html',None)
     else :
         return render(request, 'authen/register.html',None)

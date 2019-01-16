@@ -22,7 +22,8 @@ class UserRepository(RepositoryInterface):
         return user
 
     def create_user(self, username, email, password):
-        user = User.objects.create_user(pk= 12,username = username,password = password,email = email)
+        id = User.objects.all()
+        user = User.objects.create_user(pk= len(id)+1,username = username,password = password,email = email)
         user.save()
         return user
 

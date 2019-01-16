@@ -4,4 +4,4 @@ from django.contrib.auth.models import User
 class UserSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField()
-    email = serializers.CharField()
+    email = serializers.EmailField()
