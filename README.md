@@ -44,7 +44,7 @@ $ make install
 ### Seed commands
 | Command | Description |
 |:-|:-|
-| `python3 manage.py migrate --settings=myproject.settings_myapp` | Seed all tables |
+| `python3 manage.py seed --settings=myproject.settings_myapp` | Seed all tables |
 
 ### Docker Commands
 
