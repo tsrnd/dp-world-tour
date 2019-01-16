@@ -14,7 +14,7 @@ from rest_framework.response import Response
 from myapp.serializer.auth_serializer import UserSerializer
 from rest_framework.views import APIView
 from myapp.permissions.auth_permissions import IsAdminUser
-
+from shared.token import TokenBase
 logger = logging.getLogger(__name__)
 
 
@@ -58,11 +58,25 @@ class UserRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
 class AdminView(APIView):
     permission_classes = (IsAuthenticated & IsAdminUser,)
 
     def get(self, request, format=None):
         content = {
             'message': "Admin View"
+        }
+        return Response(content)
+
+
+class TokenView(APIView):
+    token_base = inject.attr(TokenBase)
+
+    def post(self, request, format=None):
+        token = self.token_base.generate_token(
+            request.data)
+
+        content = {
+            'token': token
         }
         return Response(content)
