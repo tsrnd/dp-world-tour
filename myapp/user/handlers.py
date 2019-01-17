@@ -5,6 +5,7 @@ from django.views.generic.base import TemplateView
 from myapp.user.requests import *
 from myapp.user.usecases import *
 from shared.base_handler import *
+from django.contrib.auth.models import User
 
 logger = logging.getLogger(__name__)
 
@@ -24,3 +25,14 @@ class AuthHandler(TemplateView):
         # response = self.bh.validate(UserRegister, request.POST)
         context = {"message": "validate success"}
         return render(request, 'authen/register.html', context)
+
+
+
+class UserList(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class UserDetail(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
