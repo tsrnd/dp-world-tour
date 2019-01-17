@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from myapp.models.stadiums import Stadium
+from myapp.models.stadium_registers import StadiumRegister
 
 
 class BookingStadiumSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Stadium
+        model = StadiumRegister
         fields = '__all__'
