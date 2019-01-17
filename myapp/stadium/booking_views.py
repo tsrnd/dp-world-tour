@@ -15,18 +15,18 @@ def convert(time):
 
 class BookingView(APIView):
 
-    def post(self, request, pk):
+    def post(self, request, stadiumID):
         # time_from from request
         timeFrom = request.POST.get('time_from')
         # time_to from request
         timeTo = request.POST.get('time_to')
         # get stadium from database
-        stadium = get_object_or_404(Stadium, pk=pk)
+        stadium = get_object_or_404(Stadium, pk=stadiumID)
         # when stadium is valid, get stadium registered
         stadiumsRegister = StadiumRegister.objects.filter(
             Q(time_from__lt=timeFrom, time_to__gt=timeFrom)
             | Q(time_from__lt=timeTo, time_to__gt=timeTo)
-            & Q(stadium_id=pk)).exclude(status="CANCEL")
+            & Q(stadium_id=stadiumID)).exclude(status="CANCEL")
 
         if len(stadiumsRegister) > 0:
             # Please check error response later
