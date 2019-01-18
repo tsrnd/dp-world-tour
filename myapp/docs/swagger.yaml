@@ -502,7 +502,8 @@ paths:
       description: |
         "First": Authenticate token
         "Second": Permission role user is LEAD and get id_team in user_team
-        "Third": Insert find_match with status PENDING
+        "Third": Validate date match exist or status != REJECTED
+        "Fourth": Insert find_match with status PENDING
       operationId: findMatch
       consumes:
         - application/json
