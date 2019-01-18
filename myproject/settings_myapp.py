@@ -1,3 +1,4 @@
+import logging.config
 """
 Django settings for myproject project.
 
@@ -36,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.admin', 'django.contrib.auth',
     'django.contrib.contenttypes', 'django.contrib.sessions',
     'django.contrib.messages', 'django.contrib.staticfiles', 'myapp',
-    'django_seed', 'rest_framework'
+    'django_seed', 'rest_framework',  'rest_framework.authtoken'
 ]
 
 MIDDLEWARE = [
@@ -128,7 +129,6 @@ STATIC_URL = '/static/'
 # Logging
 # https://docs.djangoproject.com/en/2.1/topics/logging/
 
-import logging.config
 
 logging.config.dictConfig({
     'version': 1,
@@ -171,4 +171,12 @@ STORAGE = {
     'secret_key': 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
     'bucket_name': 'worldtour',
     'region': 'ap-northeast-1',
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'myapp.authentication.BearerTokenAuthentication'
+    )
 }
