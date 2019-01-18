@@ -38,6 +38,7 @@ class UserTeam(models.Model):
     deleted_at = models.DateTimeField(null=True)
 
     class Meta:
+        app_label = 'myapp'
         unique_together = ('user', 'team', )
 
     objects = models.Manager()
