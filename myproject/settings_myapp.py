@@ -165,6 +165,15 @@ logging.config.dictConfig({
     }
 })
 
+STORAGE = {
+    'need_to_init': True,
+    'endpoint': 's3:9000',
+    'access_key': 'MINIOACCESSKEYEXAMPLE',
+    'secret_key': 'MINIOSECRETKEYEXAMPLE',
+    'bucket_name': 'worldtour',
+    'region': 'ap-northeast-1',
+}
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.BasicAuthentication',
