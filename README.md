@@ -1,6 +1,6 @@
-# Hello Django
+# Demo Project - World Tour
 
-[![Build Status](https://travis-ci.com/tsrnd/hello-django.svg?branch=master)](https://travis-ci.com/tsrnd/hello-django)
+[![Build Status](https://travis-ci.com/tsrnd/dp-world-tour.svg?branch=master)](https://travis-ci.com/tsrnd/dp-world-tour)
 
 ## Development
 
