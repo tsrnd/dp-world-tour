@@ -16,3 +16,6 @@ class Team(models.Model):
 
     objects = models.Manager()
     custom_objects = TeamManager()
+
+    class Meta:
+        app_label = 'myapp'
