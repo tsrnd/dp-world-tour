@@ -23,11 +23,12 @@ class StorageInterface(metaclass=ABCMeta):
 
 class Storage(StorageInterface):
     minioInfo = settings.STORAGE
-    minioClient = Minio(minioInfo['endpoint'],
-                  minioInfo['access_key'],
-                  minioInfo['secret_key'],
-                  False,
-                  minioInfo['region'])
+    if minioInfo['need_to_init']:
+        minioClient = Minio(minioInfo['endpoint'],
+                    minioInfo['access_key'],
+                    minioInfo['secret_key'],
+                    False,
+                    minioInfo['region'])
     
     def put_object(self, bucket_name, object_name, data, length, content_type='application/octet-stream', metadata=None):
         return self.minioClient.put_object(bucket_name, object_name, data, length, content_type, metadata)
