@@ -1,7 +1,7 @@
-{% extends 'base.html' %}
+{% extends 'base_login.html' %}
 
 {% block title %}
-    Register
+    Login
 {% endblock %}
 
 {% block style %}
@@ -15,7 +15,7 @@
       <div class="row">
         <div class="col-md-4 login-sec">
             <h2 class="text-center">ĐĂNG NHẬP</h2>
-            <form role="form" class="login-form" (submit)="login($event, username.value, password.value)" action="" method="POST">
+            <form role="form" class="login-form" action="{% url 'login' %}" method="POST">
               {% csrf_token %}
               <div class="form-group">
                 <label for="username" class="text-uppercase">Tài khoản</label>

@@ -1,7 +1,7 @@
 from django.urls import path
-from myapp.user.handlers import AuthHandler
+from myapp.user.handlers import AuthHandler,LoginUser
 
 urlpatterns = [
     path('register', AuthHandler.as_view(), name='register'),
-    # path('login', AuthHandler.as_view(), name='login'),
+    path('login', LoginUser.as_view(), name='login'),
 ]

@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.admin', 'django.contrib.auth',
     'django.contrib.contenttypes', 'django.contrib.sessions',
     'django.contrib.messages', 'django.contrib.staticfiles', 'myapp',
-    'django_seed', 'rest_framework'
+    'django_seed', 'rest_framework', 'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -66,6 +66,12 @@ TEMPLATES = [
         },
     },
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
 
 WSGI_APPLICATION = 'myproject.wsgi.application'
 
