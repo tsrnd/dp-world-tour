@@ -164,3 +164,11 @@ logging.config.dictConfig({
         }
     }
 })
+
+STORAGE = {
+    'endpoint': 's3:9000',
+    'access_key': 'AKIAIOSFODNN7EXAMPLE',
+    'secret_key': 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
+    'bucket_name': 'worldtour',
+    'region': 'ap-northeast-1',
+}

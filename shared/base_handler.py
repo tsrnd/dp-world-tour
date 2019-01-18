@@ -1,4 +1,4 @@
-import inject, json
+import inject, json, magic
 
 from rest_framework.response import Response
 from rest_framework import status
@@ -26,6 +26,10 @@ class BaseHandler:
             return response
         else:
             return None
+
+    # Require to close file before ending process
+    def detect_content_of_file(self, file):
+        return magic.from_buffer(file.open().read(1024), mime=False)
 
     def not_found_response(self):
         response = NotFoundResponse
