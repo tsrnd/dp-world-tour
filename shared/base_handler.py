@@ -1,4 +1,5 @@
-import inject, json
+import inject
+import json
 
 from rest_framework.response import Response
 from rest_framework import status
@@ -10,11 +11,10 @@ class BaseHandler:
     import logging
     logger = logging.getLogger(__name__)
 
-    def validate(self, serializer, request):
-        formCheck = serializer(data=request)
-        if not formCheck.is_valid():
+    def validate(self, serializer):
+        if not serializer.is_valid():
             response = ValidateResponse
-            response["fields"] = formCheck.errors
+            response["fields"] = serializer.errors
             response = Response(
                 response,
                 content_type='application/json',
@@ -68,8 +68,8 @@ class BaseHandler:
         self.logger.warning(message)
 
     def log_error(self, message):
-        self.logger.error(message)        
+        self.logger.error(message)
 
-    
+
 def bh_config(binder: inject.Binder):
     binder.bind(BaseHandler, BaseHandler())
