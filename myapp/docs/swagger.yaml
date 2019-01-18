@@ -492,6 +492,43 @@ paths:
           description: Internal server error response
           schema:
             $ref: '#/definitions/ErrorDetails'
+  /api/match:
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - Match
+      summary: Request find match
+      description: |
+        "First": Authenticate token
+        "Second": Permission role user is LEAD and get id_team in user_team
+        "Third": Insert find_match with status PENDING
+      operationId: findMatch
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            # Body schema with atomic property examples
+            type: object
+            properties:
+              date_match:
+                type: integer
+                example: 1234567890
+      responses:
+        '201':
+          description: Successful response
+        '400':
+          description: Bad request error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+        '500':
+          description: Internal server error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+
 securityDefinitions:
   petstore_auth:
     type: oauth2
@@ -503,6 +540,10 @@ securityDefinitions:
   api_key:
     type: apiKey
     name: api_key
+    in: header
+  Bearer:
+    type: apiKey
+    name: Authorization
     in: header
 consumes:
   - application/x-www-form-urlencoded
