@@ -18,7 +18,7 @@ def create_user(request):
         status_code = r.status_code
         if status_code == 200:
             response = r.json()
-            return render(request, 'authen/login.html', response)
+            return render(request, 'home/index.html', response)
         else:
             return render(request, 'authen/register.html',None)
     else :
