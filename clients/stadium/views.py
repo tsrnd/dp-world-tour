@@ -4,16 +4,15 @@ from datetime import datetime
 from datetime import datetime, date, time, timedelta
 
 def convert(time):
-    return datetime.strptime(time, '%Y-%m-%d %H:%M:%S+00').timestamp()
+    return int(datetime.strptime(time, '%Y-%m-%d %H:%M+00').strftime('%s'))
 
 
 def get_list(request):
     time_from = request.POST.get("time_from")
     time_to = request.POST.get("time_to")
     price = request.POST.get("price")
-    print(time_from)
     if time_from == '' or time_from is None:
-        time_from = datetime.now().timestamp()
+        time_from = int(datetime.now().strftime('%s'))
     else:
         time_from = convert(time_from)
     if time_to == '' or time_to is None:
