@@ -1,6 +1,14 @@
 from rest_framework.permissions import BasePermission
-
+from myapp.models.user_teams import UserTeam
+from rest_framework.exceptions import PermissionDenied
+from rest_framework import exceptions
 
 class IsLeadTeam(BasePermission):
+    message = {'message': 'User is not role CAPTION in team'}
+
     def has_permission(self, request, view):
-        return request.user.is_superuser
+        try:
+            userTeam = UserTeam.objects.get(user__pk =request.user.id)
+            return userTeam.roll == "CAPTION"
+        except UserTeam.DoesNotExist:
+            return False
