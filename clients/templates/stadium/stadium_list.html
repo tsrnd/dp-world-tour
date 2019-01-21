@@ -41,7 +41,8 @@
             <th>Số tài khoản</th>
             <th>Giá</th>
           </tr>
-          {% for stadium in stadiums %}
+          {% for st in stadiums.get('stadium') %}
+          <h1>{{ stadium.id }}</h1>
           <tr>
             <td class="mailbox-name">{{ stadium.id }}</td>
             <td class="mailbox-subject">

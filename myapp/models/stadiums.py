@@ -31,3 +31,6 @@ class ListStadiumResponse(object):
 
     objects = models.Manager()
     custom_objects = StadiumManager()
+
+    class Meta:
+        app_label = 'myapp'
