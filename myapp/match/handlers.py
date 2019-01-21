@@ -18,10 +18,11 @@ class FindMatchAPIView(GenericAPIView):
         response = self.bh.validate(serializer)
         if response is not None:
             return response
+        serializer.save()
         context = {
-            "message": "Create find match successful"
+            "message": "Create find match successfully"
         }
         return Response(
             context,
-            status=status.HTTP_200_OK,
+            status=status.HTTP_201_CREATED,
         )

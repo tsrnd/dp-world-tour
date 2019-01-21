@@ -9,6 +9,9 @@ class IsLeadTeam(BasePermission):
     def has_permission(self, request, view):
         try:
             userTeam = UserTeam.objects.get(user__pk =request.user.id)
+            if not request.POST._mutable:
+                request.POST._mutable = True
+            request.data['team_id'] = userTeam.team.id
             return userTeam.roll == "CAPTION"
         except UserTeam.DoesNotExist:
             return False
