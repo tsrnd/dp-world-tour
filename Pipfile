@@ -24,6 +24,8 @@ djangorestframework = "~=3.9.0"
 inject = "~=3.4.0"
 requests = "~=2.21.0"
 django-seed = "*"
+minio = "*"
+python-magic = "~=0.4.15"
 
 [requires]
 python_version = "3.7"
