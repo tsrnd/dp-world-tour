@@ -8,6 +8,7 @@ from rest_framework.status import (
     HTTP_404_NOT_FOUND,
     HTTP_200_OK
 )
+from django.contrib import messages
 
 import requests
 import json
@@ -42,8 +43,14 @@ def login(request):
         status_code = result.status_code
         response = result.json()
         if status_code == HTTP_200_OK:
-            return redirect('home')
+            res = redirect('home')
+            res.set_cookie('token', response.get('token'))
+            return res
         else:
+            if username == '' or password == '':
+                messages.info(request, 'Please fill in Username and Password!')
+            else:
+                messages.info(request, 'Please fill in correct Username and Password!')
             return render(request, 'authen/login.html')
     else:
         return render(request, 'authen/login.html')

@@ -15,6 +15,14 @@
       <div class="row">
         <div class="col-md-4 login-sec">
             <h2 class="text-center">ĐĂNG NHẬP</h2>
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+                <li id='asd'></li>
+            </ul>
+            {% endif %}
             <form role="form" class="login-form" action="{% url 'login' %}" method="POST">
               {% csrf_token %}
               <div class="form-group">
@@ -51,3 +59,6 @@
  </div>
 </section>
 {% endblock %}
+<!-- <script>
+  alert('{{ messages }}');
+</script> -->

@@ -8,9 +8,9 @@ class UsecaseInterface(metaclass=ABCMeta):
     def create_user(self, user_name, email, password):
         pass
 
-    @abstractmethod
-    def get_user(self, user_name, password):
-        pass
+    # @abstractmethod
+    # def get_user(self, user_name, password):
+    #     pass
 
 
 class UserUsecase(UsecaseInterface):
@@ -22,5 +22,5 @@ class UserUsecase(UsecaseInterface):
         # dang ky user vafo database
         return self.repo.create_user(user_name, email, password)
     
-    def get_user(self, user_name, password):
-        return self.repo.get_user(user_name, password)
+    # def get_user(self, user_name, password):
+    #     return self.repo.get_user(user_name, password)

@@ -4,23 +4,23 @@ import logging
 
 from django.shortcuts import render
 from django.views.generic.base import TemplateView
-from rest_framework import generics
 from myapp.user.requests import *
 from myapp.user.usecases import *
 from shared.base_handler import *
-from django.contrib.auth.models import User
-from django.http import HttpResponse
-from myapp.user.serializers import UserSerializer
-from rest_framework import serializers
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.decorators import api_view, permission_classes
-from django.contrib.auth import authenticate
-from rest_framework.status import (
-    HTTP_400_BAD_REQUEST,
-    HTTP_404_NOT_FOUND,
-    HTTP_200_OK
-)
+# from rest_framework import generics
+# from django.contrib.auth.models import User
+# from django.http import HttpResponse
+# from myapp.user.serializers import UserSerializer
+# from rest_framework import serializers
+# from rest_framework.views import APIView
+# from rest_framework.response import Response
+# from rest_framework.decorators import api_view, permission_classes
+# from django.contrib.auth import authenticate
+# from rest_framework.status import (
+#     HTTP_400_BAD_REQUEST,
+#     HTTP_404_NOT_FOUND,
+#     HTTP_200_OK
+# )
 
 from myapp.serializer.auth_serializer import TokenSerializer, UserSerializer
 from rest_framework.authtoken.models import Token
@@ -71,6 +71,7 @@ class UserInfoAPIView(GenericAPIView):
     def get(self, request):
         serializer = self.serializer_class(request.user)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 # class LoginUser(APIView):
 #     usecase = inject.attr(UsecaseInterface)
