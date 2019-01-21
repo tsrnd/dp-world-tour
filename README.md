@@ -38,6 +38,7 @@ $ make install
 | `make up-data` | Up data services |
 | `make logs-myapp` | Logs myapp container |
 | `make up-client` | Up clientside and show logs (open new terminal) |
+| `make up-mailhost` | Up smtp mail host for development (open new terminal) |
 | `make clean` | Remove exited containers, dangling images, Python cache |
 | `make clean-data` | Remove existed data of data services |
 
