@@ -30,6 +30,7 @@ class StadiumRegister(models.Model):
     deleted_at = models.DateTimeField(null=True)
 
     class Meta:
+        app_label = 'myapp'
         unique_together = ('user', 'stadium', 'time_from', )
 
     objects = models.Manager()

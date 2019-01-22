@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from rest_framework.permissions import IsAuthenticated
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from django.shortcuts import redirect
@@ -17,7 +16,6 @@ import json
 def register(request):
     return render(request, 'authen/register.html', None)
 
-
 def create_user(request):
     r = requests.post('http://localhost:8000/api/user/register', data={
         'email': 'test',
@@ -27,10 +25,6 @@ def create_user(request):
     response = r.json()
     print(response["message"])
     return render(request, 'authen/login.html', None)
-
-
-permission_classes = (IsAuthenticated,)
-
 
 def login(request):
     if request.POST:

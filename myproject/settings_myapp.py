@@ -171,6 +171,15 @@ logging.config.dictConfig({
     }
 })
 
+STORAGE = {
+    'need_to_init': True,
+    'endpoint': 's3:9000',
+    'access_key': 'MINIOACCESSKEYEXAMPLE',
+    'secret_key': 'MINIOSECRETKEYEXAMPLE',
+    'bucket_name': 'worldtour',
+    'region': 'ap-northeast-1',
+}
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.BasicAuthentication',
@@ -178,3 +187,12 @@ REST_FRAMEWORK = {
         'myapp.authentication.BearerTokenAuthentication'
     )
 }
+
+
+# Email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 1025
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+EMAIL_TIMOUT = 3000

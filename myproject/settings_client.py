@@ -163,3 +163,12 @@ logging.config.dictConfig({
         }
     }
 })
+
+STORAGE = {
+    'need_to_init': False,
+    'endpoint': '',
+    'access_key': '',
+    'secret_key': '',
+    'bucket_name': '',
+    'region': '',
+}
