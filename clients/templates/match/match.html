@@ -7,16 +7,26 @@
 {% block style %}
     {% include './match_css.html' %}
 {% endblock %}
-
 {% block pagecontent %}
-<div class="notify"></div>
+
+<div class="notify">
+    {% for message in messages %}
+        <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <strong>{{ message }}</strong>
+        </div>
+    {% endfor %}
+</div>
 <img src="../../static/extra-images/banner-ronaldo.jpg" style="opacity: 0.5;overflow: hidden;" alt="">
 <span id="blur" class=""></span>
 <div id="ec-caption" class="ec-caption">
                 <div class="row">  
                 <div class="col-md-6 col-md-offset-3" style="padding-right: 0px!important;padding-left: 0px!important;">
                     <div class="panel-body" style="padding-right: 4px!important;padding-left: 4px!important;">
-                <form class="form-horizontal" method="post" id="login" name="login" role="form" onSubmit='' action="#" AUTOCOMPLETE="off">
+                <form action="/client/match/find" class="form-horizontal" method="post" id="find-match-form" name="find-match-form" role="form" onSubmit='' action="#" AUTOCOMPLETE="off">
+                    {% csrf_token %}
                     <fieldset  style="min-width: 0;padding:.35em .625em .75em!important;margin:0 2px;border: 2px solid silver!important;margin-bottom: 10em;box-shadow: -6px 15px 20px 0px;">
                 <legend id="first3" style="width: inherit;padding:inherit;border:2px solid silver;color:blanchedalmond;" class="legend">Worldtour</legend>
                 <div class="form-group" id="above" style="margin-bottom: 5px!important;">
@@ -35,7 +45,7 @@
                                                     <div
                                                         class="col-sm-10 col-md-10 col-lg-10 col-xs-10 input-group">
                                                         <span class="input-group-addon"><span class="glyphicon glyphicon-user" style="color: black;"></span></span> <input type="date"
-                                                            class="form-control" id="date-picker" placeholder="Choosing a date" [(ngModel)]="dateRequest" [ngModelOptions]="{standalone: true}" autocomplete="off">
+                                                            class="form-control" id="date-picker" name = "date_match" placeholder="Choosing a date" [(ngModel)]="dateRequest" [ngModelOptions]="{standalone: true}" autocomplete="off">
                                                     </div>
                                                     <div class="col-sm-1 col-md-1 col-lg-1 col-xs-1"></div>
                                                 </div>
@@ -46,9 +56,8 @@
                 <div class="form-group" id="first1">
                                                     <div class="col-sm-1 col-md-1 col-lg-1 col-xs-1"></div>
                                                     <div class="col-sm-11 col-md-11 col-lg-11 col-xs-10" style="text-align:center;">
-                                                        <button id="valuser" type="button" data-toggle="modal" (click)="showDialog()"
-                                                            class="btn btn-primary customizedPrimaryBtn">
-                                                            Tìm kiếm</button>
+                                                        <button id="valuser" type="button" data-toggle="modal" data-target="#confirmBackground"
+                                                            class="btn btn-primary customizedPrimaryBtn">Tìm kiếm</button>
                                                     </div>
                 
                                                     <div class="col-sm-1 col-md-1 col-lg-1 col-xs-1"></div>
@@ -161,14 +170,14 @@
     <div class="modal-dialog">
         <div class="modal-content">
         <div class="modal-header">
-            <h4 class="modal-title">Đợi quá lâu?</h4>
+            <h4 class="modal-title">Thông báo</h4>
         </div>
         <div class="modal-body">
             <p>Bạn có muốn chúng tôi thay bạn đăng ký ngày thi đấu này và tự động ghép cặp đối thủ hay không?</p>
             <div class="row">
                 <div class="col-12-xs text-center">
                     <button id="yesBtn" class="btn btn-success btn-md">Yes</button>
-                    <button id="noBtn" class="btn btn-danger btn-md">No</button>
+                    <button id="noBtn" class="btn btn-danger btn-md" data-dismiss="modal" data-target="#confirmBackground">No</button>
                 </div>
             </div>
         </div>
