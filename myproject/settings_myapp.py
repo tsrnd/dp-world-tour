@@ -179,7 +179,8 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'myapp.authentication.BearerTokenAuthentication'
-    )
+    ),
+    # 'EXCEPTION_HANDLER': 'myapp.providers.exception.custom_exception_handler'
 }
 
 
