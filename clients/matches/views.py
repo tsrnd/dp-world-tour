@@ -6,7 +6,6 @@ from django.contrib import messages
 
 def index(request):
     response = render(request, 'match/match.html', None)
-    response.set_cookie('token', '0d6c2c9b383287add9e5df6cf492c91274d71e2d')
     return response
 
 
@@ -22,12 +21,12 @@ def find_match(request):
                     'date_match': date_match,
                 }, headers=headers)
                 response = r.json()
-                print(response)
-                messages.add_message(request, messages.SUCCESS, 'Đã đăng kí tìm kiếm trận đấu thành công.')
+                if r.status_code == 200:
+                    messages.add_message(request, messages.SUCCESS, 'Đã đăng kí tìm kiếm trận đấu thành công.')
+                elif r.status_code == 400:
+                    messages.add_message(request, messages.ERROR, 'Mời bạn chọn lịch thi đấu khác')
+                else:
+                    messages.add_message(request, messages.ERROR, 'Tìm kiếm trận đấu thất bại.')
                 return render(request, 'match/match.html', None)
-        else:
-            form = FindMatchForm()
     messages.add_message(request, messages.ERROR, 'Tìm kiếm trận đấu thất bại.')
     return render(request, 'match/match.html', {'form': form})
-        
-    
