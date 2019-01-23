@@ -2,7 +2,7 @@ from rest_framework import serializers
 from myapp.models.stadium_registers import StadiumRegister
 from django.shortcuts import get_object_or_404
 from myapp.models.stadiums import Stadium
-from shared.utils import Utils
+from shared import utils
 
 
 class BookingStadiumSerializer(serializers.ModelSerializer):
@@ -23,5 +23,5 @@ class BookingStadiumSerializer(serializers.ModelSerializer):
         super(BookingStadiumSerializer, self).__init__(data=data)
 
     def totalPrice(self, timeFrom, timeTo, pricePerHour):
-        return (Utils.convertTime(timeTo) -
-                Utils.convertTime(timeFrom))/3600*pricePerHour
+        return (utils.convertTime(timeTo) -
+                utils.convertTime(timeFrom))/3600*pricePerHour

@@ -1,0 +1,241 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Find Match
+{% endblock %}
+
+{% block style %}
+{% include './booking_css.html' %}
+{% endblock %}
+
+{% block pagecontent %}
+<div id="DIV_12">
+    <div id="DIV_13">
+        <div id="DIV_14">
+            <h4 id="H4_15">
+                <span id="SPAN_16">Time</span>
+            </h4>
+
+            <div id="DIV_20">
+                <form class="example" action="{% url 'booking' stadiumID %}" method="POST">
+                    {% csrf_token %}
+                    <div class="input-group date" id="datetimepicker1">
+                        <input id="INPUT_44" placeholder="time from" type="datetime" class="form-control" name="time_from" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                    <div class="input-group date" id="datetimepicker2">
+                        <input id="INPUT_44" placeholder="time to" type="text" class="form-control" name="time_to" />
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                    <hr id="HR_134" />
+                    <input type="submit" id="BUTTON_135" onclick="getDatePicker()" value="Booking" />
+                </form>
+            </div>
+        </div>
+        <div id="DIV_47">
+            <h4 id="H4_48">
+                Booking stadium
+            </h4>
+            <form id="FORM_49">
+                <div id="DIV_50">
+                    <div id="DIV_51">
+
+                        <label for="stadiumTitle" id="LABEL_52">
+                            Name
+                        </label>
+                        <label for="stadiumNamme" id="INPUT_53">{{stadium.name}}</label>
+                        <div id="DIV_54">
+                            Valid first name is required.
+                        </div>
+                    </div>
+                    <div id="DIV_55">
+
+                        <label for="acronym" id="LABEL_56">
+                            Acronym
+                        </label>
+                        <input type="text" id="INPUT_57" />
+                        <div id="DIV_58">
+                            Valid last name is required.
+                        </div>
+                    </div>
+                </div>
+                <div id="DIV_59">
+                    <label for="phoneNumberTitle" id="LABEL_60">Phone</label>
+                    <div id="DIV_61">
+                        <label id="INPUT_64" for="phoneNumber">{{stadium.phone_number}}</label>
+                    </div>
+                </div>
+                <div id="DIV_66">
+                    <label for="email" id="LABEL_67">
+                        Email
+                    </label>
+                    <label for="email" id="INPUT_69">{{stadium.email}}</label>
+                    <div id="DIV_70">
+                        Please enter a valid email address for shipping updates.
+                    </div>
+                </div>
+                <div id="DIV_71">
+
+                    <label for="address" id="LABEL_72">
+                        Address
+                    </label>
+                    <input type="text" id="INPUT_73" placeholder="1234 Main St" />
+                    <div id="DIV_74">
+                        Please enter your shipping address.
+                    </div>
+                </div>
+                <div id="DIV_75">
+
+                    <label for="address2" id="LABEL_76">
+                        Address 2 <span id="SPAN_77">(Optional)</span>
+                    </label>
+                    <input type="text" id="INPUT_78" placeholder="Apartment or suite" />
+                </div>
+                <div id="DIV_79">
+                    <div id="DIV_80">
+
+                        <label for="country" id="LABEL_81">
+                            Country
+                        </label>
+                        <select id="SELECT_82">
+
+                            <option id="OPTION_83">
+                                Choose...
+                            </option>
+                            <option id="OPTION_84">
+                                United States
+                            </option>
+                        </select>
+                        <div id="DIV_85">
+                            Please select a valid country.
+                        </div>
+                    </div>
+                    <div id="DIV_86">
+
+                        <label for="state" id="LABEL_87">
+                            State
+                        </label>
+                        <select id="SELECT_88">
+
+                            <option id="OPTION_89">
+                                Choose...
+                            </option>
+                            <option id="OPTION_90">
+                                California
+                            </option>
+                        </select>
+                        <div id="DIV_91">
+                            Please provide a valid state.
+                        </div>
+                    </div>
+                    <div id="DIV_92">
+
+                        <label for="zip" id="LABEL_93">
+                            Zip
+                        </label>
+                        <input type="text" id="INPUT_94" />
+                        <div id="DIV_95">
+                            Zip code required.
+                        </div>
+                    </div>
+                </div>
+                <hr id="HR_96" />
+                <div id="DIV_97">
+                    <input type="checkbox" id="INPUT_98" />
+                    <label for="same-address" id="LABEL_99">
+                        Shipping address is the same as my billing address
+                    </label>
+                </div>
+                <div id="DIV_100">
+                    <input type="checkbox" id="INPUT_101" />
+                    <label for="save-info" id="LABEL_102">
+                        Save this information for next time
+                    </label>
+                </div>
+                <hr id="HR_103" />
+                <h4 id="H4_104">
+                    Payment
+                </h4>
+                <div id="DIV_105">
+                    <div id="DIV_106">
+                        <input id="INPUT_107" name="paymentMethod" type="radio" />
+                        <label for="credit" id="LABEL_108">
+                            Credit card
+                        </label>
+                    </div>
+                    <div id="DIV_109">
+                        <input id="INPUT_110" name="paymentMethod" type="radio" />
+                        <label for="debit" id="LABEL_111">
+                            Debit card
+                        </label>
+                    </div>
+                    <div id="DIV_112">
+                        <input id="INPUT_113" name="paymentMethod" type="radio" />
+                        <label for="paypal" id="LABEL_114">
+                            Paypal
+                        </label>
+                    </div>
+                </div>
+                <div id="DIV_115">
+                    <div id="DIV_116">
+                        <label for="cc-name" id="LABEL_117">
+                            Name on card
+                        </label>
+                        <input type="text" id="INPUT_118" /> <small id="SMALL_119">Full name as displayed on card</small>
+                        <div id="DIV_120">
+                            Name on card is required
+                        </div>
+                    </div>
+                    <div id="DIV_121">
+                        <label for="cc-number" id="LABEL_122">
+                            Credit card number
+                        </label>
+                        <input type="text" id="INPUT_123" />
+                        <div id="DIV_124">
+                            Credit card number is required
+                        </div>
+                    </div>
+                </div>
+                <div id="DIV_125">
+                    <div id="DIV_126">
+
+                        <label for="cc-expiration" id="LABEL_127">
+                            Expiration
+                        </label>
+                        <input type="text" id="INPUT_128" />
+                        <div id="DIV_129">
+                            Expiration date required
+                        </div>
+                    </div>
+                    <div id="DIV_130">
+
+                        <label for="cc-expiration" id="LABEL_131">
+                            CVV
+                        </label>
+                        <input type="text" id="INPUT_132" />
+                        <div id="DIV_133">
+                            Security code required
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function getDatePicker() {
+        console.log($('#example'))
+        $("#datetimepicker1").datetimepicker({ format: 'YYYY-MM-DD HH:mm+00' });
+        $("#datetimepicker2").datetimepicker({ format: 'YYYY-MM-DD HH:mm+00' });
+    }
+    // $(function () {
+    //     console.log($('#example'))
+    //     $("#datetimepicker1").datetimepicker({ format: 'YYYY-MM-DD HH:mm+00' });
+    //     $("#datetimepicker2").datetimepicker({ format: 'YYYY-MM-DD HH:mm+00' });
+    // });
+</script>
+{% endblock %}
