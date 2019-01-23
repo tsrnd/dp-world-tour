@@ -2,14 +2,15 @@ import inject
 from myapp.models.teams import Team
 from myapp.models.user_teams import UserTeam
 from shared.storage import Storage
-from shared.utils import detect_content_of_file, gen_file_name
+from shared.utils import detect_content_of_file, gen_file_name, get_storage_file_url
 from django.conf import settings
 from rest_framework.serializers import (
         HyperlinkedIdentityField,
         ModelSerializer,
         SerializerMethodField,
         ValidationError,
-        CurrentUserDefault
+        CurrentUserDefault,
+        BooleanField,
     )
 
 class TeamCreateSerializer(ModelSerializer):
@@ -61,4 +62,27 @@ class TeamCreateSerializer(ModelSerializer):
                             file_data, f.size, content_type)
             return team
 
+class TeamSerializer(ModelSerializer):
+    profile_url = SerializerMethodField()
 
+    def get_profile_url(self, obj):
+        return get_storage_file_url(obj.team_profile_image_url, settings.STORAGE['bucket_name'])
+    class Meta:
+        model = Team
+        fields = [
+            'id',
+            'team_name',
+            'profile_url',
+            'acronym',
+            'created_at',
+        ]
+
+class UserTeamSerializer(ModelSerializer):
+    is_caption = SerializerMethodField()
+    team = TeamSerializer(read_only=True)
+    
+    def get_is_caption(self, obj):
+        return obj.roll == 'CAPTION' 
+    class Meta:
+        model = UserTeam
+        fields = ['id', 'is_caption', 'team']
