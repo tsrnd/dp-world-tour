@@ -6,6 +6,13 @@ class UserTeamManager(models.Manager):
     def is_my_team(self):
         pass
 
+    def is_caption(self, user_id):
+        try:
+            _ = UserTeam.objects.get(user=user_id, deleted_at__isnull=True)
+            return True
+        except UserTeam.DoesNotExist:
+            return False
+
 class UserTeam(models.Model):
     PD = 'PENDING'
     AC = 'ACCEPTED'
