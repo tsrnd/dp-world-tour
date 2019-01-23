@@ -13,27 +13,34 @@
     <h5 class="section-title h1">DANH SÁCH SÂN VẬN ĐỘNG</h5>
     <!-- Box body-->
     <div class="table-responsive mailbox-messages">
+        {% if messages %}
+        <ul id="messages">
+        {% for message in messages %}
+          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+        </ul>
+        {% endif %}
       <form class="example" action="{% url 'list' %}" method="POST">
         {% csrf_token %}
         <div class="input-group date" id="datetimepicker1">
-          <label for="time_from">Time From:</label>
+          <label for="time_from">Thời gian bắt đầu:</label>
           <input type="datetime" class="form-control" name="time_from"/>
           <span class="input-group-addon">
             <span class="glyphicon glyphicon-calendar"></span>
           </span>
         </div>
         <div class="input-group date" id="datetimepicker2">
-          <label for="time_from">Time To:</label>
+          <label for="time_from">Thời gian kết thúc:</label>
           <input type="text" class="form-control" name="time_to"/>
           <span class="input-group-addon">
             <span class="glyphicon glyphicon-calendar"></span>
           </span>
         </div>
         <div class="input-group date" id="datetimepicker2"></div>
-          <label>Giá tiền:</label>
+          <label>Chọn mức giá tiền:</label>
           <input type="range" name="price" min="0" max="200">
         </div>
-        <label for="result_limit">PerPage</label>
+        <label for="result_limit">Số lượng kết quả trên mỗi trang</label>
         <select name="result_limit">
           <option value="20">20</option>
           <option value="50">50</option>
@@ -70,7 +77,6 @@
       </table>
       <!-- /.table -->
       <ul class="pagination">
-        <h1>{{ stadiums.page }}</h1>
         {% if stadiums.page > 1 %}
           <li><a href="?page={{ stadiums.page|add:"-1" }}">&laquo;</a></li>
         {% else %}

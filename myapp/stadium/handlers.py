@@ -29,16 +29,15 @@ class StadiumHandler(GenericAPIView):
     serializer_class = ListStadiumSerializer
 
     def get(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.query_params)
+        response = self.bh.validate(serializer)
+        if response is not None:
+            return response
         request_data = {
             k: (lambda x: int(x))(v)
             for k, v in request.query_params.items()
             if v is not None and v != ''
         }
-        # request_data = {k: v for k, v in request.query_params.items() if v != '' and v is not None}
-        serializer = self.get_serializer(data=request.query_params)
-        response = self.bh.validate(serializer)
-        if response is not None:
-            return response
         timestamp_time_from = datetime.fromtimestamp(request_data['time_from'])
         time_from_dt = timestamp_time_from.strftime('%Y-%m-%d %H:%M:%S+00')
         timestamp_time_to = datetime.fromtimestamp(request_data['time_to'])
@@ -49,6 +48,8 @@ class StadiumHandler(GenericAPIView):
              ) & ~Q(status='Cancel')).values_list('stadium_id').all()
         stadium_available = Stadium.objects.exclude(
             id__in=stadium_registed_list)
+        # if 'price' in request_data:
+        #     stadium_available = stadium_available.filter(price=request_data['price'])
         response_stadium_list = []
         for stadium_list in stadium_available:
             stadium = ListStadiumResponse(

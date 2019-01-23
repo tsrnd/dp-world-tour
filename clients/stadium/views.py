@@ -11,7 +11,7 @@ def convert(time):
 def get_list(request):
     time_from = request.POST.get("time_from")
     time_to = request.POST.get("time_to")
-    price = request.POST.get("price")
+    price = request.POST.get("price", '')
     result_limit = request.POST.get("result_limit", 20)
     page = request.GET.get('page', 1)
     if time_from == '' or time_from is None:
@@ -22,6 +22,8 @@ def get_list(request):
         time_to = time_from + 3600
     else:
         time_to = convert(time_to)
+    if time_from > time_to:
+        messages.info(request, 'Please fill time to great than time from')
     response = requests.get('http://localhost:8000/api/stadium/list', params={
         'time_from': time_from,
         'time_to': time_to,
