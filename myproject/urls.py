@@ -25,5 +25,5 @@ inject.configure_once(shared_provider_config)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('myapp.urls')),
-    path('client/', include('clients.urls'))
+    path('', include('clients.urls'))
 ]

@@ -10,25 +10,35 @@
 
 {% block pagecontent %}
 <div class="notify"></div>
-<form action="" style="border:1px solid #ccc" *ngIf="!checkLead; else elseBlock;" (submit)="register($event, teamname.value, teamacronym.value, email.value)">
+<form id="createTeamForm" action="#" style="border:1px solid #ccc">
+    {% csrf_token %}
     <div class="container">
         <h1>Tạo đội bóng</h1>
         <p>Nhập thông tin để bắt đầu tạo đội bóng</p>
         <hr>
 
-        <label for="email"><b>Tên đội bóng</b></label>
-        <input type="text" #teamname id="teamname" placeholder="Nhập tên đội bóng" required>
-        <label for="email"><b>Tên viết tắt</b></label>
-        <input type="text" #teamacronym id="teamacronym" placeholder="Nhập tên viết tắt" required>
+        <label for="teamname"><b>Tên đội bóng</b></label>
+        <!-- {% if response %}
+            {{ response }}
+        {% endif %} -->
+        <input type="text" #teamname id="team_name" name="team_name" placeholder="Nhập tên đội bóng" required>
+        <label for="teamacronym"><b>Tên viết tắt</b></label>
+        <input type="text" #teamacronym id="teamacronym" name="acronym" placeholder="Nhập tên viết tắt" required>
         <label for="email"><b>Email của Team</b></label>
-        <input type="text" #email id="email" placeholder="Nhập email" required>
+        <input type="text" #email id="email" name="email" placeholder="Nhập email" required>
+        <label for="file"><b>Avatar</b></label>
+        <input type="file" #file id="file" name="file" placeholder="Nhập email">
         
         <p>Bằng việc đăng ký tạo đội bóng đồng nghĩa bạn đã đồng ý <a href="#" style="color:dodgerblue">Quy định và điều khoản</a> của chúng tôi.</p>
 
         <div class="clearfix">
-        <button type="button" class="cancelbtn" routerLink="['/home']">Huỷ bỏ</button>
+        <button type="button" class="cancelbtn" onclick="location.href='/home'">Huỷ bỏ</button>
         <button type="submit" class="signupbtn">Đăng ký</button>
         </div>
     </div>
 </form>
+{% endblock %}
+
+{% block js %}
+    {% include './create_team_js.html' %}
 {% endblock %}

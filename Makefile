@@ -32,6 +32,9 @@ logs-myapp:
 up-client:
 	@docker exec -it dp-world-tour_app_1 python3 manage.py runserver --settings=myproject.settings_client 0.0.0.0:8001
 
+up-mailhost:
+	@docker exec -it dp-world-tour_app_1 python -m smtpd -n -c DebuggingServer localhost:1025
+
 clean:
 	@docker ps -aq -f status=exited | xargs docker rm
 	@docker images -q -f dangling=true | xargs docker rmi
