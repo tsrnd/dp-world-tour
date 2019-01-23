@@ -1,4 +1,5 @@
 from django.shortcuts import render
+import requests, json
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from django.shortcuts import redirect
@@ -9,8 +10,6 @@ from rest_framework.status import (
 )
 from django.contrib import messages
 
-import requests
-import json
 
 
 def register(request):
