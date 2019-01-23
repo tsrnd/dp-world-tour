@@ -1,0 +1,10 @@
+<script>
+  $(document).ready(function () {
+      $('#yesBtn').click(function () {
+          $('#find-match-form').submit()
+      });
+      $(".alert").delay(4000).slideUp(200, function() {
+          $(this).alert('close');
+      });
+  });
+</script>
