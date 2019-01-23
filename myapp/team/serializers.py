@@ -52,8 +52,8 @@ class TeamCreateSerializer(ModelSerializer):
             UserTeam.objects.create(
                 user=self.context['request'].user,
                 team=team,
-                status='Accepted',
-                roll='Caption',
+                status='ACCEPTED',
+                roll='CAPTION',
             )
             if f:
                 with f.open() as file_data:
