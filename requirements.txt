@@ -2,11 +2,12 @@
 certifi==2018.11.29
 chardet==3.0.4
 dj-database-url==0.5.0
+django-cors-headers==2.4.0
 django-redis==4.10.0
 django-seed==0.1.9
 django==2.1.5
 djangorestframework==3.9.1
-faker==1.0.1
+faker==1.0.2
 idna==2.8
 inject==3.4.0
 minio==4.0.10
