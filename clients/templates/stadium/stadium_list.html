@@ -16,19 +16,31 @@
       <form class="example" action="{% url 'list' %}" method="POST">
         {% csrf_token %}
         <div class="input-group date" id="datetimepicker1">
+          <label for="time_from">Time From:</label>
           <input type="datetime" class="form-control" name="time_from"/>
           <span class="input-group-addon">
             <span class="glyphicon glyphicon-calendar"></span>
           </span>
         </div>
         <div class="input-group date" id="datetimepicker2">
+          <label for="time_from">Time To:</label>
           <input type="text" class="form-control" name="time_to"/>
           <span class="input-group-addon">
             <span class="glyphicon glyphicon-calendar"></span>
           </span>
         </div>
-        <input type="text" placeholder="Chọn giá tiền.." name="price" />
-        <input type="submit" value="Search"/>
+        <div class="input-group date" id="datetimepicker2"></div>
+          <label>Giá tiền:</label>
+          <input type="range" name="price" min="0" max="200">
+        </div>
+        <label for="result_limit">PerPage</label>
+        <select name="result_limit">
+          <option value="20">20</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+        <!-- <input type="text" placeholder="Chọn giá tiền.." name="price" /> -->
+        <input id="submit-form-list" type="submit" value="Tìm"/>
       </form>
       <table class="table table-hover table-striped">
         <tbody>
@@ -41,29 +53,35 @@
             <th>Số tài khoản</th>
             <th>Giá</th>
           </tr>
-          {% for st in stadiums.get('stadium') %}
-          <h1>{{ stadium.id }}</h1>
+          {% for objstadium in stadiums.stadium %}
           <tr>
-            <td class="mailbox-name">{{ stadium.id }}</td>
+            <td class="mailbox-name">{{ objstadium.id }}</td>
             <td class="mailbox-subject">
-              <b>{{ stadium.name }}</b>
+              <b>{{ objstadium.name }}</b>
             </td>
             <td class="mailbox-date">vị trí</td>
-            <td class="mailbox-date">{{ stadium.phone_number }}</td>
-            <td class="mailbox-date">{{ stadium.email }}</td>
-            <td class="mailbox-date">{{ stadium.bank_num }}</td>
-            <td class="mailbox-date">{{ stadium.price }}</td>
+            <td class="mailbox-date">{{ objstadium.phone_number }}</td>
+            <td class="mailbox-date">{{ objstadium.email }}</td>
+            <td class="mailbox-date">{{ objstadium.bank_num }}</td>
+            <td class="mailbox-date">{{ objstadium.price }}</td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
       <!-- /.table -->
       <ul class="pagination">
-        <li class="disabled" aria-disabled="true"><a>«</a></li>
-        <li class="active">
-          <a>1<span class="sr-only">(current)</span></a>
-        </li>
-        <li class="disabled" aria-disabled="true"><a>»</a></li>
+        <h1>{{ stadiums.page }}</h1>
+        {% if stadiums.page > 1 %}
+          <li><a href="?page={{ stadiums.page|add:"-1" }}">&laquo;</a></li>
+        {% else %}
+          <li class="disabled"><span>&laquo;</span></li>
+        {% endif %}
+        <li class="active"><span>{{ stadiums.page }} <span class="sr-only">(current)</span></span></li>
+        {% if stadiums.next_page_flg %}
+          <li><a href="?page={{ stadiums.page|add:"1" }}">&raquo;</a></li>
+        {% else %}
+          <li class="disabled"><span>&raquo;</span></li>
+        {% endif %}
       </ul>
     </div>
     <!-- /.mail-box-messages -->

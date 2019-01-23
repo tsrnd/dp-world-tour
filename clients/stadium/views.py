@@ -12,6 +12,8 @@ def get_list(request):
     time_from = request.POST.get("time_from")
     time_to = request.POST.get("time_to")
     price = request.POST.get("price")
+    result_limit = request.POST.get("result_limit", 20)
+    page = request.GET.get('page', 1)
     if time_from == '' or time_from is None:
         time_from = int(datetime.now().strftime('%s'))
     else:
@@ -24,6 +26,8 @@ def get_list(request):
         'time_from': time_from,
         'time_to': time_to,
         'price': price,
+        'page': page,
+        'result_limit': result_limit,
     })
     stadiums = response.json()
     return render(request, 'stadium/stadium_list.html', {'stadiums':stadiums})
