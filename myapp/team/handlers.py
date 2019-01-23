@@ -50,5 +50,5 @@ class TeamList(GenericAPIView):
                 context.append(team_tmp)
         return Response(
             context,
-            status=status.HTTP_201_CREATED,
+            status=status.HTTP_200_OK,
         )
