@@ -47,7 +47,7 @@ class StadiumHandler(GenericAPIView):
              | Q(time_from__lt=time_to_dt) & Q(time_to__gt=time_to_dt)
              ) & ~Q(status='Cancel')).values_list('stadium_id').all()
         stadium_available = Stadium.objects.exclude(
-            id__in=stadium_registed_list)
+            id__in=stadium_registed_list).order_by('id')
         # if 'price' in request_data:
         #     stadium_available = stadium_available.filter(price=request_data['price'])
         response_stadium_list = []
