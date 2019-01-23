@@ -16,8 +16,6 @@ from rest_framework.permissions import (
 
 class TeamCreate(GenericAPIView):
     bh = inject.attr(BaseHandler)
-    # parser_classes = (MultiPartParser, FormParser, )
-    # queryset = Team.objects.all()
     serializer_class = TeamCreateSerializer
     permission_classes = [IsAuthenticated]
 
