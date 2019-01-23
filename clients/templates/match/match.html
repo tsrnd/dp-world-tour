@@ -25,7 +25,7 @@
                 <div class="row">  
                 <div class="col-md-6 col-md-offset-3" style="padding-right: 0px!important;padding-left: 0px!important;">
                     <div class="panel-body" style="padding-right: 4px!important;padding-left: 4px!important;">
-                <form action="/client/match/find" class="form-horizontal" method="post" id="find-match-form" name="find-match-form" role="form" onSubmit='' action="#" AUTOCOMPLETE="off">
+                <form action="/match/find" class="form-horizontal" method="post" id="find-match-form" name="find-match-form" role="form" onSubmit='' action="#" AUTOCOMPLETE="off">
                     {% csrf_token %}
                     <fieldset  style="min-width: 0;padding:.35em .625em .75em!important;margin:0 2px;border: 2px solid silver!important;margin-bottom: 10em;box-shadow: -6px 15px 20px 0px;">
                 <legend id="first3" style="width: inherit;padding:inherit;border:2px solid silver;color:blanchedalmond;" class="legend">Worldtour</legend>
@@ -205,4 +205,8 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+{% endblock %}
+
+{% block js %}
+    {% include './match_js.html' %}
 {% endblock %}
