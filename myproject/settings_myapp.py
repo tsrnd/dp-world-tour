@@ -37,10 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.admin', 'django.contrib.auth',
     'django.contrib.contenttypes', 'django.contrib.sessions',
     'django.contrib.messages', 'django.contrib.staticfiles', 'myapp',
-    'django_seed', 'rest_framework',  'rest_framework.authtoken'
+    'django_seed', 'rest_framework',  'rest_framework.authtoken', 'corsheaders'
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -191,3 +192,6 @@ EMAIL_PORT = 1025
 EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORD = ''
 EMAIL_TIMOUT = 3000
+
+# CORS
+CORS_ORIGIN_ALLOW_ALL = True

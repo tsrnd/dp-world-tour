@@ -27,7 +27,7 @@ class TeamCreateSerializer(ModelSerializer):
     def validate(self, data):
         # check current user is a leader
         if UserTeam.custom_objects.is_caption(self.context['request'].user.id):
-            raise ValidationError("Current user login is a leader of another team")
+            raise ValidationError({"user": "Current user login is a leader of another team"})
         
         # check team name is exist
         if Team.custom_objects.is_exist(data["team_name"]):
@@ -39,9 +39,11 @@ class TeamCreateSerializer(ModelSerializer):
     def create(self, validated_data):
         from django.db import transaction
         with transaction.atomic():
-            if 'file' in self.context['request'].data:
-                f = self.context['request'].data['file']
+            f = self.context['request'].data['file']
+            file_name = None
+            if f:
                 file_name = gen_file_name(f.name)
+                content_type = detect_content_of_file(f)                
             team = Team.objects.create(
                 team_name=validated_data['team_name'],
                 acronym=validated_data['acronym'],
@@ -53,8 +55,7 @@ class TeamCreateSerializer(ModelSerializer):
                 status='Accepted',
                 roll='Caption',
             )
-            if f is not None:
-                content_type = detect_content_of_file(f)
+            if f:
                 with f.open() as file_data:
                         self.storage.put_object(settings.STORAGE['bucket_name'], file_name,
                             file_data, f.size, content_type)
