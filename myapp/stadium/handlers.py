@@ -3,7 +3,7 @@ import inject, json, logging
 from django.shortcuts import render
 from django.views.generic.base import TemplateView
 from rest_framework.views import APIView
-from myapp.stadium.usecases import *
+from myapp.models.stadiums import Stadium
 from shared.base_handler import *
 from myapp.serializer.stadium_serializer import StadiumSerializer
 from rest_framework.response import Response

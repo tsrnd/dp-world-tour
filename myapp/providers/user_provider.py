@@ -3,6 +3,6 @@ from myapp.user.repositories import *
 from myapp.user.usecases import *
 
 
-def user_providers_config(binder: inject.Binder):
+def myapp_providers_config(binder: inject.Binder):
     binder.bind(RepositoryInterface, UserRepository())
     binder.bind(UsecaseInterface, UserUsecase())

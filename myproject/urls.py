@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 import inject
-from myapp.providers.providers import myapp_providers_config
+from myapp.providers.user_provider import myapp_providers_config
 from shared.provider import shared_provider_config
 inject.configure_once(myapp_providers_config)
 inject.configure_once(shared_provider_config)
