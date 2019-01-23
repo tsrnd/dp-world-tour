@@ -1,8 +1,9 @@
 import inject
-from myapp.team.serializers import TeamCreateSerializer, UserTeamSerializer
+from myapp.team.serializers import TeamCreateSerializer, UserTeamSerializer, InvitationListSerializer
 
 from myapp.models.teams import Team
 from myapp.models.user_teams import UserTeam
+from django.db.models import Q
 from shared.base_handler import BaseHandler
 
 from rest_framework.parsers import MultiPartParser, FormParser
@@ -40,7 +41,7 @@ class TeamList(GenericAPIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
-        user_teams = UserTeam.objects.filter(user=self.request.user)
+        user_teams = UserTeam.objects.filter(user=self.request.user, status='ACCEPTED').order_by('roll')
         serializer = self.get_serializer(user_teams, many=True)
         context = []
         if len(serializer.data) != 0:
@@ -50,5 +51,18 @@ class TeamList(GenericAPIView):
                 context.append(team_tmp)
         return Response(
             context,
+            status=status.HTTP_200_OK,
+        )
+
+class InvitationList(GenericAPIView):
+    bh = inject.attr(BaseHandler)
+    serializer_class = InvitationListSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        user_teams = UserTeam.objects.filter(user=self.request.user).filter(Q(status='PENDING')|Q(status='REJECTED')).order_by('status', '-created_at')
+        serializer = self.get_serializer(user_teams, many=True)
+        return Response(
+            serializer.data,
             status=status.HTTP_200_OK,
         )

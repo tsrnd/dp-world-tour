@@ -86,3 +86,10 @@ class UserTeamSerializer(ModelSerializer):
     class Meta:
         model = UserTeam
         fields = ['id', 'is_caption', 'team']
+
+class InvitationListSerializer(ModelSerializer):
+    team = TeamSerializer(read_only=True)
+
+    class Meta:
+        model = UserTeam
+        fields = ['id', 'status', 'team', 'created_at']
