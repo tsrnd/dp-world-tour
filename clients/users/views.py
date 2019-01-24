@@ -13,16 +13,29 @@ from django.contrib import messages
 
 
 def register(request):
-    return render(request, 'authen/register.html', None)
+    if request.POST:
+        email = request.POST.get("email")
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        repassword = request.POST.get("repassword")
+        if password == repassword:
+            r = requests.post('http://localhost:8000/api/user/register', data={
+                'email': email,
+                'username': username,
+                'password': password,
+            })
+            response = r.json()
+            status_code = r.status_code
+            if status_code == HTTP_200_OK:
+                res = redirect('home')
+                res.set_cookie('token', response.get('token'))
+                return res
+            elif status_code == HTTP_400_BAD_REQUEST:
+                messages.info(request, 'Please fill in correct unique Username, Email and valid Password!')
+        else:
+            messages.info(request, 'Please fill match Password!')
 
-def create_user(request):
-    r = requests.post('http://localhost:8000/api/user/register', data={
-        'email': 'test',
-        'user_name': 'test',
-        'password': 'test',
-    })
-    response = r.json()
-    return render(request, 'authen/login.html', None)
+    return render(request, 'authen/register.html', None)    
 
 def login(request):
     if request.POST:

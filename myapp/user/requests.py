@@ -1,13 +1,19 @@
 from django.core import validators
 from rest_framework import serializers
 from django.contrib.auth import authenticate
+from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.auth import get_user_model
+from rest_framework.validators import UniqueValidator
 
-class UserRegister(serializers.Serializer):
-    user_name = serializers.CharField(max_length=100)
-    email = serializers.CharField(max_length=100,validators=[validators.validate_email])
-    password = serializers.CharField(max_length=100)
-
+class UserRegisterSerializer(serializers.Serializer):
+    username = serializers.CharField(min_length=3, max_length=100,required=True, validators=[UniqueValidator(queryset=get_user_model().objects.all())])
+    email = serializers.EmailField(max_length=100, validators=[UniqueValidator(queryset=get_user_model().objects.all())])
+    password = serializers.CharField(max_length=100,required=True)
+    
+    def __init__(self, *args, **kwargs):
+        super(UserRegisterSerializer, self).__init__(*args, **kwargs)
+        self.user = None
 
 class UserLoginSerializer(serializers.Serializer):
     username = serializers.CharField(required=True)
