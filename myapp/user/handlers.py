@@ -6,7 +6,6 @@ from django.shortcuts import render
 from django.views.generic.base import TemplateView
 from django.http import HttpResponse
 from myapp.user.requests import *
-from myapp.user.usecases import *
 from shared.base_handler import *
 from myapp.permission.user_permission import IsAdminUser
 from myapp.serializer.auth_serializer import TokenSerializer, UserSerializer
@@ -18,11 +17,11 @@ from rest_framework.status import (
     HTTP_404_NOT_FOUND,
     HTTP_200_OK
 )
+from django.contrib.auth import get_user_model
 
 logger = logging.getLogger(__name__)
 
 class AuthHandler(GenericAPIView):
-    usecase = inject.attr(UsecaseInterface)
     bh = inject.attr(BaseHandler)
     
     
@@ -52,7 +51,6 @@ class UserInfoAPIView(GenericAPIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class UserRegisterAPIView(GenericAPIView):
-    usecase = inject.attr(UsecaseInterface)
     bh = inject.attr(BaseHandler)
     serializer_class = UserRegisterSerializer
 
@@ -64,7 +62,7 @@ class UserRegisterAPIView(GenericAPIView):
         username = serializer.data.get("username")
         email = serializer.data.get("email")
         password = serializer.data.get("password")
-        user = self.usecase.create_user(username,email,password)
+        user = get_user_model().objects.create(username=username,email=email,password=password)
         if user is None:
             return Response({"messege":"fail"},status=400)
         token, _ = Token.objects.get_or_create(user=user)
