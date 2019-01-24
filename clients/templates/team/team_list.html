@@ -23,21 +23,27 @@
                         <th>Logo</th>
                         <th>Tên Đội</th>
                         <th>Thời Gian</th>
+                        <th>Trạng Thái</th>
                         <th></th>
                     </tr>
+                    {% for invitation in invitations %}
+                    {% if invitation.status == "PENDING" %}
                     <tr>
-                        <td class="mailbox-name">1</td>
-                        <td><img class="img-circle" style="width: 10%" src="{{invitation.team_image_profile_url}}"></td>
-                        <td class="mailbox-subject"><b>Manchester United</b></td>
-                        <td class="mailbox-date">2017</td>
+                        <td class="mailbox-name">{{ forloop.counter }}</td>
+                        <td><img class="img-fluid" width="40" height="40" src="{{ invitation.team.profile_url }}"></td>
+                        <td class="mailbox-subject"><b>{{ invitation.team.team_name }}</b></td>
+                        <td class="mailbox-date">{{ invitation.created_at }}</td>
+                        <td class="mailbox-subject">{{ invitation.status }}</td>
                         <td class="mailbox-attachment">
-                            <button (click)="accept($event, invitation.invitation_id)" type="button" class="btn btn-info btn-circle btn-xs fa fa-check-circle"></button>
-                            <button (click)="reject($event, invitation.invitation_id)" type="button" class="btn btn-danger btn-circle btn-xs fa fa-times-circle"></button>
+                            <button type="button" class="btn btn-info btn-circle btn-xs fa fa-check-circle"></button>
+                            <button type="button" class="btn btn-danger btn-circle btn-xs fa fa-times-circle"></button>
                         </td>
                     </tr>
+                    {% endif %}
+                    {% endfor %}
                 </tbody>
             </table><!-- /.table -->
-            <ul class="pagination">
+            <!-- <ul class="pagination">
                 <li class="disabled" aria-disabled="true">
                     <a >«</a>
                 </li>
@@ -45,7 +51,7 @@
                 <li class="disabled" aria-disabled="true">
                     <a>»</a>
                 </li>
-            </ul>
+            </ul> -->
         </div><!-- /.mail-box-messages -->
         <h5 class="section-title h1">ĐỘI BÓNG CỦA TÔI</h5>
         <div class="row">
