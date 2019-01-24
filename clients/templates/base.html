@@ -3,10 +3,11 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8">
     <title>
-      WorldTour - {% block title %}{% endblock %}
+        WorldTour - {% block title %}{% endblock %}
     </title>
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" type="text/css" />
     <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}" type="text/css" />
@@ -17,6 +18,7 @@
     <link rel="stylesheet" href="{% static 'css/flexslider.css' %}" type="text/css" />
     <link rel="stylesheet" href="{% static 'css/prettyphoto.css' %}" type="text/css" />
     <link rel="stylesheet" href="{% static 'css/responsive.css' %}" type="text/css" />
+    <link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.css' %}" type="text/css" />
     {% block style %}{% endblock %}
   </head>
   <body>
@@ -71,115 +73,141 @@
                                         <li><a href="{% url 'team-list' %}">Đội Bóng</a></li>
                                         <li><a href="{% url 'find-match' %}">Tìm Đối Thủ</a></li>
                                     </ul>
-                                </div>
-                                <!--// Responsive Menu //-->
-                                
-                            </div>
+                                </li>
+                            </ul>
+                        </nav>
+                        <!--// Responsive Menu //-->
+                        <div id="as-menu" class="as-menuwrapper">
+                            <button class="as-trigger">Danh Mục</button>
+                            <ul class="as-menu">
+                                <li [ngClass]="{'active': router.url=='/home'}"><a routerLink="/home">Trang Chủ</a></li>
+                                <li [ngClass]="{'active': router.url=='/match'}"><a routerLink="/match">Tìm Trận Đấu</a></li>
+                                <li [ngClass]="{'active': router.url=='/team'}"><a routerLink="/team">Đội Bóng</a></li>
+                                <li><a href="#">Sân Vận Động</a>
+                                    <ul class="as-submenu">
+                                        <li><a href="shop-list.html">Shop List</a></li>
+                                        <li><a href="plyer-list-left-sbar.html">Shop List W/left/sidebar</a></li>
+                                        <li><a href="shop-list-wsidebar.html">Shop List W/right/sidebar</a></li>
+                                        <li><a href="shop-list-w-b-sidebar">Shop List W/both/sidebar</a></li>
+                                        <li><a href="plyer-list-nosidebar.html">Shop List Wout/sidebar</a></li>
+                                        <li><a href="shop-detail.html">shop detail</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
                         </div>
+                        <!--// Responsive Menu //-->
+
                     </div>
-                    <!--// Main Header \\-->
-            </header>
+                </div>
+            </div>
             <!--// Main Header \\-->
-            {% block pagecontent %}
-            {% endblock %} 
-            <footer id="ec-footer" *ngIf="jwt">
-                <!--// Footer Widget \\-->
-                <div class="ec-footer-widget">
-                    <div class="container">
-                        <div class="row">
-                            <aside class="widget col-md-4 ec-recentnews_widget">
-                                <div class="ec-section-heading">
-                                    <h2>Tin Mới</h2></div>
-                                <ul>
-                                    <li>
-                                        <figure>
-                                            <a href="#"><img src="{% static 'extra-images/recent-widget-1.jpg' %}" alt=""></a>
-                                        </figure>
-                                        <section>
-                                            <h6><a href="#">United, Palace Aim To Rebound From Setbacks</a></h6>
-                                            <span><i class="fa fa-clock-o"></i> 2 days ago</span>
-                                        </section>
-                                    </li>
-                                    <li>
-                                        <figure>
-                                                <a href="#"><img src="{% static 'extra-images/recent-widget-2.jpg' %}" alt=""></a>
-                                        </figure>
-                                        <section>
-                                            <h6><a href="#">The summer of 2014 all about.</a></h6>
-                                            <span><i class="fa fa-clock-o"></i> 2 days ago</span>
-                                        </section>
-                                    </li>
-                                    <li>
-                                        <figure>
-                                                <a href="#"><img src="{% static 'extra-images/recent-widget-3.jpg' %}" alt=""></a>
-                                        </figure>
-                                        <section>
-                                            <h6><a href="#">Sevilla finished fifth and just out of the.</a></h6>
-                                            <span><i class="fa fa-clock-o"></i> 2 days ago</span>
-                                        </section>
-                                    </li>
-                                </ul>
-                            </aside>
-                            <aside class="widget col-md-4 widget_categories">
-                                <div class="ec-section-heading">
-                                    <h2>CATEGORY</h2></div>
-                                <ul>
-                                    <li><a href="#">Boxing</a> 03</li>
-                                    <li><a href="#">Championship</a> 05</li>
-                                    <li><a href="#">Cycling</a> 03</li>
-                                    <li><a href="#">Football</a> 19</li>
-                                    <li><a href="#">NFL</a> 02</li>
-                                    <li><a href="#">Golf</a> 11</li>
-                                    <li><a href="#">Premier League</a> 12</li>
-                                </ul>
-                            </aside>
-                            <aside class="widget col-md-4 widget_text_info">
-                                <div class="ec-section-heading">
-                                    <h2>Contact</h2></div>
-                                <ul>
-                                    <li>
-                                        <i class="fa fa-map-marker"></i>
-                                        <span>177  Desoto Health Care 7805 Southcrest Parkway  Southaven, MS (Mississippi) 38671</span>
-                                    </li>
-                                    <li>
-                                        <i class="fa fa-phone"></i>
-                                        <span>(907) 904-6163  (660) 567-1244</span>
-                                    </li>
-                                </ul>
-                                <div class="ec-newslatter">
-                                    <h6>Join the Newsletter</h6>
-                                    <span>Sign up for our personalized daily newsletter</span>
-                                    <form>
-                                        <input type="text" value="Enter email address" onblur="if(this.value == '') { this.value ='Enter email address'; }" onfocus="if(this.value =='Enter email address') { this.value = ''; }">
-                                        <input type="submit" value="Sign up" class="ec-bgcolor">
-                                    </form>
-                                </div>
-                            </aside>
+        </header>
+        <!--// Main Header \\-->
+        {% block pagecontent %}
+        {% endblock %}
+        <footer id="ec-footer" *ngIf="jwt">
+            <!--// Footer Widget \\-->
+            <div class="ec-footer-widget">
+                <div class="container">
+                    <div class="row">
+                        <aside class="widget col-md-4 ec-recentnews_widget">
+                            <div class="ec-section-heading">
+                                <h2>Tin Mới</h2>
+                            </div>
+                            <ul>
+                                <li>
+                                    <figure>
+                                        <a href="#"><img src="{% static 'extra-images/recent-widget-1.jpg' %}" alt=""></a>
+                                    </figure>
+                                    <section>
+                                        <h6><a href="#">United, Palace Aim To Rebound From Setbacks</a></h6>
+                                        <span><i class="fa fa-clock-o"></i> 2 days ago</span>
+                                    </section>
+                                </li>
+                                <li>
+                                    <figure>
+                                        <a href="#"><img src="{% static 'extra-images/recent-widget-2.jpg' %}" alt=""></a>
+                                    </figure>
+                                    <section>
+                                        <h6><a href="#">The summer of 2014 all about.</a></h6>
+                                        <span><i class="fa fa-clock-o"></i> 2 days ago</span>
+                                    </section>
+                                </li>
+                                <li>
+                                    <figure>
+                                        <a href="#"><img src="{% static 'extra-images/recent-widget-3.jpg' %}" alt=""></a>
+                                    </figure>
+                                    <section>
+                                        <h6><a href="#">Sevilla finished fifth and just out of the.</a></h6>
+                                        <span><i class="fa fa-clock-o"></i> 2 days ago</span>
+                                    </section>
+                                </li>
+                            </ul>
+                        </aside>
+                        <aside class="widget col-md-4 widget_categories">
+                            <div class="ec-section-heading">
+                                <h2>CATEGORY</h2>
+                            </div>
+                            <ul>
+                                <li><a href="#">Boxing</a> 03</li>
+                                <li><a href="#">Championship</a> 05</li>
+                                <li><a href="#">Cycling</a> 03</li>
+                                <li><a href="#">Football</a> 19</li>
+                                <li><a href="#">NFL</a> 02</li>
+                                <li><a href="#">Golf</a> 11</li>
+                                <li><a href="#">Premier League</a> 12</li>
+                            </ul>
+                        </aside>
+                        <aside class="widget col-md-4 widget_text_info">
+                            <div class="ec-section-heading">
+                                <h2>Contact</h2>
+                            </div>
+                            <ul>
+                                <li>
+                                    <i class="fa fa-map-marker"></i>
+                                    <span>177 Desoto Health Care 7805 Southcrest Parkway Southaven, MS (Mississippi)
+                                        38671</span>
+                                </li>
+                                <li>
+                                    <i class="fa fa-phone"></i>
+                                    <span>(907) 904-6163 (660) 567-1244</span>
+                                </li>
+                            </ul>
+                            <div class="ec-newslatter">
+                                <h6>Join the Newsletter</h6>
+                                <span>Sign up for our personalized daily newsletter</span>
+                                <form>
+                                    <input type="text" value="Enter email address" onblur="if(this.value == '') { this.value ='Enter email address'; }"
+                                        onfocus="if(this.value =='Enter email address') { this.value = ''; }">
+                                    <input type="submit" value="Sign up" class="ec-bgcolor">
+                                </form>
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+            </div>
+            <!--// Footer Widget \\-->
+            <!--// CopyRight Section \\-->
+            <div class="ec-bottom-section">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <a href="#" class="ec-footer-logo"><img src="{% static 'images/footer-logo.png' %}" alt=""></a>
+                            <div class="ec-copyright">
+                                <p>© Copyright 2018 eyecix all rights reserved</p>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="ec-right-section">
+                                <a href="index.html" class="backtop-btn">Back to top <i class="fa fa-caret-up"></i></a>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <!--// Footer Widget \\-->
-                <!--// CopyRight Section \\-->
-                <div class="ec-bottom-section">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-5">
-                                <a href="#" class="ec-footer-logo"><img src="{% static 'images/footer-logo.png' %}" alt=""></a>
-                                <div class="ec-copyright">
-                                    <p>© Copyright 2018 eyecix all rights reserved</p>
-                                </div>
-                            </div>
-                            <div class="col-md-7">
-                                <div class="ec-right-section">
-                                    <a href="index.html" class="backtop-btn">Back to top <i class="fa fa-caret-up"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--// pyRight Section \\-->
-            </footer>     
-        </div>            
+            </div>
+            <!--// pyRight Section \\-->
+        </footer>
+    </div>
 
     <script src="{% static 'scripts/jquery.js' %}"></script> <!-- This is how to include a static file -->
     <script src="{% static 'scripts/modernizr.js' %}"></script> <!-- This is how to include a static file -->
@@ -189,12 +217,16 @@
     <script src="{% static 'scripts/jquery.prettyphoto.js' %}"></script> <!-- This is how to include a static file -->
     <script src="{% static 'scripts/waypoints-min.js' %}"></script> <!-- This is how to include a static file -->
     <script src="{% static 'scripts/owl.carousel.min.js' %}"></script> <!-- This is how to include a static file -->
-    <script src="{% static 'scripts/jquery.countdown.min.js' %}"></script> <!-- This is how to include a static file -->
+    <script src="{% static 'scripts/jquery.countdown.min.js' %}"></script>
+    <!-- This is how to include a static file -->
     <script src="{% static 'scripts/fitvideo.js' %}"></script> <!-- This is how to include a static file -->
     <script src="{% static 'scripts/newsticker.js' %}"></script> <!-- This is how to include a static file -->
     <script src="{% static 'scripts/skills.js' %}"></script> <!-- This is how to include a static file -->
     <script src="{% static 'scripts/functions.js' %}"></script> <!-- This is how to include a static file -->
     <script src="{% static 'scripts/loading.js' %}"></script> <!-- This is how to include a static file -->
+    <script src="{% static 'scripts/moment.js' %}"></script> <!-- This is how to include a static file -->
+    <script src="{% static 'scripts/bootstrap-datetimepicker.min.js' %}"></script>
+    <!-- This is how to include a static file -->
     <script src="{% static 'scripts/jquery.cookie.js' %}"></script> <!-- This is how to include a static file -->
     <script>
         var options = {
@@ -205,9 +237,17 @@
         jQuery().newsTicker(options);
         $.ajaxSetup({
             headers:
-            { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+                { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
+        });
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            console.log($('#example'))
+            $("#datetimepicker1").datetimepicker({ format: 'YYYY-MM-DD HH:mm+00' });
+            $("#datetimepicker2").datetimepicker({ format: 'YYYY-MM-DD HH:mm+00' });
         });
     </script>
     {% block js %}{% endblock %}
-  </body>
+</body>
+
 </html>
