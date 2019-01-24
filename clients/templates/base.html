@@ -31,11 +31,11 @@
                                 <div class="col-md-12">
                                     <ul class="ec-strip-info">
                                         <li><i class="fa fa-phone"></i> +84 12345678</li>
-                                        <li><i class="fa fa-map-marker"></i> Worldtour-Football media</li>
-                                        <li><i class="fa fa-envelope-o"></i> <a href="#">worldtour@gmail.com</a></li>
+                                        <li><i class="fa fa-user"></i> {{ request.COOKIES.username }}</li>
+                                        <li><i class="fa fa-envelope-o"></i> <a href="#">{{ request.COOKIES.email }}</a></li>
                                     </ul>
                                     <div class="ec-login-section">
-                                        <a href="#" class="ec-login-section-btn ec-bgcolor"><i class="fa fa-user"></i> Đăng Xuất</a>
+                                        <a href="{% url 'logout' %}" class="ec-login-section-btn ec-bgcolor"><i class="fa fa-user"></i> Đăng Xuất</a>
                                     </div>
                                 </div>
                             </div>
@@ -49,42 +49,27 @@
                             <div class="ec-right-section">
                                 <nav class="ec-navigation" *ngIf="jwt">
                                     <ul>
-                                        <li><a href="/home">Trang Chủ</a></li>
-                                        <li [ngClass]="{'active': router.url=='/team'}"><a routerLink="/team">Đội Bóng</a>
+                                        <li><a href="{% url 'home' %}">Trang Chủ</a></li>
+                                        <li><a href="{% url 'team-list' %}">Đội Bóng</a>
                                             <ul class="as-dropdown">
-                                                <li><a routerLink="/team">Đội bóng của tôi</a></li>
+                                                <li><a href="{% url 'team-list' %}">Đội bóng của tôi</a></li>
+                                                <li><a href="{% url 'team-register' %}">Tạo đội bóng</a></li>
                                                 <!-- <li><a routerLink="/findteam">Tìm đội bóng</a></li> -->
                                             </ul>
                                         </li>
-                                        <li [ngClass]="{'active': router.url=='/messenger'}"><a routerLink="/messenger">Tin Nhắn</a></li>
-                                        <li [ngClass]="{'active': router.url=='/stadium'}"><a href="#">Sân Vận Động</a>
-                                            <ul class="as-dropdown">
-                                                <li><a href="shop-cart.html">Cart</a></li>
-                                                <li><a href="shop-list.html">List Wout/sidebar</a></li>
-                                                <li><a href="shop-list-wsidebar.html">List W/sidebar</a></li>
-                                                <li><a href="shop-list-w-b-sidebar.html">List Wboth/sidebar</a></li>
-                                                <li><a href="shop-detail.html">shop detail</a></li>
-                                            </ul>
-                                        </li>
+                                        <li><a routerLink="/messenger">Tin Nhắn</a></li>
+                                        <li><a href="#">Sân Vận Động</a></li>
+                                        <li><a href="{% url 'find-match' %}">Tìm Đối Thủ</a></li>
                                     </ul>
                                 </nav>
                                 <!--// Responsive Menu //-->
                                 <div id="as-menu" class="as-menuwrapper">
                                     <button class="as-trigger">Danh Mục</button>
                                     <ul class="as-menu">
-                                        <li [ngClass]="{'active': router.url=='/home'}"><a routerLink="/home">Trang Chủ</a></li>
+                                        <li [ngClass]="{'active': router.url=='/home'}"><a href="{% url 'home' %}">Trang Chủ</a></li>
                                         <li [ngClass]="{'active': router.url=='/match'}"><a routerLink="/match">Tìm Trận Đấu</a></li>
-                                        <li [ngClass]="{'active': router.url=='/team'}"><a routerLink="/team">Đội Bóng</a></li>
-                                        <li><a href="#">Sân Vận Động</a>
-                                            <ul class="as-submenu">
-                                                <li><a href="shop-list.html">Shop List</a></li>
-                                                <li><a href="plyer-list-left-sbar.html">Shop List W/left/sidebar</a></li>
-                                                <li><a href="shop-list-wsidebar.html">Shop List W/right/sidebar</a></li>
-                                                <li><a href="shop-list-w-b-sidebar">Shop List W/both/sidebar</a></li>
-                                                <li><a href="plyer-list-nosidebar.html">Shop List Wout/sidebar</a></li>
-                                                <li><a href="shop-detail.html">shop detail</a></li>
-                                            </ul>
-                                        </li>
+                                        <li><a href="{% url 'team-list' %}">Đội Bóng</a></li>
+                                        <li><a href="{% url 'find-match' %}">Tìm Đối Thủ</a></li>
                                     </ul>
                                 </div>
                                 <!--// Responsive Menu //-->
