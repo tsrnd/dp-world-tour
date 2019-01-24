@@ -1,8 +1,7 @@
-from django.urls import path
+from django.conf.urls import url
 
-from .booking_views import BookingView
+from myapp.stadium.booking_views import BookingView
 
 urlpatterns = [
-    # Please check name in bookings view
-    path('<int:stadiumID>/book/', BookingView.as_view(), name='booking_views')
+    url(r'^(?P<pk>\d+)/book/$', BookingView.as_view(), name='bookingviews'),
 ]

@@ -34,3 +34,6 @@ def gen_file_name(filename):
         return None
     now = datetime.now()
     return '{:%Y%m%d%H%M%S}'.format(now) + '_' + filename
+
+def get_storage_file_url(filename, bucket):
+    return 'http://localhost:9000/' + bucket + '/' + filename
