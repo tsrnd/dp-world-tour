@@ -92,4 +92,23 @@ class InvitationListSerializer(ModelSerializer):
 
     class Meta:
         model = UserTeam
+        ordering = ('created_at',)
         fields = ['id', 'status', 'team', 'created_at']
+
+class InvitationUpdateSerializer(ModelSerializer):
+    class Meta:
+        model = UserTeam
+        fields = ['id', 'status', 'user']
+
+    def validate(self, data):
+        # check invitation id is of current user
+
+        if self.instance.user.id != self.context['request'].user.id:
+            raise ValidationError({"permission": "This invitation is not your invitation"})
+        
+        if self.instance.status == 'REJECTED':
+                raise ValidationError({"status": "You've already rejected this invitation"})
+        elif self.instance.status == 'ACCEPTED':
+                raise ValidationError({"status": "You've already accepted this invitation"})
+
+        return data
