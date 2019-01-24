@@ -24,14 +24,14 @@
         {% csrf_token %}
         <div class="input-group date" id="datetimepicker1">
           <label for="time_from">Thời gian bắt đầu:</label>
-          <input type="datetime" class="form-control" name="time_from"/>
+          <input type="datetime" class="form-control" name="time_from" value="{{ old_input.time_from }}"/>
           <span class="input-group-addon">
             <span class="glyphicon glyphicon-calendar"></span>
           </span>
         </div>
         <div class="input-group date" id="datetimepicker2">
           <label for="time_from">Thời gian kết thúc:</label>
-          <input type="text" class="form-control" name="time_to"/>
+          <input type="text" class="form-control" name="time_to" value="{{ old_input.time_to }}"/>
           <span class="input-group-addon">
             <span class="glyphicon glyphicon-calendar"></span>
           </span>
@@ -46,9 +46,9 @@
 
         <label for="result_limit">Số lượng kết quả trên mỗi trang</label>
         <select name="result_limit">
-          <option value="20">20</option>
-          <option value="50">50</option>
-          <option value="100">100</option>
+          <option value="20" {% ifequal old_input.result_limit '20' %} selected="selected" {% endifequal %}>20</option>
+          <option value="50" {% ifequal old_input.result_limit '50' %} selected="selected" {% endifequal %}>50</option>
+          <option value="100" {% ifequal old_input.result_limit '100' %} selected="selected" {% endifequal %}>100</option>
         </select>
         <input id="submit-form-list" type="submit" value="Tìm"/>
       </form>
