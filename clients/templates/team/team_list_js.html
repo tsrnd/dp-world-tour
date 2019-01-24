@@ -1,0 +1,123 @@
+<script>
+    var acceptInvitation = function(event, id) {
+        event.preventDefault();
+        $.ajax({
+            type:'PATCH',
+            url:'http://localhost:8000/api/team/invitation/' + id,
+            headers: {
+                'Authorization': 'Bearer ' + $.cookie("token"),
+            },
+            processData: false,
+            contentType: false,
+            success: function(response){
+                notifySuccess = '<div id="alertSuccess" class="alert alert-info alert-dismissible" role="alert">'
+                +'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'
+                +'<span aria-hidden="true">&times;</span>'
+                +'</button>'
+                +'<strong>' + response.message +'</strong>'
+                +'</div>'
+                $('.notify').append(notifySuccess)
+                $('#alertSuccess').delay(1500).slideUp(200, function() {
+                    $(this).alert('close');
+                    location.reload();
+                });
+                $('#status' + id).html("ACCEPTED")
+            },
+            error: function(e) {
+                resp = e.responseJSON
+                notifyError = '<div id="alertError" class="alert alert-danger alert-dismissible" role="alert">'
+                +'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'
+                +'<span aria-hidden="true">&times;</span>'
+                +'</button>'
+                +'<strong>' + resp.status[0] +'</strong>'
+                +'</div>'
+                $('.notify').append(notifyError)
+                $('.alert').delay(4000).slideUp(200, function() {
+                    $(this).alert('close');
+                });
+            }
+        })
+    };
+    var rejectInvitation = function(event, id) {
+        event.preventDefault();
+        $.ajax({
+            type:'DELETE',
+            url:'http://localhost:8000/api/team/invitation/' + id,
+            headers: {
+                'Authorization': 'Bearer ' + $.cookie("token"),
+            },
+            processData: false,
+            contentType: false,
+            success: function(response){
+                notifySuccess = '<div id="alertSuccess" class="alert alert-warning alert-dismissible" role="alert">'
+                +'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'
+                +'<span aria-hidden="true">&times;</span>'
+                +'</button>'
+                +'<strong>' + response.message +'</strong>'
+                +'</div>'
+                $('.notify').append(notifySuccess)
+                $('#alertSuccess').delay(1000).slideUp(200, function() {
+                    $(this).alert('close');
+                    location.reload();
+                });
+                $('#status' + id).html("REJECTED")
+            },
+            error: function(e) {
+                resp = e.responseJSON
+                notifyError = '<div id="alertError" class="alert alert-danger alert-dismissible" role="alert">'
+                +'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'
+                +'<span aria-hidden="true">&times;</span>'
+                +'</button>'
+                +'<strong>' + resp.status[0] +'</strong>'
+                +'</div>'
+                $('.notify').append(notifyError)
+                $('.alert').delay(4000).slideUp(200, function() {
+                    $(this).alert('close');
+                });
+            }
+        })
+    };
+    $('#createTeamForm').submit(function(event) {
+        event.preventDefault();
+        form_data = new FormData($('#createTeamForm')[0]);
+        $.ajax({
+            type:'POST',
+            url:'http://localhost:8000/api/team/create',
+            headers: {
+                'Authorization': 'Bearer ' + $.cookie("token"),
+            },
+            processData: false,
+            contentType: false,
+            data : form_data,
+            success: function(response){
+                notifySuccess = '<div id="alertSuccess" class="alert alert-info alert-dismissible" role="alert">'
+                +'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'
+                +'<span aria-hidden="true">&times;</span>'
+                +'</button>'
+                +'<strong>' + response.message +'</strong>'
+                +'</div>'
+                $('.notify').append(notifySuccess)
+                $('#alertSuccess').delay(1500).slideUp(200, function() {
+                    $(this).alert('close');
+                    window.location.replace("http://localhost:8001/team/list")
+                });
+            },
+            error: function(e) {
+                resp = e.responseJSON
+                $.each(resp.fields, function(key, value) {
+                    notifyError = '<div id="alertError" class="alert alert-danger alert-dismissible" role="alert">'
+                    +'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'
+                    +'<span aria-hidden="true">&times;</span>'
+                    +'</button>'
+                    +'<strong>' + value[0] +'</strong>'
+                    +'</div>'
+                    $('.notify').append(notifyError)
+                    $('.alert').delay(4000).slideUp(200, function() {
+                        $(this).alert('close');
+                    });
+                });
+            }
+        })
+    })
+</script>
+    
