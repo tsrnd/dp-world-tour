@@ -25,6 +25,7 @@ class FindMatch(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True, blank=True)
 
     class Meta:
+        app_label = 'myapp'
         unique_together = ('team', 'date_match', )
 
     objects = models.Manager()

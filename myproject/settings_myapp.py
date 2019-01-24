@@ -37,10 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.admin', 'django.contrib.auth',
     'django.contrib.contenttypes', 'django.contrib.sessions',
     'django.contrib.messages', 'django.contrib.staticfiles', 'myapp',
-    'django_seed', 'rest_framework',  'rest_framework.authtoken'
+    'django_seed', 'rest_framework',  'rest_framework.authtoken', 'corsheaders'
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -165,10 +166,32 @@ logging.config.dictConfig({
     }
 })
 
+STORAGE = {
+    'need_to_init': True,
+    'endpoint': 's3:9000',
+    'access_key': 'MINIOACCESSKEYEXAMPLE',
+    'secret_key': 'MINIOSECRETKEYEXAMPLE',
+    'bucket_name': 'worldtour',
+    'region': 'ap-northeast-1',
+}
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'myapp.authentication.BearerTokenAuthentication'
-    )
+    ),
+    # 'EXCEPTION_HANDLER': 'myapp.providers.exception.custom_exception_handler'
 }
+
+
+# Email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 1025
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+EMAIL_TIMOUT = 3000
+
+# CORS
+CORS_ORIGIN_ALLOW_ALL = True

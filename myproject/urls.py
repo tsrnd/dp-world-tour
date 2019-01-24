@@ -18,12 +18,12 @@ from django.urls import path, include
 
 import inject
 from myapp.providers.user_provider import myapp_providers_config
-from shared.base_handler import bh_config
+from shared.provider import shared_provider_config
 inject.configure_once(myapp_providers_config)
-inject.configure_once(bh_config)
+inject.configure_once(shared_provider_config)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('myapp.urls')),
-    path('client/', include('clients.urls'))
+    path('', include('clients.urls'))
 ]

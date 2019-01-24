@@ -11,7 +11,15 @@
       <div class="row">
         <div class="col-md-4 login-sec">
             <h2 class="text-center">ĐĂNG KÝ</h2>
-            <form role="form" method="POST" class="login-form" action='/client/user/create'>
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+                
+            </ul>
+            {% endif %}
+            <form role="form" method="POST" class="login-form" action='{% url 'register' %}'>
               {% csrf_token %}
               <div class="form-group">
                 <label for="email" class="text-uppercase">Email</label>
