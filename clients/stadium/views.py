@@ -1,0 +1,69 @@
+from django.shortcuts import render
+from myapp.models.stadiums import Stadium
+from django.contrib import messages
+from shared import utils
+from datetime import datetime
+import requests
+
+
+class Stadium2:
+    def __init__(self, name, phone_number, email):
+        self.name = name
+        self.phone_number = phone_number
+        self.email = email
+
+    @staticmethod
+    def fakeStadium():
+        return Stadium2("Catch position cold. Begin article can military establish.", "0349566507", "lam.le@asiantech.vn")
+
+
+def myBookingView(request, stadiumID):
+    # Handle with stadium ID
+    token = request.COOKIES.get('token')
+    if token == None:
+        # Show warning message to login
+        messages.add_message(
+            request, messages.ERROR, 'Please login again')
+        stadium = Stadium2.fakeStadium()
+        return render(request, 'stadium/booking.html', {
+            'stadium': stadium, 'stadiumID': stadiumID
+        })
+    else:
+        stadium = Stadium2.fakeStadium()
+        if request.method == 'GET':
+            return render(request, 'stadium/booking.html', {
+                'stadium': stadium, 'stadiumID': stadiumID
+            })
+        elif request.method == 'POST':
+            timeFrom, timeTo = request.POST.get(
+                'time_from'), request.POST.get('time_to')
+            if not timeFrom:  # Check time_from is empty
+                timeFrom = utils.convertTimestampToString(
+                    utils.currentTimestamp())
+            if not timeTo:  # Check time_to is empty
+                timeTo = utils.convertTimestampToString(
+                    utils.convertStringToTimestamp(timeFrom) + 3600)
+            # headers for request
+            headers = {'Authorization': 'Bearer %s' % token}
+            # Data for request
+            data = {"time_from": timeFrom, "time_to": timeTo}
+            r = requests.post(
+                'http://localhost:8000/api/stadium/{}/book/'.format(stadiumID), data=data, headers=headers)
+            if r.status_code == 200:
+                messages.add_message(
+                    request, messages.SUCCESS, 'Register stadium successfully')
+            else:
+                messages.add_message(
+                    request, messages.ERROR, 'Register stadium failure')
+            return render(request, 'stadium/booking.html', {
+                'stadium': stadium,
+                'stadiumID': stadiumID,
+                'time_from': timeFrom,
+                'time_to': timeTo
+            })
+        else:
+            messages.add_message(request, messages.SUCCESS,
+                                 'Please use GET or POST method')
+            return render(request, 'stadium/booking.html', {
+                'stadium': stadium, 'stadiumID': stadiumID
+            })
