@@ -9,13 +9,22 @@ Find Match
 {% endblock %}
 
 {% block pagecontent %}
+<div class="notify">
+    {% for message in messages %}
+    <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <strong>{{ message }}</strong>
+    </div>
+    {% endfor %}
+</div>
 <div id="DIV_12">
     <div id="DIV_13">
         <div id="DIV_14">
             <h4 id="H4_15">
                 <span id="SPAN_16">Time</span>
             </h4>
-
             <div id="DIV_20">
                 <form class="example" action="{% url 'booking' stadiumID %}" method="POST">
                     {% csrf_token %}

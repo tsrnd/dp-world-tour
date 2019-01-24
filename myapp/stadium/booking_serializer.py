@@ -23,5 +23,5 @@ class BookingStadiumSerializer(serializers.ModelSerializer):
         super(BookingStadiumSerializer, self).__init__(data=data)
 
     def totalPrice(self, timeFrom, timeTo, pricePerHour):
-        return (utils.convertTime(timeTo) -
-                utils.convertTime(timeFrom))/3600*pricePerHour
+        return (utils.convertStringToTimestamp(timeTo) -
+                utils.convertStringToTimestamp(timeFrom))/3600*pricePerHour
