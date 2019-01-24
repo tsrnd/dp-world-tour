@@ -123,6 +123,9 @@ paths:
               result_count:
                 type: integer
                 description: "result count"
+              page:
+                type: integer
+                description: "current page"
               next_page_flg:
                 type: boolean
                 description: "check has next page"

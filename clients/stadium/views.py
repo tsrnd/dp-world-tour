@@ -23,7 +23,7 @@ def get_list(request):
         time_to = time_from + 3600
     else:
         time_to = convert(time_to)
-    if time_from > time_to:
+    if time_from >= time_to:
         messages.info(request, 'Please fill time to great than time from')
     response = requests.get('http://localhost:8000/api/stadium/list', params={
         'time_from': time_from,

@@ -61,7 +61,8 @@
             <th>Số điện thoại</th>
             <th>Email</th>
             <th>Số tài khoản</th>
-            <th>Giá</th>
+            <th>Giá/1h</th>
+            <th></th>
           </tr>
           {% for objstadium in stadiums.stadium %}
           <tr>
@@ -74,6 +75,7 @@
             <td class="mailbox-date">{{ objstadium.email }}</td>
             <td class="mailbox-date">{{ objstadium.bank_num }}</td>
             <td class="mailbox-date">{{ objstadium.price }}</td>
+            <td class="mailbox-date"><a href=""><span style="color:blue">Chi tiết</span></a></td>
           </tr>
           {% endfor %}
         </tbody>
