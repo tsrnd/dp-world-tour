@@ -33,10 +33,10 @@
                         <td><img class="img-fluid" width="40" height="40" src="{{ invitation.team.profile_url }}"></td>
                         <td class="mailbox-subject"><b>{{ invitation.team.team_name }}</b></td>
                         <td class="mailbox-date">{{ invitation.created_at }}</td>
-                        <td class="mailbox-subject">{{ invitation.status }}</td>
+                        <td class="mailbox-subject" id="status{{invitation.id}}">{{ invitation.status }}</td>
                         <td class="mailbox-attachment">
-                            <button type="button" class="btn btn-info btn-circle btn-xs fa fa-check-circle"></button>
-                            <button type="button" class="btn btn-danger btn-circle btn-xs fa fa-times-circle"></button>
+                            <button type="button" class="btn btn-info btn-circle btn-xs fa fa-check-circle" onclick='acceptInvitation(event, "{{ invitation.id }}")' id="accept{{invitation.id}}"></button>
+                            <button type="button" class="btn btn-danger btn-circle btn-xs fa fa-times-circle" onclick='rejectInvitation(event, "{{ invitation.id }}")' id="reject{{invitation.id}}"></button>
                         </td>
                     </tr>
                     {% endif %}
@@ -107,4 +107,8 @@
     </div>
 </section>
 <!-- Team -->
+{% endblock %}
+
+{% block js %}
+    {% include './team_list_js.html' %}
 {% endblock %}
