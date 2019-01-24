@@ -19,6 +19,8 @@
     <link rel="stylesheet" href="{% static 'css/flexslider.css' %}" type="text/css" />
     <link rel="stylesheet" href="{% static 'css/prettyphoto.css' %}" type="text/css" />
     <link rel="stylesheet" href="{% static 'css/responsive.css' %}" type="text/css" />
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}" type="text/css" />
+    <link rel="stylesheet" href="{% static 'css/price_range_style.css' %}" type="text/css" />
     {% block style %}{% endblock %}
     {% block script %}{% endblock %}
   </head>
@@ -216,6 +218,8 @@
     <script src="{% static 'scripts/moment.js' %}"></script>
     <script src="{% static 'scripts/bootstrap-datetimepicker.min.js' %}"></script> 
     <script src="{% static 'scripts/jquery.cookie.js' %}"></script> <!-- This is how to include a static file -->
+    <script src="{% static 'scripts/jquery-ui.min.js' %}"></script> <!-- This is how to include a static file -->
+    <script src="{% static 'scripts/price_range_script.js' %}"></script> <!-- This is how to include a static file -->
     <script>
         var options = {
             newsList: "#ec-news",
@@ -234,7 +238,8 @@
       $("#datetimepicker1").datetimepicker({format: 'YYYY-MM-DD HH:mm+00'});
       $("#datetimepicker2").datetimepicker({format: 'YYYY-MM-DD HH:mm+00'});
     });
-  </script>
+    </script>
+    
     {% block js %}{% endblock %}
   </body>
 </html>

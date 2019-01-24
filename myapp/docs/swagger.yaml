@@ -93,9 +93,14 @@ paths:
             Default is "time_from" + 1 hour
           required: false
           type: integer
-        - name: price
+        - name: max_price
           in: query
-          description: The price per hour of stadium
+          description: The max_price per hour of stadium
+          required: false
+          type: integer
+        - name: min_price
+          in: query
+          description: The min_price per hour of stadium
           required: false
           type: integer
         - name: result_limit

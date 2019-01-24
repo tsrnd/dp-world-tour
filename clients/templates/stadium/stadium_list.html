@@ -36,17 +36,20 @@
             <span class="glyphicon glyphicon-calendar"></span>
           </span>
         </div>
-        <div class="input-group date" id="datetimepicker2"></div>
-          <label>Chọn mức giá tiền:</label>
-          <input type="range" name="price" min="0" max="200">
+        <br>
+        <label for="price">Chọn mức giá:</label>
+        <div id="slider-range" class="price-filter-range" name="rangeInput"></div>
+        <div style="margin:30px auto">
+          <input name="min_price" type="number" min=0 max="999000" oninput="validity.valid||(value='0');" id="min_price" class="price-range-field" />
+          <input name="max_price" type="number" min=0 max="1000000" oninput="validity.valid||(value='1000000');" id="max_price" class="price-range-field" />
         </div>
+
         <label for="result_limit">Số lượng kết quả trên mỗi trang</label>
         <select name="result_limit">
           <option value="20">20</option>
           <option value="50">50</option>
           <option value="100">100</option>
         </select>
-        <!-- <input type="text" placeholder="Chọn giá tiền.." name="price" /> -->
         <input id="submit-form-list" type="submit" value="Tìm"/>
       </form>
       <table class="table table-hover table-striped">

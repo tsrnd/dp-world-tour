@@ -11,7 +11,8 @@ def convert(time):
 def get_list(request):
     time_from = request.POST.get("time_from")
     time_to = request.POST.get("time_to")
-    price = request.POST.get("price", '')
+    min_price = request.POST.get("min_price")
+    max_price = request.POST.get('max_price')
     result_limit = request.POST.get("result_limit", 20)
     page = request.GET.get('page', 1)
     if time_from == '' or time_from is None:
@@ -27,7 +28,8 @@ def get_list(request):
     response = requests.get('http://localhost:8000/api/stadium/list', params={
         'time_from': time_from,
         'time_to': time_to,
-        'price': price,
+        'min_price': min_price,
+        'max_price': max_price,
         'page': page,
         'result_limit': result_limit,
     })
