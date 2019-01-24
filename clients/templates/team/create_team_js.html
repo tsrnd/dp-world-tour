@@ -1,4 +1,8 @@
 <script>
+    var loadFile = function(event) {
+        var output = document.getElementById('output');
+        output.src = URL.createObjectURL(event.target.files[0]);
+    };
     $('#createTeamForm').submit(function(event) {
         event.preventDefault();
         form_data = new FormData($('#createTeamForm')[0]);
@@ -25,7 +29,6 @@
                 });
             },
             error: function(e) {
-                console.log(e.responseJSON)
                 resp = e.responseJSON
                 $.each(resp.fields, function(key, value) {
                     notifyError = '<div id="alertError" class="alert alert-danger alert-dismissible" role="alert">'

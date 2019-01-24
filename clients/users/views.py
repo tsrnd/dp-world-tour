@@ -22,7 +22,6 @@ def create_user(request):
         'password': 'test',
     })
     response = r.json()
-    print(response["message"])
     return render(request, 'authen/login.html', None)
 
 def login(request):
@@ -48,5 +47,23 @@ def login(request):
     else:
         return render(request, 'authen/login.html')
 
+def logout(request):
+    res = redirect('login')
+    res.delete_cookie('token')
+    return res
+
 def home(request):
-    return render(request, 'home/index.html')
+    token = request.COOKIES.get('token')
+    result = requests.get('http://localhost:8000/api/user/info', headers={
+        'Authorization': 'Bearer %s' % token,
+    })
+    status_code = result.status_code
+    response = result.json()
+    if status_code != HTTP_200_OK:
+        res = redirect('login')
+        res.delete_cookie('token')
+        return res
+    res = render(request, 'home/index.html')
+    res.set_cookie('username', response['username'])
+    res.set_cookie('email', response['email'])
+    return res

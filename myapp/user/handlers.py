@@ -40,7 +40,7 @@ class UserLoginAPIView(GenericAPIView):
 
 class UserInfoAPIView(GenericAPIView):
     serializer_class = UserSerializer
-    permission_classes = (IsAuthenticated, IsAdminUser,)
+    permission_classes = (IsAuthenticated, )
 
     def get(self, request):
         serializer = self.serializer_class(request.user)
