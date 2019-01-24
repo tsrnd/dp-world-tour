@@ -12,4 +12,8 @@ def list(request):
         'Authorization': 'Bearer %s' % token,
     })
     teams = r.json()
-    return render(request, 'team/team_list.html', {'teams':teams})
+    re = requests.get('http://localhost:8000/api/team/invitation', headers={
+        'Authorization': 'Bearer %s' % token,
+    })
+    invitations = re.json()
+    return render(request, 'team/team_list.html', {'teams':teams, 'invitations': invitations})
