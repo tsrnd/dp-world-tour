@@ -71,5 +71,6 @@ $(document).ready(function() {
         max_price +
         "."
 		);
+		console.log(min_price)
   });
 });
