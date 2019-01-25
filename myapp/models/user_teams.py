@@ -8,7 +8,7 @@ class UserTeamManager(models.Manager):
 
     def is_caption(self, user_id):
         try:
-            _ = UserTeam.objects.get(user=user_id, deleted_at__isnull=True)
+            _ = UserTeam.objects.get(user=user_id, deleted_at__isnull=True, roll='CAPTION')
             return True
         except UserTeam.DoesNotExist:
             return False
