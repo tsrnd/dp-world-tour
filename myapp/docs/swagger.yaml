@@ -133,6 +133,36 @@ paths:
           description: Internal server error response
           schema:
             $ref: '#/definitions/ErrorDetails'
+  /api/stadium/{id_stadium}/detail:
+    get:
+      tags:
+        - Stadium
+      summary: Get all ready stadium to book
+      description: |
+        "First": Collects all ready stadium from "time_from" to "time_to" in "stadium_registers" table or was registed before but now is canceled by query "(time_from < timeFrom < time_to OR time_from < timeTo < time_to) AND (status != CANCELED)"
+        "Second": Return all of this stadiums
+      operationId: stadiumDetail
+      produces:
+        - application/json
+      parameters:
+        - name: id_stadium
+          in: path
+          description: id of stadium
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            $ref: '#/definitions/Stadium'
+        '400':
+          description: Bad request error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
+        '500':
+          description: Internal server error response
+          schema:
+            $ref: '#/definitions/ErrorDetails'
   /api/stadium/{id_stadium}/book:
     post:
       tags:
