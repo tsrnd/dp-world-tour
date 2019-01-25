@@ -17,6 +17,7 @@ from rest_framework.status import (
     HTTP_404_NOT_FOUND,
     HTTP_200_OK
 )
+
 from django.contrib.auth import get_user_model
 
 logger = logging.getLogger(__name__)
@@ -62,7 +63,12 @@ class UserRegisterAPIView(GenericAPIView):
         username = serializer.data.get("username")
         email = serializer.data.get("email")
         password = serializer.data.get("password")
-        user = get_user_model().objects.create(username=username,email=email,password=password)
+        user = get_user_model()(
+            username=username,
+            email=email,
+        )
+        user.set_password(password)
+        user.save()
         if user is None:
             return Response({"messege":"fail"},status=400)
         token, _ = Token.objects.get_or_create(user=user)
