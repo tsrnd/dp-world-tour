@@ -20,16 +20,16 @@ class Stadium2:
 def myBookingView(request, stadiumID):
     # Handle with stadium ID
     token = request.COOKIES.get('token')
+    r = requests.get('http://localhost:8000/api/stadium/{}/detail/'.format(stadiumID))
+    stadium = r.json()
     if token == None:
         # Show warning message to login
         messages.add_message(
             request, messages.ERROR, 'Please login again')
-        stadium = Stadium2.fakeStadium()
-        return render(request, 'stadium/booking.html', {
-            'stadium': stadium, 'stadiumID': stadiumID
-        })
+        # return render(request, 'stadium/booking.html', {
+        #     'stadium': stadium, 'stadiumID': stadiumID
+        # })
     else:
-        stadium = Stadium2.fakeStadium()
         if request.method == 'GET':
             return render(request, 'stadium/booking.html', {
                 'stadium': stadium, 'stadiumID': stadiumID
@@ -49,7 +49,7 @@ def myBookingView(request, stadiumID):
             data = {"time_from": timeFrom, "time_to": timeTo}
             r = requests.post(
                 'http://localhost:8000/api/stadium/{}/book/'.format(stadiumID), data=data, headers=headers)
-            if r.status_code == 200:
+            if r.status_code == 201:
                 messages.add_message(
                     request, messages.SUCCESS, 'Register stadium successfully')
             else:
