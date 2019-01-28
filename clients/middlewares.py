@@ -13,6 +13,9 @@ class AuthRequiredMiddleware(object):
         if request.COOKIES.get('token') is None and request.path != '/user/login' and request.path != '/user/register':
             return HttpResponseRedirect('/user/login')
 
+        if request.COOKIES.get('token') is not None and (request.path == '/user/register' or request.path == '/user/login'):
+            return HttpResponseRedirect('/user/home')
+
         # Code to be executed for each request/response after
         # the view is called.
 
