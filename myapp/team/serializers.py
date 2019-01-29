@@ -9,8 +9,12 @@ from rest_framework.serializers import (
         ModelSerializer,
         SerializerMethodField,
         ValidationError,
-        CurrentUserDefault
+        CurrentUserDefault,
+        DateTimeField
     )
+from django.contrib.auth.models import User
+
+from rest_framework import serializers
 
 class TeamCreateSerializer(ModelSerializer):
     storage = inject.attr(Storage)
@@ -62,3 +66,9 @@ class TeamCreateSerializer(ModelSerializer):
             return team
 
 
+class InviteSerializer(ModelSerializer):
+    date_joined_format = serializers.DateTimeField(source='date_joined', format='%Y-%m-%d %H:%M:%S')
+    
+    class Meta:
+        model = User
+        fields = ('id','username','email','date_joined_format')
