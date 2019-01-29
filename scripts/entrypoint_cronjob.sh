@@ -9,8 +9,8 @@ done
 >&2 echo "Postgres is up - continuing"
 
 if [ "$AUTO_CRONJOBS" = '1' ]; then
-  python manage.py crontab remove --settings=myproject.settings_cronjob
-  python manage.py crontab add --settings=myproject.settings_cronjob
+  python manage.py cus_crontab remove --settings=myproject.settings_cronjob
+  python manage.py cus_crontab add --settings=myproject.settings_cronjob
 fi
 
 exec "$@"

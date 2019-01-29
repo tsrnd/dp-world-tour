@@ -23,7 +23,7 @@ class CronjobModel(models.Model):
     job_schedule = models.CharField(max_length=20)
     job_path = models.CharField(max_length=500)
     last_run_at = models.DateTimeField(null=True, blank=True)
-    status = models.CharField(max_length=1, choices=status_choices)
+    status = models.IntegerField(choices=status_choices, default=0)
     created_at = models.DateTimeField(auto_now_add=True, blank=True)
     updated_at = models.DateTimeField(auto_now_add=True, blank=True)
     deleted_at = models.DateTimeField(null=True)

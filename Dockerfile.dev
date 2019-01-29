@@ -23,7 +23,8 @@ RUN set -ex \
         postgresql-client \
         redis
 
-RUN apk add libmagic
+RUN apk add libmagic \
+    && apk add --no-cache docker
 
 ADD ./scripts/entrypoint.sh /
 RUN chmod +x /entrypoint.sh

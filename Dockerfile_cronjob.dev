@@ -32,6 +32,6 @@ RUN mkdir -p /code
 WORKDIR /code
 
 # these flags are used in `runserver` command only
-ENV AUTO_CRONJOBS=1
+ENV AUTO_CRONJOBS=0
 
 ENTRYPOINT [ "/entrypoint_cronjob.sh" ]

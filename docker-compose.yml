@@ -6,6 +6,7 @@ services:
       dockerfile: Dockerfile.dev
     volumes:
       - .:/code
+      - /var/run/docker.sock:/var/run/docker.sock
     expose:
       - 8000
       - 8001
@@ -13,7 +14,7 @@ services:
       - 8000:8000
       - 8001:8001
     environment:
-      DATABASE_URL: 'postgres://hello:django@data:5432/yashoes'
+      DATABASE_URL: 'postgres://hello:django@data:5432/default'
       CACHE_URL: 'redis://cache:6379/'
       STORAGE_URL: 's3:9000'
     links:
@@ -58,16 +59,16 @@ services:
       dockerfile: Dockerfile_cronjob.dev
     volumes:
       - .:/code
-      - ./client/
     expose:
       - 8000
     ports:
       - 8888:8000
     environment:
-      DATABASE_URL: 'postgres://hello:django@data:5432/yashoes'
+      DATABASE_URL: 'postgres://hello:django@data:5432/default'
       CACHE_URL: 'redis://cache:6379/'
       STORAGE_URL: 's3:9000'
     links:
       - data:data
       - cache:cache
       - s3:s3
+    command: [ "python", "manage.py", "runserver", "--settings=myproject.settings_myapp", "0.0.0.0:8000" ]

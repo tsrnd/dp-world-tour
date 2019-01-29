@@ -97,7 +97,7 @@ class CustomCrontab(object):
 
     def add_jobs(self):
         """
-        Adds all jobs defined in CRONJOBS setting to internal buffer
+        Adds all jobs defined in database to internal buffer
         """
         for job in self.settings.CRONJOBS:
             # differ format and find job's suffix
@@ -130,6 +130,39 @@ class CustomCrontab(object):
                 except Exception as err:
                     logger.error(f'Update hash job of job {job} has an error., {err}')
                 
+    def add_one_job(self, job_id):
+        """
+        Adds job to internal buffer
+        """
+        try:
+            job = CronjobModel.objects.get(deleted_at=None, pk=job_id)
+        except CronjobModel.DoesNotExist:
+            logger.error('Job does not exist.')
+            return
+        job = (job.job_schedule, job.job_path)
+        job_suffix = ''
+        self.remove_job_with_hash(self.__hash_job(job))
+        self.crontab_lines.append(self.settings.CRONTAB_LINE_PATTERN % {
+            'time': job[0],
+            'comment': self.settings.CRONTAB_COMMENT,
+            'command': ' '.join(filter(None, [
+                self.settings.COMMAND_PREFIX,
+                self.settings.PYTHON_EXECUTABLE,
+                self.settings.DJANGO_MANAGE_PATH,
+                'crontab', 'run',
+                self.__hash_job(job),
+                '--settings=%s' % self.settings.DJANGO_SETTINGS_MODULE if self.settings.DJANGO_SETTINGS_MODULE else '',
+                job_suffix,
+                self.settings.COMMAND_SUFFIX
+            ]))
+        })
+        if self.verbosity >= 1:
+            print('  adding cronjob: (%s) -> %s' % (self.__hash_job(job), job))
+            try:
+                CronjobModel.objects.filter(job_schedule=job[0], job_path=job[1],deleted_at=None).update(job_hash=self.__hash_job(job), updated_at=timezone.now())
+            except Exception as err:
+                logger.error(f'Update hash job of job {job} has an error., {err}')
+                
 
     def show_jobs(self):
         """
@@ -147,7 +180,7 @@ class CustomCrontab(object):
 
     def remove_jobs(self):
         """
-        Removes all jobs defined in CRONJOBS setting from internal buffer
+        Removes all jobs from internal buffer
         """
         for line in self.crontab_lines[:]:
             job = self.settings.CRONTAB_LINE_REGEXP.findall(line)
@@ -158,7 +191,27 @@ class CustomCrontab(object):
                         job[0][2].split()[4],
                         self.__get_job_by_hash(job[0][2][job[0][2].find('crontab run') + 12:].split()[0])
                     ))
-
+        try:
+            CronjobModel.objects.all().update(job_hash=None, updated_at=timezone.now())
+        except Exception as err:
+            logger.error(f'Update hash job for all job has an error., {err}')
+    def remove_job_with_hash(self, job_hash):
+        """
+        Removes job with hash from internal buffer
+        """
+        for line in self.crontab_lines[:]:
+            job = self.settings.CRONTAB_LINE_REGEXP.findall(line)
+            if job_hash in line and job and job[0][4] == self.settings.CRONTAB_COMMENT:
+                self.crontab_lines.remove(line)
+                if self.verbosity >= 1:
+                    print('removing cronjob: (%s) -> %s' % (
+                        job[0][2].split()[4],
+                        self.__get_job_by_hash(job[0][2][job[0][2].find('crontab run') + 12:].split()[0])
+                    ))
+        try:
+            CronjobModel.objects.filter(job_hash=job_hash).update(job_hash=None, updated_at=timezone.now())
+        except Exception as err:
+            logger.error(f'Update hash job for job with hash {job_hash} has an error., {err}')
     # noinspection PyBroadException
     def run_job(self, job_hash):
         """
