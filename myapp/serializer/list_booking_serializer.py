@@ -32,9 +32,12 @@ class ListBookingSerializer(serializers.Serializer):
     @property
     def page(self):
         try:
-            return int(self.request.GET.get('page'))
+            page = int(self.request.GET.get('page'))
         except:
             raise serializers.ValidationError({'error': 'page is not valid'})
+        if page == 0:
+            raise serializers.ValidationError({'error': 'page is zero'})
+        return page
 
     @property
     def result_limit(self):
