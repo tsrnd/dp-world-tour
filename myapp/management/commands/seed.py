@@ -33,7 +33,7 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('--mode', type=str, help="Mode")
-        parser.add_argument('--model', type=int, help="Model")
+        parser.add_argument('--model', type=str, help="Model")
         parser.add_argument('--number', type=int, help="Number")
 
 
@@ -46,14 +46,14 @@ class Command(BaseCommand):
             number = DEFAULT_RECORD
         if mode == MODE_CLEAR:
             logger.info("Run seeding with mode: " + MODE_CLEAR)
-            clear_data()
+            clear_data(model)
         elif mode == MODE_SUPERUSER:
             logger.info("Run seeding with mode: " + MODE_SUPERUSER)
             from myapp.seeds import user
             user.create_superuser()
         elif mode == MODE_REFRESH:
             logger.info("Run seeding with mode: " + MODE_REFRESH)
-            clear_data()
+            clear_data(model)
             create_data(model, number)
         else:
             logger.info("This mode is not support, run default mode to insert new data")
