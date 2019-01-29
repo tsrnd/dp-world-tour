@@ -32,9 +32,9 @@ class Command(BaseCommand):
     help = 'Seed data'
 
     def add_arguments(self, parser):
-        parser.add_argument('--mode', type=str, help="Mode")
-        parser.add_argument('--model', type=str, help="Model")
-        parser.add_argument('--number', type=int, help="Number")
+        parser.add_argument('--mode', type=str, help="Mode to seeding: clear, refresh, superuser or default")
+        parser.add_argument('--model', type=str, help="Model to seeding: user_team, team, ...")
+        parser.add_argument('--number', type=int, help="Number record to seeding, default is 10")
 
 
     def handle(self, *args, **options):
