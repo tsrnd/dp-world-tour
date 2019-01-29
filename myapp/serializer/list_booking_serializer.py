@@ -16,9 +16,7 @@ class ListBookingSerializer(serializers.Serializer):
         return self.filteredBookings.count()
 
     def get_next_page_flg(self, data):
-        user_id = self.request.user.id
-        all_bookings = StadiumRegister.objects.filter(user=user_id)
-        return all_bookings[self.page * self.result_limit:(self.page+1)*self.result_limit].count() > 0
+        return self.all_bookings[self.page * self.result_limit:(self.page+1)*self.result_limit].count() > 0
 
     def get_bookings(self, data):
         serial = BookingSerializer(
@@ -48,11 +46,14 @@ class ListBookingSerializer(serializers.Serializer):
                 {'error': 'result_limit is not valid'})
 
     @property
-    def filteredBookings(self):
+    def all_bookings(self):
         user_id = self.request.user.id
-        all_bookings = StadiumRegister.objects.filter(user=user_id)
-        bookings = all_bookings[(self.page-1) *
-                                self.result_limit:self.page*self.result_limit]
+        return StadiumRegister.objects.filter(user=user_id)
+
+    @property
+    def filteredBookings(self):
+        bookings = self.all_bookings[(self.page-1) *
+                                     self.result_limit:self.page*self.result_limit]
         return bookings
 
 
@@ -70,6 +71,8 @@ class BookingSerializer(serializers.ModelSerializer):
         return {
             'id': stadium_id,
             'name': stadium.name,
+            'lat': stadium.lat,
+            'lng': stadium.lng,
             'phone_number': stadium.phone_number,
             'email': stadium.email,
             'price': stadium.price,
