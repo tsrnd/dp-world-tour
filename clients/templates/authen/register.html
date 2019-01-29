@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_login.html' %}
 
 {% block title %}
     Register
@@ -11,20 +11,33 @@
       <div class="row">
         <div class="col-md-4 login-sec">
             <h2 class="text-center">ĐĂNG KÝ</h2>
-            <form role="form" class="login-form" action='/client/user/create'>
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+                
+            </ul>
+            {% endif %}
+            <form role="form" method="POST" class="login-form" action='{% url 'register' %}'>
+              {% csrf_token %}
               <div class="form-group">
-                <label for="username" class="text-uppercase">Tài khoản</label>
-                <input type="text" #username class="form-control" id="username" placeholder="Tài khoản">
+                <label for="email" class="text-uppercase">Email</label>
+                <input type="text" #username class="form-control" id="email" placeholder="Email" name="email">
                 
               </div>
               <div class="form-group">
+                <label for="username" class="text-uppercase">Tài khoản</label>
+                <input type="text" #password class="form-control" id="username" placeholder="Tài khoản" name="username">
+              </div>
+              <div class="form-group">
                 <label for="password" class="text-uppercase">Mật khẩu</label>
-                <input type="password" #password class="form-control" id="password" placeholder="Mật khẩu">
+                <input type="password" #repassword class="form-control" id="password" placeholder="Mật khẩu" name="password">
               </div>
               <div class="form-group">
                 <label for="password" class="text-uppercase">Nhập Lại Mật khẩu</label>
-                <input type="password" #repassword class="form-control" id="repassword" placeholder="Nhập Lại Mật khẩu">
-                </div>
+                <input type="password" #repassword class="form-control" id="repassword" placeholder="Mật khẩu" name="repassword">
+              </div>
               <div class="form-check">
                 <input type="submit" class="btn btn-login float-right"></input>
               </div>

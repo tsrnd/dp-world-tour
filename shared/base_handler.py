@@ -11,7 +11,7 @@ class BaseHandler:
     logger = logging.getLogger(__name__)
 
     def validate(self, serializer):
-        if not serializer.is_valid():
+        if not serializer.is_valid(raise_exception=True):
             response = ValidateResponse
             response["fields"] = serializer.errors
             response = Response(

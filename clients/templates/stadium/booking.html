@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Find Match
+{% endblock %}
+
+{% block style %}
+{% include './booking_css.html' %}
+{% endblock %}
+
+{% block pagecontent %}
+<div class="notify">
+    {% for message in messages %}
+    <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <strong>{{ message }}</strong>
+    </div>
+    {% endfor %}
+</div>
+<div class="container">
+        <br>
+    <div class="card border-0">
+        <div class="row">
+            <aside class="col-sm-4">
+    <article class="gallery-wrap"> 
+    <div class="img-big-wrap">
+      <iframe width="500" height="450" src = "https://maps.google.com/maps?q={{stadium.lat}},{{stadium.lng}}&hl=es;z=14&amp;output=embed"></iframe>
+    </div>
+    <div class="img-small-wrap">
+      <div class="item-gallery"> <img src="https://via.placeholder.com/100x100"> </div>
+    <div class="item-gallery"> <img src="https://via.placeholder.com/100x100"> </div>
+    <div class="item-gallery"> <img src="https://via.placeholder.com/100x100"> </div>
+    <div class="item-gallery"> <img src="https://via.placeholder.com/100x100"> </div>
+    </div>
+    </article>
+            </aside>
+            <aside class="col-sm-5">
+    <article class="card-body m-0 pt-0 pl-5">
+        <h3 class="title text-uppercase">{{ stadium.name }}</h3>
+    <div class="rating">
+                                <div class="stars">
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star checked"></span>
+                                    <span class="fa fa-star"></span>
+                                    <span class="fa fa-star"></span>
+                                    <span class="review-no ml-2">(41 lượt đánh giá)</span>
+                                </div>
+                            </div>
+    <div class="mb-3 mt-3"> 
+    </div>						
+    <div class="mb-3 mt-3"> 
+        <span class="price-title">Giá cả/1 giờ :</span>
+            <span class="price color-price-waanbii">{{ stadium.price }} VNĐ</span>
+    </div>
+    <dl class="item-property">
+      <dt>Địa chỉ</dt>
+      <dd><p>Here goes description consectetur adipisicing elit, sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+    quis nostrud exercitation ullamco </p></dd>
+    </dl>
+    <dl class="param param-feature">
+      <dt>Thời gian rảnh</dt>
+      <dd>200g</dd>
+    </dl>
+    </article>
+            </aside>
+            <aside class="col-sm-3">
+                    <div class="row">
+                        <form class="example" action="{% url 'booking' stadiumID %}" method="POST">
+                            {% csrf_token %}
+                            <div class="input-group date" id="datetimepicker1">
+                                <input id="INPUT_44" placeholder="time from" type="datetime" class="form-control" name="time_from" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                            <div class="input-group date" id="datetimepicker2">
+                                <input id="INPUT_44" placeholder="time to" type="text" class="form-control" name="time_to" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                            <div class="input-group">
+                                    <h3><span class="label label-info">Giá</span></h3>
+                            </div>
+                            <hr id="HR_134" />
+                            <button class="btn btn-lg btn-success" type="submit" onclick="getDatePicker()" value="Booking">Đặt</button>
+                        </form>
+                    </div>
+    <hr class="m-0 p-0">
+        <div class="row mb-4 mt-4">
+        <b>Climb to the top of the world!</b>
+                </div>
+            </aside>
+        </div>
+    </div>
+    
+    
+</div>
+{% endblock %}

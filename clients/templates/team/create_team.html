@@ -27,7 +27,8 @@
         <label for="email"><b>Email của Team</b></label>
         <input type="text" #email id="email" name="email" placeholder="Nhập email" required>
         <label for="file"><b>Avatar</b></label>
-        <input type="file" #file id="file" name="file" placeholder="Nhập email">
+        <input type="file" #file id="file" name="file" onchange="loadFile(event)">
+        <img id="output"/>
         
         <p>Bằng việc đăng ký tạo đội bóng đồng nghĩa bạn đã đồng ý <a href="#" style="color:dodgerblue">Quy định và điều khoản</a> của chúng tôi.</p>
 

@@ -6,9 +6,16 @@ class UserTeamManager(models.Manager):
     def is_my_team(self):
         pass
 
+    def my_caption(self, team_id):
+        try:
+            team = UserTeam.objects.get(team=team_id, roll='CAPTION')
+            return team.user
+        except UserTeam.DoesNotExist:
+            return None
+
     def is_caption(self, user_id):
         try:
-            _ = UserTeam.objects.get(user=user_id, deleted_at__isnull=True)
+            _ = UserTeam.objects.get(user=user_id, deleted_at__isnull=True, roll='CAPTION')
             return True
         except UserTeam.DoesNotExist:
             return False
