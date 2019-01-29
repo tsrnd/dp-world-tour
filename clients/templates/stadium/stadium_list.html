@@ -20,18 +20,18 @@
         {% endfor %}
         </ul>
         {% endif %}
-      <form class="example" action="{% url 'list' %}" method="POST">
+      <form class="example" action="{% url 'list' %}" method="POST" id="form-filter">
         {% csrf_token %}
         <div class="input-group date" id="datetimepicker1">
           <label for="time_from">Thời gian bắt đầu:</label>
-          <input type="datetime" class="form-control" name="time_from" value="{{ old_input.time_from }}"/>
+          <input id="time_from" type="datetime" class="form-control" name="time_from" value="{{ old_input.time_from }}"/>
           <span class="input-group-addon">
             <span class="glyphicon glyphicon-calendar"></span>
           </span>
         </div>
         <div class="input-group date" id="datetimepicker2">
           <label for="time_from">Thời gian kết thúc:</label>
-          <input type="text" class="form-control" name="time_to" value="{{ old_input.time_to }}"/>
+          <input id="time_to" type="datetime" class="form-control" name="time_to" value="{{ old_input.time_to }}"/>
           <span class="input-group-addon">
             <span class="glyphicon glyphicon-calendar"></span>
           </span>
@@ -40,12 +40,12 @@
         <label for="price">Chọn mức giá:</label>
         <div id="slider-range" class="price-filter-range" name="rangeInput"></div>
         <div style="margin:30px auto">
-          <input name="min_price" type="number" min=0 max="999000" oninput="validity.valid||(value='0');" id="min_price" class="price-range-field" />
+          <input name="min_price" type="number" min=0 max="999000" value="{{ old_input.min_price }}" oninput="validity.valid||(value='0');" id="min_price" class="price-range-field" />
           <input name="max_price" type="number" min=0 max="1000000" oninput="validity.valid||(value='1000000');" id="max_price" class="price-range-field" />
         </div>
 
         <label for="result_limit">Số lượng kết quả trên mỗi trang</label>
-        <select name="result_limit">
+        <select name="result_limit" id="result_limit">
           <option value="20" {% ifequal old_input.result_limit '20' %} selected="selected" {% endifequal %}>20</option>
           <option value="50" {% ifequal old_input.result_limit '50' %} selected="selected" {% endifequal %}>50</option>
           <option value="100" {% ifequal old_input.result_limit '100' %} selected="selected" {% endifequal %}>100</option>
@@ -83,13 +83,21 @@
       <!-- /.table -->
       <ul class="pagination">
         {% if stadiums.page > 1 %}
-          <li><a href="?page={{ stadiums.page|add:"-1" }}">&laquo;</a></li>
+        <form action="{% url 'list' %}" method="post" id="next-page">
+          {% csrf_token %}
+          <input type="hidden" value="{{ stadiums.page|add:"-1" }}" name="page" >
+          <button id="prev-submit" type="submit">&raquo;</button>
+        </form>
         {% else %}
           <li class="disabled"><span>&laquo;</span></li>
         {% endif %}
         <li class="active"><span>{{ stadiums.page }} <span class="sr-only">(current)</span></span></li>
         {% if stadiums.next_page_flg %}
-          <li><a href="?page={{ stadiums.page|add:"1" }}">&raquo;</a></li>
+        <form action="{% url 'list' %}" method="post" id="next-page">
+          {% csrf_token %}
+          <input type="hidden" value="{{ stadiums.page|add:"1" }}" name="page" >
+          <button id="test" type="submit">&raquo;</button>
+        </form>
         {% else %}
           <li class="disabled"><span>&raquo;</span></li>
         {% endif %}

@@ -82,7 +82,7 @@ def get_list(request):
     min_price = request.POST.get("min_price")
     max_price = request.POST.get('max_price')
     result_limit = request.POST.get("result_limit", 20)
-    page = request.GET.get('page', 1)
+    page = request.POST.get('page', 1)
     old_input = {}
     old_input['time_from'] = time_from
     old_input['time_to'] = time_to
@@ -110,4 +110,5 @@ def get_list(request):
         'result_limit': result_limit,
     })
     stadiums = response.json()
+    print(stadiums)
     return render(request, 'stadium/stadium_list.html', {'stadiums':stadiums, 'old_input': old_input})

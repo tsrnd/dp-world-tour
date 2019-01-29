@@ -1,0 +1,29 @@
+$(document).ready(function () {
+    $("#next-page").submit(function ( event ) {
+        time_from = $("#time_from").val();
+        time_to = $("#time_to").val();
+        result_limit = $("#result_limit").val();
+        min_price = localStorage.getItem("min_price");
+        max_price = localStorage.getItem("max_price");
+        var time_from = $("<input>")
+            .attr("type", "hidden")
+            .attr("name", "time_from").val(time_from);
+        $('#next-page').append(time_from);
+        var time_to = $("<input>")
+            .attr("type", "hidden")
+            .attr("name", "time_to").val(time_to);
+        $('#next-page').append(time_to);
+        var result_limit = $("<input>")
+            .attr("type", "hidden")
+            .attr("name", "result_limit").val(result_limit);
+        $('#next-page').append(result_limit);
+        var min_price = $("<input>")
+            .attr("type", "hidden")
+            .attr("name", "min_price").val(min_price);
+        $('#next-page').append(min_price);
+        var max_price = $("<input>")
+            .attr("type", "hidden")
+            .attr("name", "max_price").val(max_price);
+        $('#next-page').append(max_price);
+    });
+});

@@ -29,6 +29,7 @@ class StadiumHandler(GenericAPIView):
     serializer_class = ListStadiumSerializer
 
     def get(self, request, *args, **kwargs):
+        print("-----------------------",request.query_params)
         serializer = self.get_serializer(data=request.query_params)
         response = self.bh.validate(serializer)
         if response is not None:

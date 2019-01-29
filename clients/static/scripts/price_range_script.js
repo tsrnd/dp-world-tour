@@ -7,7 +7,6 @@ $(document).ready(function() {
     var min_price_range = parseInt($("#min_price").val());
 
     var max_price_range = parseInt($("#max_price").val());
-
     if (min_price_range > max_price_range) {
       $("#max_price").val(min_price_range);
     }
@@ -51,7 +50,8 @@ $(document).ready(function() {
         }
         $("#min_price").val(ui.values[0]);
         $("#max_price").val(ui.values[1]);
-      }
+
+      },
     });
 
     $("#min_price").val($("#slider-range").slider("values", 0));
@@ -71,6 +71,7 @@ $(document).ready(function() {
         max_price +
         "."
 		);
-		console.log(min_price)
+    localStorage.setItem("min_price", min_price);
+    localStorage.setItem("max_price", max_price);
   });
 });
