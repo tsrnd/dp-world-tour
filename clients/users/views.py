@@ -63,6 +63,8 @@ def login(request):
 def logout(request):
     res = redirect('login')
     res.delete_cookie('token')
+    res.delete_cookie('username')
+    res.delete_cookie('email')
     return res
 
 def home(request):
@@ -76,7 +78,10 @@ def home(request):
         res = redirect('login')
         res.delete_cookie('token')
         return res
-    res = render(request, 'home/index.html')
+    res = render(request, 'home/index.html', {
+        'username': response['username'],
+        'email': response['email'],
+    })
     res.set_cookie('username', response['username'])
     res.set_cookie('email', response['email'])
     return res

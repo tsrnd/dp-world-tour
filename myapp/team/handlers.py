@@ -23,10 +23,14 @@ from rest_framework.permissions import (
     IsAuthenticated,
 )
 
+from myapp.permission.user_permission import (
+    IsNormalUser,
+)
+
 class TeamCreate(GenericAPIView):
     bh = inject.attr(BaseHandler)
     serializer_class = TeamCreateSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsNormalUser, ]
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -45,7 +49,7 @@ class TeamCreate(GenericAPIView):
 class TeamList(GenericAPIView):
     bh = inject.attr(BaseHandler)
     serializer_class = UserTeamSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsNormalUser, ]
 
     def get(self, request, *args, **kwargs):
         user_teams = UserTeam.objects.filter(user=self.request.user, status='ACCEPTED').order_by('roll')
@@ -64,7 +68,7 @@ class TeamList(GenericAPIView):
 class InvitationList(GenericAPIView):
     bh = inject.attr(BaseHandler)
     serializer_class = InvitationListSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsNormalUser, ]
 
     def get(self, request, *args, **kwargs):
         user_teams = UserTeam.objects.filter(user=self.request.user).filter(Q(status='PENDING')|Q(status='REJECTED')).order_by('status', '-created_at')
@@ -77,7 +81,7 @@ class InvitationList(GenericAPIView):
 class InvitationUpdate(UpdateModelMixin, GenericAPIView):
     bh = inject.attr(BaseHandler)
     serializer_class = InvitationUpdateSerializer
-    permission_classes = [IsAuthenticated,]
+    permission_classes = [IsAuthenticated, IsNormalUser, ]
     lookup_field = 'pk'
     queryset = UserTeam.objects.all()
 
