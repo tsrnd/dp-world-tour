@@ -13,8 +13,9 @@ services:
       - 8000:8000
       - 8001:8001
     environment:
-      DATABASE_URL: 'postgres://hello:django@data:5432/default'
-      CACHE_URL: 'postgres://hello:django@data:5432/default'
+      DATABASE_URL: 'postgres://hello:django@data:5432/yashoes'
+      CACHE_URL: 'redis://cache:6379/'
+      STORAGE_URL: 's3:9000'
     links:
       - data:data
       - cache:cache
@@ -50,3 +51,23 @@ services:
     volumes:
       - ./.tmp/photo:/export
     command: server /export
+
+  cronjob:
+    build:
+      context: .
+      dockerfile: Dockerfile_cronjob.dev
+    volumes:
+      - .:/code
+      - ./client/
+    expose:
+      - 8000
+    ports:
+      - 8888:8000
+    environment:
+      DATABASE_URL: 'postgres://hello:django@data:5432/yashoes'
+      CACHE_URL: 'redis://cache:6379/'
+      STORAGE_URL: 's3:9000'
+    links:
+      - data:data
+      - cache:cache
+      - s3:s3

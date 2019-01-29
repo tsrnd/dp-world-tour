@@ -10,6 +10,14 @@ build:
 up: build
 	@docker-compose up -d app
 
+build-cron:
+	@pipenv lock -r > requirements.txt
+	@pipenv lock -d -r > requirements-dev.txt
+	@docker-compose build cronjob
+
+up-cron: build-cron
+	@docker-compose up -d cronjob
+
 stop:
 	@docker-compose stop
 
