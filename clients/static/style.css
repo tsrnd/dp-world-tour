@@ -3589,7 +3589,7 @@ blockquote:after {
 	border-top: 10px solid #e95842;
 	border-left: 10px solid transparent;
 }
-#test {
+#btn-submit {
 	color: #777;
 	width: 34px;
 	height: 34px;
@@ -3602,15 +3602,4 @@ blockquote:after {
 }
 .pagination {
 	width: 120px;
-}
-#prev-submit {
-	color:#777;
-	width: 34px;
-	height: 34px;
-	border: 1px #d4d4d4 solid;
-	padding: 5px;
-	margin-left: 2px;
-    border-radius:50%;
-    -moz-border-radius:50%;
-    -webkit-border-radius:60px;
 }

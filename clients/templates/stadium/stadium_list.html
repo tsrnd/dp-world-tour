@@ -86,7 +86,7 @@
         <form action="{% url 'list' %}" method="post" id="next-page">
           {% csrf_token %}
           <input type="hidden" value="{{ stadiums.page|add:"-1" }}" name="page" >
-          <button id="prev-submit" type="submit">&raquo;</button>
+          <button id="btn-submit" type="submit">&raquo;</button>
         </form>
         {% else %}
           <li class="disabled"><span>&laquo;</span></li>
@@ -96,7 +96,7 @@
         <form action="{% url 'list' %}" method="post" id="next-page">
           {% csrf_token %}
           <input type="hidden" value="{{ stadiums.page|add:"1" }}" name="page" >
-          <button id="test" type="submit">&raquo;</button>
+          <button id="btn-submit" type="submit">&raquo;</button>
         </form>
         {% else %}
           <li class="disabled"><span>&raquo;</span></li>
