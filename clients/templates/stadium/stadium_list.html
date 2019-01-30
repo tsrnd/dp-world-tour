@@ -66,7 +66,7 @@
           </tr>
           {% for objstadium in stadiums.stadium %}
           <tr>
-            <td class="mailbox-name">{{ objstadium.id }}</td>
+            <td class="mailbox-name">{{ forloop.counter }}</td>
             <td class="mailbox-subject">
               <b>{{ objstadium.name }}</b>
             </td>
