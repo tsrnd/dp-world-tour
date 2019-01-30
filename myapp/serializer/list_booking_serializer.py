@@ -65,4 +65,5 @@ class BookingSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = StadiumRegister
-        fields = ('id', 'stadium', 'time_from', 'time_to', 'status')
+        fields = ('id', 'stadium', 'time_from',
+                  'time_to', 'status', 'total_price')

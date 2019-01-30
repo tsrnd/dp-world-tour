@@ -10,7 +10,7 @@
 <!-- Team -->
 <section id="team" class="pb-5">
     <div class="container">
-        <h5 class="section-title h1">DANH SÁCH SÂN VẬN ĐỘNG</h5>
+        <h5 class="section-title h1">DANH SÁCH SÂN ĐÃ ĐẶT</h5>
         <!-- Box body-->
         <div class="table-responsive mailbox-messages">
             {% if messages %}
@@ -29,7 +29,9 @@
                         <th>Số điện thoại</th>
                         <th>Email</th>
                         <th>Số tài khoản</th>
-                        <th>Giá/1h</th>
+                        <th>Giá</th>
+                        <th>Bắt đầu</th>
+                        <th>Kết thúc</th>
                         <th></th>
                     </tr>
                     {% for booking in bookings %}
@@ -41,8 +43,10 @@
                         <td class="mailbox-date">vị trí</td>
                         <td class="mailbox-date">{{booking.stadium.phone_number}}</td>
                         <td class="mailbox-date">{{booking.stadium.email}}</td>
-                        <td class="mailbox-date"></td>
-                        <td class="mailbox-date">{{booking.stadium.price}}</td>
+                        <td class="mailbox-date">{{booking.stadium.bank_num}}</td>
+                        <td class="mailbox-date">{{booking.total_price}}</td>
+                        <td class="mailbox-date">{{booking.time_from}}</td>
+                        <td class="mailbox-date">{{booking.time_to}}</td>
                         <td class="mailbox-date"><a href=""><span style="color:blue">Chi tiết</span></a></td>
                     </tr>
                     {% endfor %}
@@ -53,17 +57,17 @@
                 {% if bookings.page > 1 %}
                 <form action="{% url 'list' %}" method="post" id="next-page">
                     {% csrf_token %}
-                    <input type="hidden" value="{{ bookings.page|add:"-1" }}" name="page">
+                    <input type="hidden" value="{{ page|add:"-1" }}" name="page">
                     <button id="btn-submit" type="submit">&raquo;</button>
                 </form>
                 {% else %}
                 <li class="disabled"><span>&laquo;</span></li>
                 {% endif %}
-                <li class="active"><span>{{ bookings.page }} <span class="sr-only">(current)</span></span></li>
-                {% if bookings.next_page_flg %}
+                <li class="active"><span>{{ page }} <span class="sr-only">(current)</span></span></li>
+                {% if next_page_flg %}
                 <form action="{% url 'list' %}" method="post" id="next-page">
                     {% csrf_token %}
-                    <input type="hidden" value="{{ bookings.page|add:"1" }}" name="page">
+                    <input type="hidden" value="{{ page|add:"1" }}" name="page">
                     <button id="btn-submit" type="submit">&raquo;</button>
                 </form>
                 {% else %}
