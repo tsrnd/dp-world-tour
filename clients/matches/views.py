@@ -6,6 +6,7 @@ from clients.matches.forms import FindMatchForm
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 
+
 def index(request):
     today = datetime.now().strftime("%Y-%m-%d")
     response = render(request, 'match/match.html', {'today': today})
@@ -26,11 +27,15 @@ def find_match(request):
                 }, headers=headers)
                 response = r.json()
                 if r.status_code == 201:
-                    messages.add_message(request, messages.SUCCESS, _('Đã đăng kí tìm kiếm trận đấu thành công.'))
+                    messages.add_message(request, messages.SUCCESS, _(
+                        'Đã đăng kí tìm kiếm trận đấu thành công.'))
                 elif r.status_code == 400:
-                    messages.add_message(request, messages.ERROR, _('Mời bạn chọn lịch thi đấu khác'))
+                    messages.add_message(request, messages.ERROR, _(
+                        'Mời bạn chọn lịch thi đấu khác'))
                 else:
-                    messages.add_message(request, messages.ERROR, _('Tìm kiếm trận đấu thất bại.'))
+                    messages.add_message(request, messages.ERROR, _(
+                        'Tìm kiếm trận đấu thất bại.'))
                 return render(request, 'match/match.html', {'today': today})
-    messages.add_message(request, messages.ERROR, _('Tìm kiếm trận đấu thất bại.'))
+    messages.add_message(request, messages.ERROR,
+                         _('Tìm kiếm trận đấu thất bại.'))
     return render(request, 'match/match.html', {'form': form, 'today': today})

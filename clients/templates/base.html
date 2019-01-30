@@ -13,106 +13,119 @@
     <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}" type="text/css" />
     <link rel="stylesheet" href="{% static 'style.css' %}" type="text/css" />
     <link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}" type="text/css" />
+    <link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.css' %}" type="text/css" />
     <link rel="stylesheet" href="{% static 'css/color.css' %}" type="text/css" />
     <link rel="stylesheet" href="{% static 'css/dl-menu.css' %}" type="text/css" />
     <link rel="stylesheet" href="{% static 'css/flexslider.css' %}" type="text/css" />
     <link rel="stylesheet" href="{% static 'css/prettyphoto.css' %}" type="text/css" />
     <link rel="stylesheet" href="{% static 'css/responsive.css' %}" type="text/css" />
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}" type="text/css" />
+    <link rel="stylesheet" href="{% static 'css/price_range_style.css' %}" type="text/css" />
     <link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.css' %}" type="text/css" />
     {% block style %}{% endblock %}
-  </head>
-  <body>
-        <div class="ec-main-wrapper">
-            <div class="ec-loading-section"><div class="ball-scale-multiple"><div></div><div></div><div></div></div></div>
-            <!--// Main Header \\-->
-            <header id="ec-header">
-                    <!--// TopSection \\-->
-                    <div class="ec-top-strip" *ngIf="jwt">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <ul class="ec-strip-info">
-                                        <li><i class="fa fa-phone"></i> +84 12345678</li>
-                                        <li><i class="fa fa-user"></i>
-                                            {% if username %}
-                                                {{ username }}
-                                            {% else %}
-                                                {{ request.COOKIES.username }}
-                                            {% endif %}
-                                        </li>
-                                        <li><i class="fa fa-envelope-o"></i> <a href="#">
-                                            {% if email %}
-                                                {{ email }}
-                                            {% else %}
-                                                {{ request.COOKIES.email }}
-                                            {% endif %}
-                                        </a></li>
-                                    </ul>
-                                    <div class="ec-login-section">
-                                        <a href="{% url 'logout' %}" class="ec-login-section-btn ec-bgcolor"><i class="fa fa-user"></i> Đăng Xuất</a>
-                                    </div>
-                                </div>
+    {% block script %}{% endblock %}
+</head>
+
+<body>
+    <div class="ec-main-wrapper">
+        <div class="ec-loading-section">
+            <div class="ball-scale-multiple">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+        <!--// Main Header \\-->
+        <header id="ec-header">
+            <!--// TopSection \\-->
+            <div class="ec-top-strip" *ngIf="jwt">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <ul class="ec-strip-info">
+                                <li><i class="fa fa-phone"></i> +84 12345678</li>
+                                <li><i class="fa fa-user"></i>
+                                    {% if username %}
+                                    {{ username }}
+                                    {% else %}
+                                    {{ request.COOKIES.username }}
+                                    {% endif %}
+                                </li>
+                                <li><i class="fa fa-envelope-o"></i> <a href="#">
+                                        {% if email %}
+                                        {{ email }}
+                                        {% else %}
+                                        {{ request.COOKIES.email }}
+                                        {% endif %}
+                                    </a></li>
+                            </ul>
+                            <div class="ec-login-section">
+                                <a href="{% url 'logout' %}" class="ec-login-section-btn ec-bgcolor"><i class="fa fa-user"></i>
+                                    Đăng Xuất</a>
                             </div>
                         </div>
                     </div>
-                    <!--// TopSection \\-->
-                    <!--// Main Header \\-->
-                    <div class="ec-main-navsection" style="z-index:9999999999999;">
-                        <div class="container">
-                            <a routerLink="/home" class="ec-logo"><img src="../../static/images/logo-1.png" alt=""></a>
-                            <div class="ec-right-section">
-                                <nav class="ec-navigation" *ngIf="jwt">
-                                    <ul>
-                                        <li><a href="{% url 'home' %}">Trang Chủ</a></li>
-                                        <li><a href="{% url 'team-list' %}">Đội Bóng</a>
-                                            <ul class="as-dropdown">
-                                                <li><a href="{% url 'team-list' %}">Đội bóng của tôi</a></li>
-                                                <li><a href="{% url 'team-register' %}">Tạo đội bóng</a></li>
-                                                <!-- <li><a routerLink="/findteam">Tìm đội bóng</a></li> -->
-                                            </ul>
-                                        </li>
-                                        <li><a routerLink="/messenger">Tin Nhắn</a></li>
-                                        <li><a href="#">Sân Vận Động</a></li>
-                                        <li><a href="{% url 'find-match' %}">Tìm Đối Thủ</a></li>
-                                    </ul>
-                                </nav>
-                                <!--// Responsive Menu //-->
-                                <div id="as-menu" class="as-menuwrapper">
-                                    <button class="as-trigger">Danh Mục</button>
-                                    <ul class="as-menu">
-                                        <li [ngClass]="{'active': router.url=='/home'}"><a href="{% url 'home' %}">Trang Chủ</a></li>
-                                        <li [ngClass]="{'active': router.url=='/match'}"><a routerLink="/match">Tìm Trận Đấu</a></li>
-                                        <li><a href="{% url 'team-list' %}">Đội Bóng</a></li>
-                                        <li><a href="{% url 'find-match' %}">Tìm Đối Thủ</a></li>
+                </div>
+            </div>
+            <!--// TopSection \\-->
+            <!--// Main Header \\-->
+            <div class="ec-main-navsection" style="z-index:9999999999999;">
+                <div class="container">
+                    <a routerLink="/home" class="ec-logo"><img src="../../static/images/logo-1.png" alt=""></a>
+                    <div class="ec-right-section">
+                        <nav class="ec-navigation" *ngIf="jwt">
+                            <ul>
+                                <li><a href="{% url 'home' %}">Trang Chủ</a></li>
+                                <li><a href="{% url 'team-list' %}">Đội Bóng</a>
+                                    <ul class="as-dropdown">
+                                        <li><a href="{% url 'team-list' %}">Đội bóng của tôi</a></li>
+                                        <li><a href="{% url 'team-register' %}">Tạo đội bóng</a></li>
+                                        <!-- <li><a routerLink="/findteam">Tìm đội bóng</a></li> -->
                                     </ul>
                                 </li>
+                                <li><a routerLink="/messenger">Tin Nhắn</a></li>
+                                <li><a href="#">Sân Vận Động</a></li>
+                                <li><a href="{% url 'find-match' %}">Tìm Đối Thủ</a></li>
                             </ul>
                         </nav>
                         <!--// Responsive Menu //-->
                         <div id="as-menu" class="as-menuwrapper">
                             <button class="as-trigger">Danh Mục</button>
                             <ul class="as-menu">
-                                <li [ngClass]="{'active': router.url=='/home'}"><a routerLink="/home">Trang Chủ</a></li>
+                                <li [ngClass]="{'active': router.url=='/home'}"><a href="{% url 'home' %}">Trang Chủ</a></li>
                                 <li [ngClass]="{'active': router.url=='/match'}"><a routerLink="/match">Tìm Trận Đấu</a></li>
-                                <li [ngClass]="{'active': router.url=='/team'}"><a routerLink="/team">Đội Bóng</a></li>
-                                <li><a href="#">Sân Vận Động</a>
-                                    <ul class="as-submenu">
-                                        <li><a href="shop-list.html">Shop List</a></li>
-                                        <li><a href="plyer-list-left-sbar.html">Shop List W/left/sidebar</a></li>
-                                        <li><a href="shop-list-wsidebar.html">Shop List W/right/sidebar</a></li>
-                                        <li><a href="shop-list-w-b-sidebar">Shop List W/both/sidebar</a></li>
-                                        <li><a href="plyer-list-nosidebar.html">Shop List Wout/sidebar</a></li>
-                                        <li><a href="shop-detail.html">shop detail</a></li>
-                                    </ul>
-                                </li>
+                                <li><a href="{% url 'team-list' %}">Đội Bóng</a></li>
+                                <li><a href="{% url 'find-match' %}">Tìm Đối Thủ</a></li>
                             </ul>
-                        </div>
-                        <!--// Responsive Menu //-->
+                            </li>
+                            </ul>
+                            </nav>
+                            <!--// Responsive Menu //-->
+                            <div id="as-menu" class="as-menuwrapper">
+                                <button class="as-trigger">Danh Mục</button>
+                                <ul class="as-menu">
+                                    <li [ngClass]="{'active': router.url=='/home'}"><a routerLink="/home">Trang Chủ</a></li>
+                                    <li [ngClass]="{'active': router.url=='/match'}"><a routerLink="/match">Tìm Trận
+                                            Đấu</a></li>
+                                    <li [ngClass]="{'active': router.url=='/team'}"><a routerLink="/team">Đội Bóng</a></li>
+                                    <li><a href="#">Sân Vận Động</a>
+                                        <ul class="as-submenu">
+                                            <li><a href="shop-list.html">Shop List</a></li>
+                                            <li><a href="plyer-list-left-sbar.html">Shop List W/left/sidebar</a></li>
+                                            <li><a href="shop-list-wsidebar.html">Shop List W/right/sidebar</a></li>
+                                            <li><a href="shop-list-w-b-sidebar">Shop List W/both/sidebar</a></li>
+                                            <li><a href="plyer-list-nosidebar.html">Shop List Wout/sidebar</a></li>
+                                            <li><a href="shop-detail.html">shop detail</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!--// Responsive Menu //-->
 
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!--// Main Header \\-->
+                <!--// Main Header \\-->
         </header>
         <!--// Main Header \\-->
         {% block pagecontent %}
@@ -240,6 +253,8 @@
     <script src="{% static 'scripts/bootstrap-datetimepicker.min.js' %}"></script>
     <!-- This is how to include a static file -->
     <script src="{% static 'scripts/jquery.cookie.js' %}"></script> <!-- This is how to include a static file -->
+    <script src="{% static 'scripts/jquery-ui.min.js' %}"></script> <!-- This is how to include a static file -->
+    <script src="{% static 'scripts/price_range_script.js' %}"></script> <!-- This is how to include a static file -->
     <script>
         var options = {
             newsList: "#ec-news",
