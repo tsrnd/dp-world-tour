@@ -9,7 +9,7 @@ from django.http import HttpResponseRedirect
 import time
 from threading import Thread
 import os
-
+from .forms import CronjobForm
 admin.register(teams.Team)
 admin.register(user_teams.UserTeam)
 admin.register(stadiums.Stadium)
@@ -39,10 +39,34 @@ class CronjobAdmin(admin.ModelAdmin):
     )
     search_fields = ('job_path', 'job_name')
     model = cronjob.CronjobModel
-    list_display = ['job_hash', 'job_schedule', 'job_path', 'cronjob_actions', 'deleted_at']
+    list_display = ['id', 'job_hash', 'job_schedule', 'job_path', 'cronjob_actions', 'deleted_at']
+    readonly_fields = ['job_path_view', 'job_schedule_view']
+    form = CronjobForm
+    def job_schedule_view(self, obj):
+        return format_html(
+            '{}<a style="color:blue;padding-left:10px;font-size:smaller;">(You can edit this field if job have already removed from crontab)</a>', obj.job_schedule
+        )
+    
+    def job_path_view(self, obj):
+        return format_html(
+            '{}<a style="color:blue;padding-left:10px;font-size:smaller;">(You can edit this field if job have already removed from crontab)</a>', obj.job_path
+        )
+
     def get_fieldsets(self, request, obj=None):
         if not obj:
             return self.add_fieldsets
+        if obj.job_hash:
+            return (
+                (None, {
+                    'fields': ('job_name', 'job_hash')
+                }),
+                (_('Job Detail'), {
+                    'fields': ('job_schedule_view', 'job_path_view', 'status')
+                }),
+                (_('Important dates'), {
+                    'fields': ('last_run_at', )
+                }),
+            )
         return self.fieldsets
     def run_now(self, request, job_hash):
         try:
