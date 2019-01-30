@@ -12,8 +12,6 @@
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" type="text/css" />
     <link rel="stylesheet" href="{% static 'css/font-awesome.css' %}" type="text/css" />
     <link rel="stylesheet" href="{% static 'style.css' %}" type="text/css" />
-    <link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.css' %}" type="text/css" />
-
     <link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}" type="text/css" />
     <link rel="stylesheet" href="{% static 'css/color.css' %}" type="text/css" />
     <link rel="stylesheet" href="{% static 'css/dl-menu.css' %}" type="text/css" />
@@ -24,7 +22,6 @@
     <link rel="stylesheet" href="{% static 'css/price_range_style.css' %}" type="text/css" />
     <link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.css' %}" type="text/css" />
     {% block style %}{% endblock %}
-    {% block script %}{% endblock %}
   </head>
   <body>
         <div class="ec-main-wrapper">
@@ -235,7 +232,6 @@
     <script src="{% static 'scripts/jquery.cookie.js' %}"></script> <!-- This is how to include a static file -->
     <script src="{% static 'scripts/jquery-ui.min.js' %}"></script> <!-- This is how to include a static file -->
     <script src="{% static 'scripts/price_range_script.js' %}"></script> <!-- This is how to include a static file -->
-    <script src="{% static 'scripts/stadium.js' %}"></script> <!-- This is how to include a static file -->
     <script>
         var options = {
             newsList: "#ec-news",
@@ -255,14 +251,6 @@
             $("#datetimepicker2").datetimepicker({ format: 'YYYY-MM-DD HH:mm+00' });
         });
     </script>
-    <script type="text/javascript">
-    $(function () {
-        console.log($('#example'))
-      $("#datetimepicker1").datetimepicker({format: 'YYYY-MM-DD HH:mm+00'});
-      $("#datetimepicker2").datetimepicker({format: 'YYYY-MM-DD HH:mm+00'});
-    });
-    </script>
-    
     {% block js %}{% endblock %}
 </body>
 

@@ -40,8 +40,8 @@
         <label for="price">Chọn mức giá:</label>
         <div id="slider-range" class="price-filter-range" name="rangeInput"></div>
         <div style="margin:30px auto">
-          <input name="min_price" type="number" min=0 max="999000" value="{{ old_input.min_price }}" oninput="validity.valid||(value='0');" id="min_price" class="price-range-field" />
-          <input name="max_price" type="number" min=0 max="1000000" oninput="validity.valid||(value='1000000');" id="max_price" class="price-range-field" />
+          <input name="min_price" type="number" min=0 max="999000" oninput="validity.valid||(value='0');" id="min_price_stadium" class="price-range-field" />
+          <input name="max_price" type="number" min=0 max="1000000" oninput="validity.valid||(value='1000000');" id="max_price_stadium" class="price-range-field" />
         </div>
 
         <label for="result_limit">Số lượng kết quả trên mỗi trang</label>
@@ -107,5 +107,9 @@
   </div>
 </section>
 <!-- Team -->
+{% endblock %}
+
+{% block js %}
+    {% include './stadium_js.html' %}
 {% endblock %}
   
