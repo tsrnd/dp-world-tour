@@ -10,8 +10,11 @@ from rest_framework.serializers import (
         SerializerMethodField,
         ValidationError,
         CurrentUserDefault,
+        DateTimeField,
         BooleanField,
     )
+from django.contrib.auth.models import User
+from rest_framework import serializers
 
 class TeamCreateSerializer(ModelSerializer):
     storage = inject.attr(Storage)
@@ -64,7 +67,6 @@ class TeamCreateSerializer(ModelSerializer):
 
 class TeamSerializer(ModelSerializer):
     profile_url = SerializerMethodField()
-
     def get_profile_url(self, obj):
         return get_storage_file_url(obj.team_profile_image_url, settings.STORAGE['bucket_name'])
     class Meta:
@@ -76,6 +78,14 @@ class TeamSerializer(ModelSerializer):
             'acronym',
             'created_at',
         ]
+
+class InviteSerializer(ModelSerializer):
+    date_joined_format = serializers.DateTimeField(source='date_joined', format='%Y-%m-%d %H:%M:%S')
+    
+    class Meta:
+        model = User
+        fields = ('id','username','email','date_joined_format')
+    
 
 class UserTeamSerializer(ModelSerializer):
     is_caption = SerializerMethodField()
