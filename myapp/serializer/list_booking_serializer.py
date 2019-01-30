@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from myapp.models.stadium_registers import StadiumRegister
 from myapp.models.stadiums import Stadium
+from myapp.serializer.stadium_serializer import StadiumSerializer
 
 
 class ListBookingSerializer(serializers.Serializer):
@@ -48,7 +49,7 @@ class ListBookingSerializer(serializers.Serializer):
     @property
     def all_bookings(self):
         user_id = self.request.user.id
-        return StadiumRegister.objects.filter(user=user_id)
+        return StadiumRegister.objects.filter(user=user_id, deleted_at__isnull=True)
 
     @property
     def filteredBookings(self):
@@ -59,21 +60,9 @@ class ListBookingSerializer(serializers.Serializer):
 
 class BookingSerializer(serializers.ModelSerializer):
 
-    stadium = serializers.SerializerMethodField()
+    stadium = StadiumSerializer(
+        {'exclude_fields': ['created_at', 'updated_at', 'deleted_at']})
 
     class Meta:
         model = StadiumRegister
         fields = ('id', 'stadium', 'time_from', 'time_to', 'status')
-
-    def get_stadium(self, data):
-        stadium_id = data.stadium_id
-        stadium = Stadium.objects.get(pk=stadium_id)
-        return {
-            'id': stadium_id,
-            'name': stadium.name,
-            'lat': stadium.lat,
-            'lng': stadium.lng,
-            'phone_number': stadium.phone_number,
-            'email': stadium.email,
-            'price': stadium.price,
-        }
