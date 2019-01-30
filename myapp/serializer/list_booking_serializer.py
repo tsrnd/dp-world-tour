@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from myapp.models.stadium_registers import StadiumRegister
 from myapp.models.stadiums import Stadium
+from myapp.serializer.stadium_serializer import StadiumSerializer
 
 
 class ListBookingSerializer(serializers.Serializer):
@@ -16,9 +17,7 @@ class ListBookingSerializer(serializers.Serializer):
         return self.filteredBookings.count()
 
     def get_next_page_flg(self, data):
-        user_id = self.request.user.id
-        all_bookings = StadiumRegister.objects.filter(user=user_id)
-        return all_bookings[self.page * self.result_limit:(self.page+1)*self.result_limit].count() > 0
+        return self.all_bookings[self.page * self.result_limit:(self.page+1)*self.result_limit].count() > 0
 
     def get_bookings(self, data):
         serial = BookingSerializer(
@@ -48,29 +47,22 @@ class ListBookingSerializer(serializers.Serializer):
                 {'error': 'result_limit is not valid'})
 
     @property
-    def filteredBookings(self):
+    def all_bookings(self):
         user_id = self.request.user.id
-        all_bookings = StadiumRegister.objects.filter(user=user_id)
-        bookings = all_bookings[(self.page-1) *
-                                self.result_limit:self.page*self.result_limit]
+        return StadiumRegister.objects.filter(user=user_id, deleted_at__isnull=True)
+
+    @property
+    def filteredBookings(self):
+        bookings = self.all_bookings[(self.page-1) *
+                                     self.result_limit:self.page*self.result_limit]
         return bookings
 
 
 class BookingSerializer(serializers.ModelSerializer):
 
-    stadium = serializers.SerializerMethodField()
+    stadium = StadiumSerializer(
+        {'exclude_fields': ['created_at', 'updated_at', 'deleted_at']})
 
     class Meta:
         model = StadiumRegister
         fields = ('id', 'stadium', 'time_from', 'time_to', 'status')
-
-    def get_stadium(self, data):
-        stadium_id = data.stadium_id
-        stadium = Stadium.objects.get(pk=stadium_id)
-        return {
-            'id': stadium_id,
-            'name': stadium.name,
-            'phone_number': stadium.phone_number,
-            'email': stadium.email,
-            'price': stadium.price,
-        }
