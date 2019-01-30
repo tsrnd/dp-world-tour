@@ -17,7 +17,6 @@
                 {% for message in messages %}
                 <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
                 {% endfor %}
-                <li id='asd'></li>
             </ul>
             {% endif %}
             {% if users %}
@@ -56,13 +55,13 @@
                             </tbody>
                         </table>
                         <ul class="pagination">
-                            {% if users.links.has_previous %}
+                            {% if users.page > 1 %}
                                 <li><a href="?page={{ users.page|add:"-1" }}">&laquo;</a></li>
                             {% else %}
                                 <li class="disabled"><span>&laquo;</span></li>
                             {% endif %}
                             <li class="active"><span>{{ users.page }} <span class="sr-only">(current)</span></span></li>
-                            {% if users.links.has_next %}
+                            {% if users.next_page_flg %}
                                 <li><a href="?page={{ users.page|add:"1" }}">&raquo;</a></li>
                             {% else %}
                                 <li class="disabled"><span>&raquo;</span></li>

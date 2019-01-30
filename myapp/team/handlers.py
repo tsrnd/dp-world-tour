@@ -26,6 +26,9 @@ from rest_framework.permissions import (
 from myapp.permission.user_permission import (
     IsNormalUser,
 )
+from myapp.permission.match_permission import (
+    IsLeadTeam,
+)
 from rest_framework.authtoken.models import Token
 from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth.models import User
@@ -57,11 +60,10 @@ class TeamCreate(GenericAPIView):
 class ListUserInvite(GenericAPIView):
     bh = inject.attr(BaseHandler)
     serializer_class = InviteSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsLeadTeam]
 
     def get(self, request):
-        id_user_login = self.request.user.id
-        id_team= get_object_or_404(Team,userteam__user_id=id_user_login, userteam__roll='CAPTION')
+        id_team = request.data['team_id']
         users_list = User.objects.exclude(userteam__team_id=id_team).order_by('date_joined')
 
         result_limit = request.GET.get('result_limit', RESULT_LIMIT)
@@ -77,14 +79,9 @@ class ListUserInvite(GenericAPIView):
         serializer = InviteSerializer(users, many=True)
 
         content = {
-            'links': {
-                'has_other_pages': users.has_other_pages(),
-                'has_previous': users.has_previous(),
-                'has_next': users.has_next(),
-                'num_pages': paginator.num_pages,
-            },
+            'id_team': id_team,
             'result_count': users_list.count(),
-            'page': page,
+            'page': int(page),
             'next_page_flg': users.has_next(),
             'result': serializer.data,
         }
