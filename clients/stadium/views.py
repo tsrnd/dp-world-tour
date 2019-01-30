@@ -10,21 +10,11 @@ from django.contrib import messages
 
 
 
-class Stadium2:
-    def __init__(self, name, phone_number, email):
-        self.name = name
-        self.phone_number = phone_number
-        self.email = email
-
-    @staticmethod
-    def fakeStadium():
-        return Stadium2("Catch position cold. Begin article can military establish.", "0349566507", "lam.le@asiantech.vn")
-
-
 def myBookingView(request, stadiumID):
     # Handle with stadium ID
     token = request.COOKIES.get('token')
-    r = requests.get('http://localhost:8000/api/stadium/{}/detail/'.format(stadiumID))
+    r = requests.get(
+        'http://localhost:8000/api/stadium/{}/detail/'.format(stadiumID))
     stadium = r.json()
     if token == None:
         # Show warning message to login
@@ -66,7 +56,7 @@ def myBookingView(request, stadiumID):
                 'time_to': timeTo
             })
         else:
-            messages.add_message(request, messages.SUCCESS,
+            messages.add_message(request, messages.ERROR,
                                  'Please use GET or POST method')
             return render(request, 'stadium/booking.html', {
                 'stadium': stadium, 'stadiumID': stadiumID
@@ -110,5 +100,4 @@ def get_list(request):
         'result_limit': result_limit,
     })
     stadiums = response.json()
-    print(stadiums)
     return render(request, 'stadium/stadium_list.html', {'stadiums':stadiums, 'old_input': old_input})

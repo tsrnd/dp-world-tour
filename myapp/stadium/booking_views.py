@@ -14,12 +14,15 @@ from shared.base_handler import BaseHandler
 from rest_framework.permissions import (
     IsAuthenticated,
 )
+from myapp.permission.user_permission import (
+    IsNormalUser,
+)
 
 
 class BookingView(GenericAPIView):
     bh = inject.attr(BaseHandler)
     serializer_class = BookingStadiumSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsNormalUser, ]
     queryset = StadiumRegister.objects.all()
     lookup_field = 'pk'
 

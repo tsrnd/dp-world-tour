@@ -35,8 +35,20 @@
                                 <div class="col-md-12">
                                     <ul class="ec-strip-info">
                                         <li><i class="fa fa-phone"></i> +84 12345678</li>
-                                        <li><i class="fa fa-user"></i> {{ request.COOKIES.username }}</li>
-                                        <li><i class="fa fa-envelope-o"></i> <a href="#">{{ request.COOKIES.email }}</a></li>
+                                        <li><i class="fa fa-user"></i>
+                                            {% if username %}
+                                                {{ username }}
+                                            {% else %}
+                                                {{ request.COOKIES.username }}
+                                            {% endif %}
+                                        </li>
+                                        <li><i class="fa fa-envelope-o"></i> <a href="#">
+                                            {% if email %}
+                                                {{ email }}
+                                            {% else %}
+                                                {{ request.COOKIES.email }}
+                                            {% endif %}
+                                        </a></li>
                                     </ul>
                                     <div class="ec-login-section">
                                         <a href="{% url 'logout' %}" class="ec-login-section-btn ec-bgcolor"><i class="fa fa-user"></i> Đăng Xuất</a>
