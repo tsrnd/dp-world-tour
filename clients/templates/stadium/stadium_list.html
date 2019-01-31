@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} My Teams {% endblock %}
+{% block style %}
+{% include './stadium_list_css.html' %}
+{% endblock %}
+{% block pagecontent %}
+
+<div class="notify"></div>
+<!-- Team -->
+<section id="team" class="pb-5">
+  <div class="container">
+    <h5 class="section-title h1">DANH SÁCH SÂN VẬN ĐỘNG</h5>
+    <!-- Box body-->
+    <div class="table-responsive mailbox-messages">
+        {% if messages %}
+        <ul id="messages">
+        {% for message in messages %}
+          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+      <form class="example" action="{% url 'list' %}" method="POST" id="form-filter">
+        {% csrf_token %}
+        <div class="input-group date" id="datetimepicker1">
+          <label for="time_from">Thời gian bắt đầu:</label>
+          <input id="time_from" type="datetime" class="form-control" name="time_from" value="{{ old_input.time_from }}"/>
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"></span>
+          </span>
+        </div>
+        <div class="input-group date" id="datetimepicker2">
+          <label for="time_from">Thời gian kết thúc:</label>
+          <input id="time_to" type="datetime" class="form-control" name="time_to" value="{{ old_input.time_to }}"/>
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"></span>
+          </span>
+        </div>
+        <br>
+        <label for="price">Chọn mức giá:</label>
+        <div id="slider-range" class="price-filter-range" name="rangeInput"></div>
+        <div style="margin:30px auto">
+          <input name="min_price" type="number" min=0 max="999000" oninput="validity.valid||(value='0');" id="min_price_stadium" class="price-range-field" />
+          <input name="max_price" type="number" min=0 max="1000000" oninput="validity.valid||(value='1000000');" id="max_price_stadium" class="price-range-field" />
+        </div>
+
+        <label for="result_limit">Số lượng kết quả trên mỗi trang</label>
+        <select name="result_limit" id="result_limit">
+          <option value="20" {% ifequal old_input.result_limit '20' %} selected="selected" {% endifequal %}>20</option>
+          <option value="50" {% ifequal old_input.result_limit '50' %} selected="selected" {% endifequal %}>50</option>
+          <option value="100" {% ifequal old_input.result_limit '100' %} selected="selected" {% endifequal %}>100</option>
+        </select>
+        <input id="submit-form-list" type="submit" value="Tìm"/>
+      </form>
+      <table class="table table-hover table-striped">
+        <tbody>
+          <tr>
+            <th>STT</th>
+            <th>Tên sân vận động</th>
+            <th>Vị trí</th>
+            <th>Số điện thoại</th>
+            <th>Email</th>
+            <th>Số tài khoản</th>
+            <th>Giá/1h</th>
+            <th></th>
+          </tr>
+          {% for objstadium in stadiums.stadium %}
+          <tr>
+            <td class="mailbox-name">{{ objstadium.indx }}</td>
+            <td class="mailbox-subject">
+              <b>{{ objstadium.name }}</b>
+            </td>
+            <td class="mailbox-date">vị trí</td>
+            <td class="mailbox-date">{{ objstadium.phone_number }}</td>
+            <td class="mailbox-date">{{ objstadium.email }}</td>
+            <td class="mailbox-date">{{ objstadium.bank_num }}</td>
+            <td class="mailbox-date">{{ objstadium.price }}</td>
+            <td class="mailbox-date"><a href=""><span style="color:blue">Chi tiết</span></a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <!-- /.table -->
+      <ul class="pagination">
+        {% if stadiums.page > 1 %}
+        <form action="{% url 'list' %}" method="post" id="next-page">
+          {% csrf_token %}
+          <input type="hidden" value="{{ stadiums.page|add:"-1" }}" name="page" >
+          <button id="btn-submit" type="submit">&raquo;</button>
+        </form>
+        {% else %}
+          <li class="disabled"><span>&laquo;</span></li>
+        {% endif %}
+        <li class="active"><span>{{ stadiums.page }} <span class="sr-only">(current)</span></span></li>
+        {% if stadiums.next_page_flg %}
+        <form action="{% url 'list' %}" method="post" id="next-page">
+          {% csrf_token %}
+          <input type="hidden" value="{{ stadiums.page|add:"1" }}" name="page" >
+          <button id="btn-submit" type="submit">&raquo;</button>
+        </form>
+        {% else %}
+          <li class="disabled"><span>&raquo;</span></li>
+        {% endif %}
+      </ul>
+    </div>
+    <!-- /.mail-box-messages -->
+  </div>
+</section>
+<!-- Team -->
+{% endblock %}
+
+{% block js %}
+    {% include './stadium_js.html' %}
+{% endblock %}
+  
