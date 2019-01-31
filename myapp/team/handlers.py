@@ -1,7 +1,7 @@
 import inject
 from myapp.team.serializers import (
     TeamCreateSerializer, UserTeamSerializer,
-    InvitationListSerializer, InvitationUpdateSerializer, InviteSerializer
+    InvitationListSerializer, InvitationUpdateSerializer, InviteSerializer, InviteMemberSerializer, 
 )
 
 from myapp.models.teams import Team
@@ -22,7 +22,9 @@ from rest_framework.generics import (
 from rest_framework.permissions import (
     IsAuthenticated,
 )
-
+from myapp.permission.match_permission import(
+    IsLeadTeam,
+)
 from myapp.permission.user_permission import (
     IsNormalUser,
 )
@@ -148,3 +150,23 @@ class InvitationUpdate(UpdateModelMixin, GenericAPIView):
     def delete(self, request, *args, **kwargs):
         kwargs['status'] = 'REJECTED'
         return self.update(request, *args, **kwargs)
+
+class InviteMember(GenericAPIView):
+    bh = inject.attr(BaseHandler)
+    serializer_class = InviteMemberSerializer
+    permission_classes = [IsAuthenticated, IsLeadTeam]
+
+    def post(self, request):
+        user_id = request.POST.get('user_id')
+        id_team = request.data['team_id']
+        user = User.objects.get(pk=user_id)
+        team = Team.objects.get(pk=id_team)
+        # print(team, 'ahahahah')
+        invite_member = UserTeam.objects.create(
+            team = team,
+            user = user,
+            roll = 'MEMBER',
+            status = 'PENDING',
+        )
+        serializer = InviteMemberSerializer(team)
+        return Response(serializer.data)
