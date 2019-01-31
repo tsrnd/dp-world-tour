@@ -7,12 +7,14 @@ class FindMatchManager(models.Manager):
 
 class FindMatch(models.Model):
     PD = 'PENDING'
+    WA = 'WAITING'
     AC = 'ACCEPTED'
     RJ = 'REJECTED'
     REQUEST_STATUS = (
         (PD, 'Pending'),
         (AC, 'Accepted'),
         (RJ, 'Rejected'),
+        (WA, 'Waiting'),
     )
     team = models.ForeignKey('Team', on_delete=models.DO_NOTHING)
     date_match = models.DateTimeField()

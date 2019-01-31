@@ -8,6 +8,7 @@ from cronjob.job import job_const
 import sys
 from myapp.models.find_matches import FindMatch
 from myapp.models.matches import Match
+from myapp.models.cronjob import CronjobModel
 from django.db import models
 from django.core.mail import send_mail
 
@@ -20,6 +21,7 @@ class FindMatchResult(models.Model):
     find_match_id = models.IntegerField()
 def match_users_request():
     try:
+        CronjobModel.objects.filter(job_name=JOB_NAME).update(status=1, updated_at=timezone.now())
         logger.info(f"Start {JOB_NAME}")
         find_match_rqs = FindMatchResult.objects.raw('''
             SELECT 1 as id, a.id as find_match_id, a.date_match, auth_user.email
@@ -54,6 +56,7 @@ def match_users_request():
             OR (MOD(a.max,2) = 1
                 AND a.ranking < a.max)
         ''')
+        list_id_find_match = []
         arr_match = []
         for i in range(0, len(find_match_rqs), 2):
             arr_match.append(Match(
@@ -62,7 +65,7 @@ def match_users_request():
                 find_match_a_id=find_match_rqs[i].find_match_id,
                 find_match_b_id=find_match_rqs[i+1].find_match_id,
             ))
-
+            list_id_find_match.extend([find_match_rqs[i].find_match_id, find_match_rqs[i+1].find_match_id])
             # send_mail(
             #     'Subject here',
             #     'Here is the message.',
@@ -70,9 +73,16 @@ def match_users_request():
             #     ['reciever@gmail.com'],
             #     fail_silently=False,
             # )
-        Match.objects.bulk_create(arr_match)
+        
+        with transaction.atomic():
+            FindMatch.objects.filter(pk__in=list_id_find_match).update(status='WA', updated_at=timezone.now())
+            Match.objects.bulk_create(arr_match)
+            CronjobModel.objects.filter(job_name=JOB_NAME).update(status=2, updated_at=timezone.now())
+
         logger.info(f'{JOB_NAME} successful')
         pass
     except Exception as err:
         logger.error(f'{JOB_NAME} failed {err}')
+        CronjobModel.objects.filter(job_name=JOB_NAME).update(status=4, updated_at=timezone.now())
+
         
