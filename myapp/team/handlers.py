@@ -156,17 +156,33 @@ class InviteMember(GenericAPIView):
     serializer_class = InviteMemberSerializer
     permission_classes = [IsAuthenticated, IsLeadTeam]
 
-    def post(self, request):
+    def post(self, request, id):
+        from django.db import transaction
         user_id = request.POST.get('user_id')
         id_team = request.data['team_id']
-        user = User.objects.get(pk=user_id)
-        team = Team.objects.get(pk=id_team)
-        # print(team, 'ahahahah')
-        invite_member = UserTeam.objects.create(
-            team = team,
-            user = user,
-            roll = 'MEMBER',
-            status = 'PENDING',
-        )
-        serializer = InviteMemberSerializer(team)
-        return Response(serializer.data)
+        if id == id_team:
+            user = User.objects.get(pk=user_id)
+            team = Team.objects.get(pk=id_team)
+            with transaction.atomic():
+                invite_member = UserTeam.objects.create(
+                    team = team,
+                    user = user,
+                    roll = 'MEMBER',
+                    status = 'PENDING',
+                )
+            serializer = InviteMemberSerializer(team)
+            context = {
+                'message': 'Invite member successfull!'
+            }
+            return Response(
+                context,
+                status=status.HTTP_201_CREATED,
+            )
+        else: 
+            context = {
+                "message": "Forbiden"
+            }
+            return Response(
+                context,
+                status=status.HTTP_403_FORBIDDEN
+            )
