@@ -13,6 +13,13 @@
 <form id="createTeamForm" action="#" style="border:1px solid #ccc">
     {% csrf_token %}
     <div class="container">
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
         <h1>Tạo đội bóng</h1>
         <p>Nhập thông tin để bắt đầu tạo đội bóng</p>
         <hr>

@@ -12,12 +12,21 @@
 <div class="container bootstrap snippet">
     <div class="row">
         <div class="col-lg-12">
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% if users %}
             <div class="main-box no-header clearfix">
                 <div class="main-box-body clearfix">
                     <div class="table-responsive">
                         <table class="table user-list">
                             <thead>
                                 <tr>
+                                <th><span>STT</span></th>
                                 <th><span>Cầu thủ</span></th>
                                 <th><span>Ngày nhập môn</span></th>
                                 <th><span>Email</span></th>
@@ -25,33 +34,44 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {% for user in users.result %}
                                 <tr *ngFor="let user of users">
+                                    <td>{{user.stt}}</td>
                                     <td>
-                                        <img src="https://bootdey.com/img/Content/user_1.jpg" alt="">
-                                        <a href="#" class="user-link">Username</a>
+                                        <a href="#" class="user-link">{{ user.username }}</a>
                                     </td>
-                                    <td>1/1/1995</td>
+                                    <td>{{ user.date_joined_format }}</td>
                                     <td>
-                                        <a href="#">pending@tmp.com</a>
+                                        <a href="#">{{ user.email }}</a>
                                     </td>
                                     <td class="text-center">
-                                        <button class="btn btn-xs btn-success">Mời</button>
+                                        <form role="form" class="form" action="" method="POST">
+                                            {% csrf_token %}
+                                            <input type="hidden" #username class="form-control" id="user_id" name="user_id" value="{{ user.id }}">
+                                            <button type="submit" class="btn btn-xs btn-success">Mời</button>
+                                        </form>
                                     </td>
                                 </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                         <ul class="pagination">
-                            <li class="disabled" aria-disabled="true">
-                                <a >«</a>
-                            </li>
-                            <li class="active"><a>1<span class="sr-only">(current)</span></a></li>
-                            <li class="disabled" aria-disabled="true">
-                                <a>»</a>
-                            </li>
+                            {% if users.page > 1 %}
+                                <li><a href="?page={{ users.page|add:"-1" }}">&laquo;</a></li>
+                            {% else %}
+                                <li class="disabled"><span>&laquo;</span></li>
+                            {% endif %}
+                            <li class="active"><span>{{ users.page }} <span class="sr-only">(current)</span></span></li>
+                            {% if users.next_page_flg %}
+                                <li><a href="?page={{ users.page|add:"1" }}">&raquo;</a></li>
+                            {% else %}
+                                <li class="disabled"><span>&raquo;</span></li>
+                            {% endif %}
                         </ul>
                     </div>
                 </div>
             </div>
+            {% endif %}
         </div>
     </div>
 </div>
