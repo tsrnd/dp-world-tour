@@ -17,18 +17,6 @@ class Stadium(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True, blank=True)
     deleted_at = models.DateTimeField(null=True)
 
-
-class ListStadiumResponse(object):
-    def __init__(self, id, name, lat, lng, phone_number, email, price, bank_number):
-        self.id = id
-        self.name = name
-        self.lat = lat
-        self.lng = lng
-        self.phone_number = phone_number
-        self.email = email
-        self.price = price
-        self.bank_number = bank_number
-
     objects = models.Manager()
     custom_objects = StadiumManager()
 

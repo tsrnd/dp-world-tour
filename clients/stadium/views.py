@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from myapp.models.stadiums import Stadium
 from django.contrib import messages
 from shared import utils
 from datetime import datetime

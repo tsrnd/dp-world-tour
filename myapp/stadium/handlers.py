@@ -12,7 +12,7 @@ import datetime
 from rest_framework.generics import GenericAPIView
 from datetime import datetime, date, time, timedelta
 from myapp.models.stadium_registers import StadiumRegister
-from myapp.models.stadiums import ListStadiumResponse
+from myapp.stadium.request import ListStadiumResponse
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
