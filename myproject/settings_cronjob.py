@@ -204,7 +204,7 @@ LOGGING = {
         'cron_log_file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': 'cron.log',
+            'filename': '/code/cron.log',
             'formatter': 'normal'
         },
     },
@@ -214,7 +214,13 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': True,
         },
+        'django.db.backends': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
     },
 }
 
 CRONTAB_LOCK_JOBS = True
+
+CRONTAB_DJANGO_SETTINGS_MODULE = 'myproject.settings_cronjob'

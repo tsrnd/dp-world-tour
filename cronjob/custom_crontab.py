@@ -116,7 +116,7 @@ class CustomCrontab(object):
                     self.settings.COMMAND_PREFIX,
                     self.settings.PYTHON_EXECUTABLE,
                     self.settings.DJANGO_MANAGE_PATH,
-                    'crontab', 'run',
+                    'cus_crontab', 'run',
                     self.__hash_job(job),
                     '--settings=%s' % self.settings.DJANGO_SETTINGS_MODULE if self.settings.DJANGO_SETTINGS_MODULE else '',
                     job_suffix,
@@ -149,7 +149,7 @@ class CustomCrontab(object):
                 self.settings.COMMAND_PREFIX,
                 self.settings.PYTHON_EXECUTABLE,
                 self.settings.DJANGO_MANAGE_PATH,
-                'crontab', 'run',
+                'cus_crontab', 'run',
                 self.__hash_job(job),
                 '--settings=%s' % self.settings.DJANGO_SETTINGS_MODULE if self.settings.DJANGO_SETTINGS_MODULE else '',
                 job_suffix,
@@ -175,7 +175,7 @@ class CustomCrontab(object):
                 if self.verbosity >= 1:
                     print(u'%s -> %s' % (
                         job[0][2].split()[4],
-                        self.__get_job_by_hash(job[0][2][job[0][2].find('crontab run') + 12:].split()[0])
+                        self.__get_job_by_hash(job[0][2][job[0][2].find('cus_crontab run') + 12:].split()[0])
                     ))
 
     def remove_jobs(self):
@@ -189,7 +189,7 @@ class CustomCrontab(object):
                 if self.verbosity >= 1:
                     print('removing cronjob: (%s) -> %s' % (
                         job[0][2].split()[4],
-                        self.__get_job_by_hash(job[0][2][job[0][2].find('crontab run') + 12:].split()[0])
+                        self.__get_job_by_hash(job[0][2][job[0][2].find('cus_crontab run') + 12:].split()[0])
                     ))
         try:
             CronjobModel.objects.all().update(job_hash=None, updated_at=timezone.now())
@@ -206,7 +206,7 @@ class CustomCrontab(object):
                 if self.verbosity >= 1:
                     print('removing cronjob: (%s) -> %s' % (
                         job[0][2].split()[4],
-                        self.__get_job_by_hash(job[0][2][job[0][2].find('crontab run') + 12:].split()[0])
+                        self.__get_job_by_hash(job[0][2][job[0][2].find('cus_crontab run') + 12:].split()[0])
                     ))
         try:
             CronjobModel.objects.filter(job_hash=job_hash).update(job_hash=None, updated_at=timezone.now())
@@ -264,6 +264,6 @@ class CustomCrontab(object):
                 return job
         raise RuntimeError(
             'No job with hash %s found. It seems the crontab is out of sync with your settings.CRONJOBS. '
-            'Run "python manage.py crontab add" again to resolve this issue!' % job_hash
+            'Run "python manage.py cus_crontab add --settings=\{your setting cronjob\}" again to resolve this issue!' % job_hash
         )
 
