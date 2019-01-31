@@ -44,6 +44,8 @@ def get_users_invite(request, id):
         result = requests.get('http://127.0.0.1:8000/api/team/list_users_invite', headers=headers, params=payload)
         status_code = result.status_code
         users = result.json()
+        for index, user in enumerate(users['result']):
+            user['stt'] = (int(page)-1) * RESULT_LIMIT + index + 1
         if (status_code == HTTP_200_OK and users['id_team'] == id):
             return render(request, 'team/invite_member.html',{'users': users}) 
         else:
