@@ -26,7 +26,7 @@ class FindMatch(models.Model):
 
     class Meta:
         app_label = 'myapp'
-        # unique_together = ('team', 'date_match', ) - remove it
+        unique_together = ('team', 'date_match', 'status', )
 
     objects = models.Manager()
     custom_objects = FindMatchManager()
