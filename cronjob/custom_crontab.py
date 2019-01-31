@@ -189,7 +189,7 @@ class CustomCrontab(object):
                 if self.verbosity >= 1:
                     print('removing cronjob: (%s) -> %s' % (
                         job[0][2].split()[4],
-                        self.__get_job_by_hash(job[0][2][job[0][2].find('cus_crontab run') + 12:].split()[0])
+                        self.__get_job_by_hash(job[0][2][job[0][2].find('cus_crontab run') + 16:].split()[0])
                     ))
         try:
             CronjobModel.objects.all().update(job_hash=None, updated_at=timezone.now())
@@ -206,7 +206,7 @@ class CustomCrontab(object):
                 if self.verbosity >= 1:
                     print('removing cronjob: (%s) -> %s' % (
                         job[0][2].split()[4],
-                        self.__get_job_by_hash(job[0][2][job[0][2].find('cus_crontab run') + 12:].split()[0])
+                        self.__get_job_by_hash(job[0][2][job[0][2].find('cus_crontab run') + 16:].split()[0])
                     ))
         try:
             CronjobModel.objects.filter(job_hash=job_hash).update(job_hash=None, updated_at=timezone.now())
