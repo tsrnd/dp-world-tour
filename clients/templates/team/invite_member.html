@@ -26,6 +26,7 @@
                         <table class="table user-list">
                             <thead>
                                 <tr>
+                                <th><span>STT</span></th>
                                 <th><span>Cầu thủ</span></th>
                                 <th><span>Ngày nhập môn</span></th>
                                 <th><span>Email</span></th>
@@ -35,8 +36,8 @@
                             <tbody>
                                 {% for user in users.result %}
                                 <tr *ngFor="let user of users">
+                                    <td>{{user.stt}}</td>
                                     <td>
-                                        <img src="https://bootdey.com/img/Content/user_1.jpg" alt="">
                                         <a href="#" class="user-link">{{ user.username }}</a>
                                     </td>
                                     <td>{{ user.date_joined_format }}</td>
