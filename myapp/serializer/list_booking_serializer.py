@@ -2,6 +2,7 @@ from rest_framework import serializers
 from myapp.models.stadium_registers import StadiumRegister
 from myapp.models.stadiums import Stadium
 from myapp.serializer.stadium_serializer import StadiumSerializer
+from django.core.paginator import Paginator
 
 
 class ListBookingSerializer(serializers.Serializer):
@@ -17,12 +18,12 @@ class ListBookingSerializer(serializers.Serializer):
         return self.filteredBookings.count()
 
     def get_next_page_flg(self, data):
-        return self.all_bookings[self.page * self.result_limit:(self.page+1)*self.result_limit].count() > 0
+        return self.paginator.page(self.page).has_next()
 
     def get_bookings(self, data):
-        serial = BookingSerializer(
+        booking_serializer = BookingSerializer(
             self.filteredBookings, many=True, read_only=True)
-        return serial.data
+        return booking_serializer.data
 
     @property
     def request(self):
@@ -34,17 +35,22 @@ class ListBookingSerializer(serializers.Serializer):
             page = int(self.request.GET.get('page'))
         except:
             raise serializers.ValidationError({'error': 'page is not valid'})
-        if page == 0:
-            raise serializers.ValidationError({'error': 'page is zero'})
+        if page <= 0:
+            raise serializers.ValidationError(
+                {'error': 'page must be positive number'})
         return page
 
     @property
     def result_limit(self):
         try:
-            return int(self.request.GET.get('result_limit'))
+            limit = int(self.request.GET.get('result_limit'))
         except:
             raise serializers.ValidationError(
                 {'error': 'result_limit is not valid'})
+        if limit < 0:
+            raise serializers.ValidationError(
+                {'error': 'limit must be positive number'})
+        return limit
 
     @property
     def all_bookings(self):
@@ -52,10 +58,12 @@ class ListBookingSerializer(serializers.Serializer):
         return StadiumRegister.objects.filter(user=user_id, deleted_at__isnull=True)
 
     @property
+    def paginator(self):
+        return Paginator(self.all_bookings, self.result_limit)
+
+    @property
     def filteredBookings(self):
-        bookings = self.all_bookings[(self.page-1) *
-                                     self.result_limit:self.page*self.result_limit]
-        return bookings
+        return self.paginator.page(self.page).object_list
 
 
 class BookingSerializer(serializers.ModelSerializer):
