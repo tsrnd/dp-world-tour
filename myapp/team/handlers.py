@@ -1,7 +1,7 @@
 import inject
 from myapp.team.serializers import (
     TeamCreateSerializer, UserTeamSerializer,
-    InvitationListSerializer, InvitationUpdateSerializer,
+    InvitationListSerializer, InvitationUpdateSerializer, InviteSerializer
 )
 
 from myapp.models.teams import Team
@@ -26,6 +26,17 @@ from rest_framework.permissions import (
 from myapp.permission.user_permission import (
     IsNormalUser,
 )
+from myapp.permission.match_permission import (
+    IsLeadTeam,
+)
+from rest_framework.authtoken.models import Token
+from django.shortcuts import render_to_response, get_object_or_404
+from django.contrib.auth.models import User
+from myapp.models.user_teams import UserTeam
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+RESULT_LIMIT = 50
+PAGE_DEFAULT = 1
 
 class TeamCreate(GenericAPIView):
     bh = inject.attr(BaseHandler)
@@ -46,6 +57,36 @@ class TeamCreate(GenericAPIView):
             status=status.HTTP_201_CREATED,
         )
 
+class ListUserInvite(GenericAPIView):
+    bh = inject.attr(BaseHandler)
+    serializer_class = InviteSerializer
+    permission_classes = [IsAuthenticated, IsLeadTeam]
+
+    def get(self, request):
+        id_team = request.data['team_id']
+        users_list = User.objects.filter(~Q(userteam__team_id=id_team), is_superuser = False).order_by('date_joined')
+
+        result_limit = request.GET.get('result_limit', RESULT_LIMIT)
+        page = request.GET.get('page', PAGE_DEFAULT)
+        paginator = Paginator(users_list, result_limit)
+        try:
+            users = paginator.page(page)
+        except PageNotAnInteger:
+            users = paginator.page(PAGE_DEFAULT)
+        except EmptyPage:
+            users = paginator.page(paginator.num_pages)
+
+        serializer = InviteSerializer(users, many=True)
+
+        content = {
+            'id_team': id_team,
+            'result_count': users_list.count(),
+            'page': int(page),
+            'next_page_flg': users.has_next(),
+            'result': serializer.data,
+        }
+        return Response(content)
+    
 class TeamList(GenericAPIView):
     bh = inject.attr(BaseHandler)
     serializer_class = UserTeamSerializer
