@@ -4,6 +4,10 @@ from myapp.models.stadium_registers import StadiumRegister
 from django.shortcuts import get_object_or_404
 from myapp.models.stadiums import Stadium
 from shared import utils
+from rest_framework.serializers import (
+        ModelSerializer,
+        ValidationError,
+    )
 
 
 class BookingStadiumSerializer(serializers.ModelSerializer):
@@ -38,3 +42,17 @@ class BookingStadiumSerializer(serializers.ModelSerializer):
             ),
         )
         return stadium_register
+
+class BookingCancelSerializer(ModelSerializer):
+    class Meta:
+        model = StadiumRegister
+        fields = ['id', 'status']
+    
+    def validate(self, data):
+        if self.instance.user.id != self.context['request'].user.id:
+            raise ValidationError({"permission": "This booking's request is not your booking request"})
+        
+        # check current booking request is pending
+        if self.instance.status != 'PENDING':
+            raise ValidationError({"status": "This booking's request is not pending"})
+        return data

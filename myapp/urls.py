@@ -6,6 +6,5 @@ urlpatterns = [
     path('stadium/', include('myapp.stadium.urls')),
     path('match/', include('myapp.match.urls')),
     path('team/', include('myapp.team.urls')),
-    path('stadium/', include('myapp.stadium.urls')),
-    path('booking/', include('myapp.booking.urls')),
+    path('booking/', include('myapp.stadium.urls')),
 ]

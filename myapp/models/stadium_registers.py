@@ -29,13 +29,6 @@ class StadiumRegisterManager(models.Manager):
         hours = (time_to - time_from)
         total_price = hours.total_seconds()//3600*stadium.price
         return total_price
-    
-    def is_pending(self, booking_id):
-        try:
-            _ = StadiumRegister.objects.get(id=booking_id, deleted_at__isnull=True, status='PENDING')
-            return True
-        except StadiumRegister.DoesNotExist:
-            return False
 
 class StadiumRegister(models.Model):
     PD = 'PENDING'
