@@ -99,4 +99,6 @@ def get_list(request):
         'result_limit': result_limit,
     })
     stadiums = response.json()
+    for index, stadium in enumerate(stadiums['stadium']):
+        stadium['indx'] = (int(page)-1) * int(result_limit) + index + 1
     return render(request, 'stadium/stadium_list.html', {'stadiums':stadiums, 'old_input': old_input})
