@@ -9,11 +9,12 @@ DATE_FORMAT = '%d/%m/%Y %H:%M'
 
 
 def my_list_booking(request, page):
-    # Get token
     token = request.COOKIES.get('token')
     if token is None:
         return redirect('login')
-
+    full_path = request.get_full_path()
+    if '?page' not in full_path:
+        return redirect('{}?page=1'.format(full_path))
     # Call api
     headers = {'Authorization': 'Bearer %s' % token}
     if request.method == 'POST':
