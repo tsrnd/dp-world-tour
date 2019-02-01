@@ -21,6 +21,8 @@ class ListBookingSerializer(serializers.Serializer):
         return self.paginator.page(self.page).has_next()
 
     def get_bookings(self, data):
+        print("vanlam")
+        print(data)
         booking_serializer = BookingSerializer(
             self.filteredBookings, many=True, read_only=True)
         return booking_serializer.data
@@ -70,6 +72,9 @@ class BookingSerializer(serializers.ModelSerializer):
 
     stadium = StadiumSerializer(
         {'exclude_fields': ['created_at', 'updated_at', 'deleted_at']})
+
+    time_from = serializers.DateTimeField(format='%s')
+    time_to = serializers.DateTimeField(format='%s')
 
     class Meta:
         model = StadiumRegister

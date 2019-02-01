@@ -1,7 +1,8 @@
-from django.urls import path
+from django.urls import re_path
 
 from clients.booking import views
 
 urlpatterns = [
-    path('list/', views.my_list_booking, name='list')
+    re_path('list/(?:page-(?P<page>\d+)/)?$', views.my_list_booking, name='list')
+    
 ]
