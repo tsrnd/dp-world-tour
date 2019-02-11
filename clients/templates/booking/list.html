@@ -54,22 +54,14 @@
             </table>
             <!-- /.table -->
             <ul class="pagination">
-                {% if bookings.page > 1 %}
-                <form action="{% url 'list' %}" method="post" id="next-page">
-                    {% csrf_token %}
-                    <input type="hidden" value="{{ page|add:"-1" }}" name="page">
-                    <button id="btn-submit" type="submit">&raquo;</button>
-                </form>
+                {% if page > 1 %}
+                <li><a href="?page={{ page|add:"-1" }}">&laquo;</a></li>
                 {% else %}
                 <li class="disabled"><span>&laquo;</span></li>
                 {% endif %}
                 <li class="active"><span>{{ page }} <span class="sr-only">(current)</span></span></li>
                 {% if next_page_flg %}
-                <form action="{% url 'list' %}" method="post" id="next-page">
-                    {% csrf_token %}
-                    <input type="hidden" value="{{ page|add:"1" }}" name="page">
-                    <button id="btn-submit" type="submit">&raquo;</button>
-                </form>
+                <li><a href="?page={{ page|add:"1" }}">&raquo;</a></li>
                 {% else %}
                 <li class="disabled"><span>&raquo;</span></li>
                 {% endif %}
