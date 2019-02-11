@@ -62,30 +62,39 @@ class ListUserInvite(GenericAPIView):
     serializer_class = InviteSerializer
     permission_classes = [IsAuthenticated, IsLeadTeam]
 
-    def get(self, request):
+    def get(self, request, id):
         id_team = request.data['team_id']
-        users_list = User.objects.filter(~Q(userteam__team_id=id_team), is_superuser = False).order_by('date_joined')
+        if id == id_team:
+            users_list = User.objects.exclude(userteam__team_id=id_team).order_by('date_joined')
 
-        result_limit = request.GET.get('result_limit', RESULT_LIMIT)
-        page = request.GET.get('page', PAGE_DEFAULT)
-        paginator = Paginator(users_list, result_limit)
-        try:
-            users = paginator.page(page)
-        except PageNotAnInteger:
-            users = paginator.page(PAGE_DEFAULT)
-        except EmptyPage:
-            users = paginator.page(paginator.num_pages)
+            result_limit = request.GET.get('result_limit', RESULT_LIMIT)
+            page = request.GET.get('page', PAGE_DEFAULT)
+            paginator = Paginator(users_list, result_limit)
+            try:
+                users = paginator.page(page)
+            except PageNotAnInteger:
+                users = paginator.page(PAGE_DEFAULT)
+            except EmptyPage:
+                users = paginator.page(paginator.num_pages)
 
-        serializer = InviteSerializer(users, many=True)
+            serializer = InviteSerializer(users, many=True)
 
-        content = {
-            'id_team': id_team,
-            'result_count': users_list.count(),
-            'page': int(page),
-            'next_page_flg': users.has_next(),
-            'result': serializer.data,
-        }
-        return Response(content)
+            content = {
+                'id_team': id_team,
+                'result_count': users_list.count(),
+                'page': int(page),
+                'next_page_flg': users.has_next(),
+                'result': serializer.data,
+            }
+            return Response(content)
+        else: 
+            context = {
+                "message": "Forbiden"
+            }
+            return Response(
+                context,
+                status=status.HTTP_403_FORBIDDEN
+            )
     
 class TeamList(GenericAPIView):
     bh = inject.attr(BaseHandler)

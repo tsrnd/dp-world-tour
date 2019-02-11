@@ -10,5 +10,5 @@ urlpatterns = [
     path('', TeamList.as_view(), name='list-team'),
     path('invitation', InvitationList.as_view(), name='list-invitation'),
     url(r'^invitation/(?P<pk>\d+)$', InvitationUpdate.as_view(), name='update-invitation'),
-    path('list_users_invite', ListUserInvite.as_view(), name='list_users_invite'),
+    path('<int:id>/list_users_invite', ListUserInvite.as_view(), name='list_users_invite'),
 ]

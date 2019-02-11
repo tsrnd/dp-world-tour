@@ -41,7 +41,7 @@ def get_users_invite(request, id):
         headers = {
             'Authorization': 'Bearer %s' % token
         }
-        result = requests.get('http://127.0.0.1:8000/api/team/list_users_invite', headers=headers, params=payload)
+        result = requests.get('http://127.0.0.1:8000/api/team/'+ str(id) +'/list_users_invite', headers=headers, params=payload)
         status_code = result.status_code
         users = result.json()
         for index, user in enumerate(users['result']):
