@@ -1,0 +1,48 @@
+<script type="text/javascript">
+    $(document).ready(function(){
+        var url= window.location.pathname;
+        arr = url.split('/');
+        id_team = arr[2]
+        $(document).on('click','#invite',function(){
+            id_user = $(this).closest('td').find('#user_id').val();
+            $.ajax({
+                type:'POST',
+                url:'http://localhost:8000/api/team/'+ id_team +'/invite',
+                headers: {
+                    'Authorization': 'Bearer ' + $.cookie("token"),
+                },
+                data:{
+                    'user_id': id_user,
+                },
+                success: function(response){
+                    notifySuccess = '<div id="alertSuccess" class="alert alert-info alert-dismissible" role="alert">'
+                    +'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'
+                    +'<span aria-hidden="true">&times;</span>'
+                    +'</button>'
+                    +'<strong>' + response.message +'</strong>'
+                    +'</div>'
+                    $('.notify').append(notifySuccess)
+                    $('#alertSuccess').delay(1500).slideUp(200, function() {
+                        $(this).alert('close');
+                    });
+                },
+                error: function(e) {
+                    resp = e.responseJSON
+                    $.each(resp.fields, function(key, value) {
+                        notifyError = '<div id="alertError" class="alert alert-danger alert-dismissible" role="alert">'
+                        +'<button type="button" class="close" data-dismiss="alert" aria-label="Close">'
+                        +'<span aria-hidden="true">&times;</span>'
+                        +'</button>'
+                        +'<strong>' + value[0] +'</strong>'
+                        +'</div>'
+                        $('.notify').append(notifyError)
+                        $('.alert').delay(4000).slideUp(200, function() {
+                            $(this).alert('close');
+                        });
+                    });
+                }
+            });
+            $(this).prop('disabled', true);
+        })
+    })
+</script>
