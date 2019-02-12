@@ -26,22 +26,13 @@ class CronjobAdmin(admin.ModelAdmin):
         'classes': ('wide', ),
         'fields': ('job_schedule', 'job_path', 'job_name'),
     }), )
-    fieldsets = (
-        (None, {
-            'fields': ('job_name', 'job_hash')
-        }),
-        (_('Job Detail'), {
-            'fields': ('job_schedule', 'job_path', 'status')
-        }),
-        (_('Important dates'), {
-            'fields': ('last_run_at', )
-        }),
-    )
+    
     search_fields = ('job_path', 'job_name')
     model = cronjob.CronjobModel
     list_display = ['id', 'job_hash', 'job_schedule', 'job_path', 'cronjob_actions', 'deleted_at']
     readonly_fields = ['job_path_view', 'job_schedule_view']
     form = CronjobForm
+
     def job_schedule_view(self, obj):
         return format_html(
             '{}<a style="color:blue;padding-left:10px;font-size:smaller;">(You can edit this field if job have already removed from crontab)</a>', obj.job_schedule
@@ -55,19 +46,32 @@ class CronjobAdmin(admin.ModelAdmin):
     def get_fieldsets(self, request, obj=None):
         if not obj:
             return self.add_fieldsets
+        detail_schedule = obj.job_schedule.replace(' ', '_')
         if obj.job_hash:
             return (
                 (None, {
                     'fields': ('job_name', 'job_hash')
                 }),
                 (_('Job Detail'), {
-                    'fields': ('job_schedule_view', 'job_path_view', 'status')
+                    'fields': ('job_schedule_view', 'job_path_view', 'status'),
+                    'description': f'<div class="help">See job schedule in <a href = "https://crontab.guru/#{detail_schedule}"> https://crontab.guru/</a> </div>'
                 }),
                 (_('Important dates'), {
                     'fields': ('last_run_at', )
                 }),
             )
-        return self.fieldsets
+        return (
+                (None, {
+                    'fields': ('job_name', 'job_hash')
+                }),
+                (_('Job Detail'), {
+                    'fields': ('job_schedule', 'job_path', 'status'),
+                    'description': f'<div class="help">See detail job schedule in <a href = "https://crontab.guru/#{detail_schedule}"> https://crontab.guru/</a> </div>'
+                }),
+                (_('Important dates'), {
+                    'fields': ('last_run_at', )
+                }),
+            )
     def run_now(self, request, job_hash):
         try:
             job = cronjob.CronjobModel.objects.get(job_hash=job_hash)

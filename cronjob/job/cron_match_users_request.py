@@ -1,5 +1,4 @@
 import time
-from datetime import timedelta
 from django.utils import timezone
 from django.db import DatabaseError, transaction
 from django.contrib.contenttypes.models import ContentType
@@ -10,7 +9,7 @@ from myapp.models.find_matches import FindMatch
 from myapp.models.matches import Match
 from myapp.models.cronjob import CronjobModel
 from django.db import models
-from django.core.mail import send_mail
+from django.core.mail import EmailMessage
 
 logger = logging.getLogger('cronjob')
 JOB_NAME = 'MATCH_USER_REQUESTS'
@@ -66,13 +65,8 @@ def match_users_request():
                 find_match_b_id=find_match_rqs[i+1].find_match_id,
             ))
             list_id_find_match.extend([find_match_rqs[i].find_match_id, find_match_rqs[i+1].find_match_id])
-            # send_mail(
-            #     'Subject here',
-            #     'Here is the message.',
-            #     'sender@gmail.com',
-            #     ['reciever@gmail.com'],
-            #     fail_silently=False,
-            # )
+            EmailMessage('Ancouncement request find match', 'Your request has been matched with other match', to=[find_match_rqs[i].email, find_match_rqs[i+1].email]).send()
+
         
         with transaction.atomic():
             FindMatch.objects.filter(pk__in=list_id_find_match).update(status='WA', updated_at=timezone.now())
