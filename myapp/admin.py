@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.conf.urls import url
 from django.http import HttpResponseRedirect
 import time
+from django.contrib.auth import get_permission_codename
 from threading import Thread
 import os
 from .forms import CronjobForm
@@ -54,7 +55,7 @@ class CronjobAdmin(admin.ModelAdmin):
                 }),
                 (_('Job Detail'), {
                     'fields': ('job_schedule_view', 'job_path_view', 'status'),
-                    'description': f'<div class="help">See job schedule in <a href = "https://crontab.guru/#{detail_schedule}"> https://crontab.guru/</a> </div>'
+                    'description': f'<div class="help">See detail job schedule in <a href = "https://crontab.guru/#{detail_schedule}"> https://crontab.guru/</a> </div>'
                 }),
                 (_('Important dates'), {
                     'fields': ('last_run_at', )
@@ -131,5 +132,13 @@ class CronjobAdmin(admin.ModelAdmin):
             remove, tag_remove,
             reverse('admin:remove-from-crontab', args=[obj.job_hash]),
         )
+    
+    def has_delete_permission(self, request, obj=None):
+        opts = self.opts
+        codename = get_permission_codename('delete', opts)
+        extra_condition = True
+        if obj:
+            extra_condition = not obj.job_hash
+        return request.user.has_perm("%s.%s" % (opts.app_label, codename)) and extra_condition
 
 admin.site.register(cronjob.CronjobModel, CronjobAdmin)
