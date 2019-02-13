@@ -1,0 +1,26 @@
+<script>
+    $('.btn-booking-cancel').click(function(){
+        if (confirm("Do you want cancel this booking?")) {
+            parent = $(this).parent()
+            var id = parent.attr('id')
+            $.ajax({
+                type:'PUT',
+                url: 'http://localhost:8000/api/booking/' +id+ '/cancel',
+                headers: {
+                    'Authorization': 'Bearer ' + $.cookie("token"),
+                },
+                data: {},
+                success: function(response){
+                    alert(response.message)
+                    window.location.reload("http://localhost:8001/booking/list")
+                },
+                error: function(e) {
+                    resp = e.responseJSON
+                    $.each(resp, function(key, value) {
+                        alert(value)
+                    });
+                }
+            })
+        }
+    })
+</script>

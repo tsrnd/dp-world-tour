@@ -28,7 +28,7 @@ class BookingCancel(UpdateModelMixin, GenericAPIView):
             return response
         serializer.save()
         context = {
-            "message": "Update booking successfully"
+            "message": "Cancel this booking successfully"
         }
         return Response(
             context,

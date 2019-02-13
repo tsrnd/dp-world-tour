@@ -53,6 +53,8 @@ class BookingCancelSerializer(ModelSerializer):
             raise ValidationError({"permission": "This booking's request is not your booking request"})
         
         # check current booking request is pending
-        if self.instance.status != 'PENDING':
-            raise ValidationError({"status": "This booking's request is not pending"})
+        if self.instance.status == 'CANCEL':
+            raise ValidationError({"status": "This booking's request has already been canceled"})
+        if self.instance.status == 'PAID':
+            raise ValidationError({"status": "This booking's request has already been paid"})
         return data

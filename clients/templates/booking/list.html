@@ -32,7 +32,9 @@
                         <th>Giá</th>
                         <th>Bắt đầu</th>
                         <th>Kết thúc</th>
+                        <th>Trạng thái</th>
                         <th></th>
+                        <th>Huỷ sân</th>
                     </tr>
                     {% for booking in bookings %}
                     <tr>
@@ -47,7 +49,13 @@
                         <td class="mailbox-date">{{booking.total_price}}</td>
                         <td class="mailbox-date">{{booking.time_from}}</td>
                         <td class="mailbox-date">{{booking.time_to}}</td>
+                        <td class="mailbox-date">{{booking.status}}</td>
                         <td class="mailbox-date"><a href=""><span style="color:blue">Chi tiết</span></a></td>
+                        <td>
+                            <div id = {{ booking.id }}>
+                              <button type="button" class="btn btn-danger btn-booking-cancel"><span style="color:white">Huỷ</span></button>
+                            </div>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -72,3 +80,7 @@
 </section>
 <!-- Team -->
 {% endblock %}
+{% block js %}
+    {% include './booking_cancel_js.html' %}
+{% endblock %}
+  
