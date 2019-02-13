@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} My Teams {% endblock %}
+{% block style %}
+{% include './list_css.html' %}
+{% endblock %}
+{% block pagecontent %}
+
+<div class="notify"></div>
+<!-- Team -->
+<section id="team" class="pb-5">
+    <div class="container">
+        <h5 class="section-title h1">DANH SÁCH SÂN ĐÃ ĐẶT</h5>
+        <!-- Box body-->
+        <div class="table-responsive mailbox-messages">
+            {% if messages %}
+            <ul id="messages">
+                {% for message in messages %}
+                <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <table class="table table-hover table-striped">
+                <tbody>
+                    <tr>
+                        <th>STT</th>
+                        <th>Tên sân vận động</th>
+                        <th>Vị trí</th>
+                        <th>Số điện thoại</th>
+                        <th>Email</th>
+                        <th>Số tài khoản</th>
+                        <th>Giá</th>
+                        <th>Bắt đầu</th>
+                        <th>Kết thúc</th>
+                        <th></th>
+                    </tr>
+                    {% for booking in bookings %}
+                    <tr>
+                        <td class="mailbox-name">{{booking.stt}}</td>
+                        <td class="mailbox-subject">
+                            <b>{{booking.stadium.name}}</b>
+                        </td>
+                        <td class="mailbox-date">vị trí</td>
+                        <td class="mailbox-date">{{booking.stadium.phone_number}}</td>
+                        <td class="mailbox-date">{{booking.stadium.email}}</td>
+                        <td class="mailbox-date">{{booking.stadium.bank_num}}</td>
+                        <td class="mailbox-date">{{booking.total_price}}</td>
+                        <td class="mailbox-date">{{booking.time_from}}</td>
+                        <td class="mailbox-date">{{booking.time_to}}</td>
+                        <td class="mailbox-date"><a href=""><span style="color:blue">Chi tiết</span></a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <!-- /.table -->
+            <ul class="pagination">
+                {% if page > 1 %}
+                <li><a href="?page={{ page|add:"-1" }}">&laquo;</a></li>
+                {% else %}
+                <li class="disabled"><span>&laquo;</span></li>
+                {% endif %}
+                <li class="active"><span>{{ page }} <span class="sr-only">(current)</span></span></li>
+                {% if next_page_flg %}
+                <li><a href="?page={{ page|add:"1" }}">&raquo;</a></li>
+                {% else %}
+                <li class="disabled"><span>&raquo;</span></li>
+                {% endif %}
+            </ul>
+        </div>
+        <!-- /.mail-box-messages -->
+    </div>
+</section>
+<!-- Team -->
+{% endblock %}
