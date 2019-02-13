@@ -67,7 +67,7 @@ class ListUserInvite(GenericAPIView):
     def get(self, request, id):
         id_team = request.data['team_id']
         if id == id_team:
-            users_list = User.objects.exclude(userteam__team_id=id_team).order_by('date_joined')
+            users_list = User.objects.filter(~Q(userteam__team_id=id_team), is_superuser = False).order_by('date_joined')
 
             result_limit = request.GET.get('result_limit', RESULT_LIMIT)
             page = request.GET.get('page', PAGE_DEFAULT)
