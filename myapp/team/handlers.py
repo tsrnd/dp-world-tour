@@ -1,7 +1,7 @@
 import inject
 from myapp.team.serializers import (
     TeamCreateSerializer, UserTeamSerializer,
-    InvitationListSerializer, InvitationUpdateSerializer, InviteSerializer
+    InvitationListSerializer, InvitationUpdateSerializer, InviteSerializer, InviteMemberSerializer, 
 )
 
 from myapp.models.teams import Team
@@ -22,7 +22,9 @@ from rest_framework.generics import (
 from rest_framework.permissions import (
     IsAuthenticated,
 )
-
+from myapp.permission.match_permission import(
+    IsLeadTeam,
+)
 from myapp.permission.user_permission import (
     IsNormalUser,
 )
@@ -157,3 +159,39 @@ class InvitationUpdate(UpdateModelMixin, GenericAPIView):
     def delete(self, request, *args, **kwargs):
         kwargs['status'] = 'REJECTED'
         return self.update(request, *args, **kwargs)
+
+class InviteMember(GenericAPIView):
+    bh = inject.attr(BaseHandler)
+    serializer_class = InviteMemberSerializer
+    permission_classes = [IsAuthenticated, IsLeadTeam]
+
+    def post(self, request, id):
+        from django.db import transaction
+        user_id = request.POST.get('user_id')
+        id_team = request.data['team_id']
+        if id == id_team:
+            user = User.objects.get(pk=user_id)
+            team = Team.objects.get(pk=id_team)
+            with transaction.atomic():
+                invite_member = UserTeam.objects.create(
+                    team = team,
+                    user = user,
+                    roll = 'MEMBER',
+                    status = 'PENDING',
+                )
+            serializer = InviteMemberSerializer(team)
+            context = {
+                'message': 'Invite member successfull!'
+            }
+            return Response(
+                context,
+                status=status.HTTP_201_CREATED,
+            )
+        else: 
+            context = {
+                "message": "Forbiden"
+            }
+            return Response(
+                context,
+                status=status.HTTP_403_FORBIDDEN
+            )

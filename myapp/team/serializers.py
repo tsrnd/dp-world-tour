@@ -122,3 +122,14 @@ class InvitationUpdateSerializer(ModelSerializer):
                 raise ValidationError({"status": "You've already accepted this invitation"})
 
         return data
+
+class InviteMemberSerializer(ModelSerializer):
+    class Meta:
+        model = Team
+        fields = [
+            'id',
+            'team_name',
+            'team_profile_image_url',
+            'acronym',
+            'created_at',
+        ]

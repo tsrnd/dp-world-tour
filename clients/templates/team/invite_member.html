@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block pagecontent %}
+<div class="notify"></div>
 <div class="container bootstrap snippet">
     <div class="row">
         <div class="col-lg-12">
@@ -45,11 +46,8 @@
                                         <a href="#">{{ user.email }}</a>
                                     </td>
                                     <td class="text-center">
-                                        <form role="form" class="form" action="" method="POST">
-                                            {% csrf_token %}
-                                            <input type="hidden" #username class="form-control" id="user_id" name="user_id" value="{{ user.id }}">
-                                            <button type="submit" class="btn btn-xs btn-success">Mời</button>
-                                        </form>
+                                        <input type="hidden" #username class="form-control" id="user_id" name="user_id" value="{{ user.id }}">
+                                        <button type="submit" id="invite" class="btn btn-xs btn-success">Mời</button>
                                     </td>
                                 </tr>
                                 {% endfor %}
@@ -75,4 +73,7 @@
         </div>
     </div>
 </div>
+{% endblock %}
+{% block js %}
+    {% include './invite_member_js.html' %}
 {% endblock %}
