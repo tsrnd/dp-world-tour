@@ -23,18 +23,15 @@ RUN set -ex \
         postgresql-client \
         redis
 
-RUN apk add libmagic \
-    && apk add --no-cache docker
+RUN apk add libmagic
 
-ADD ./scripts/entrypoint.sh /
-RUN chmod +x /entrypoint.sh
+ADD ./scripts/entrypoint_cronjob.sh /
+RUN chmod +x /entrypoint_cronjob.sh
 
 RUN mkdir -p /code
 WORKDIR /code
 
 # these flags are used in `runserver` command only
-ENV AUTO_MIGRATE=1 \
-    AUTO_SEED=1 \
-    AUTO_COLLECT_STATIC=0
+ENV AUTO_CRONJOBS=0
 
-ENTRYPOINT [ "/entrypoint.sh" ]
+ENTRYPOINT [ "/entrypoint_cronjob.sh" ]
