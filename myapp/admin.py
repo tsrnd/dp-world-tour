@@ -26,6 +26,8 @@ class CronjobAdmin(admin.ModelAdmin):
     add_fieldsets = ((None, {
         'classes': ('wide', ),
         'fields': ('job_schedule', 'job_path', 'job_name'),
+        'description': f'<div class="help">See how to schedule job in this link <a href = "https://crontab.guru/"> https://crontab.guru/</a> </div>'
+
     }), )
     
     search_fields = ('job_path', 'job_name')

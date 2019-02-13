@@ -10,12 +10,17 @@ from myapp.models.matches import Match
 from myapp.models.cronjob import CronjobModel
 from django.db import models
 from django.core.mail import EmailMessage
-
+from django.contrib.auth import get_user_model
+from rest_framework.authtoken.models import Token
+from threading import Thread
+from django.template.loader import render_to_string
+RECORDS_PER_THREAD = 50
 logger = logging.getLogger('cronjob')
 JOB_NAME = 'MATCH_USER_REQUESTS'
-
+User = get_user_model()
 class FindMatchResult(models.Model):
     email = models.EmailField(blank=True)
+    username = models.CharField(blank=True)
     date_match = models.DateTimeField()
     find_match_id = models.IntegerField()
 def match_users_request():
@@ -23,7 +28,7 @@ def match_users_request():
         CronjobModel.objects.filter(job_name=JOB_NAME).update(status=1, updated_at=timezone.now())
         logger.info(f"Start {JOB_NAME}")
         find_match_rqs = FindMatchResult.objects.raw('''
-            SELECT 1 as id, a.id as find_match_id, a.date_match, auth_user.email
+            SELECT 1 as id, a.id as find_match_id, a.date_match, auth_user.email, auth_user.username
             FROM
             (SELECT myapp_findmatch.*,
                     tmpJoin2.max,
@@ -65,14 +70,17 @@ def match_users_request():
                 find_match_b_id=find_match_rqs[i+1].find_match_id,
             ))
             list_id_find_match.extend([find_match_rqs[i].find_match_id, find_match_rqs[i+1].find_match_id])
-            EmailMessage('Ancouncement request find match', 'Your request has been matched with other match', to=[find_match_rqs[i].email, find_match_rqs[i+1].email]).send()
-
-        
         with transaction.atomic():
             FindMatch.objects.filter(pk__in=list_id_find_match).update(status='WA', updated_at=timezone.now())
             Match.objects.bulk_create(arr_match)
             CronjobModel.objects.filter(job_name=JOB_NAME).update(status=2, updated_at=timezone.now())
 
+        threads = []
+        for k in range(0, len(find_match_rqs), RECORDS_PER_THREAD):
+            threads.append(Thread(target=sendEmail, args=(find_match_rqs[k:k+RECORDS_PER_THREAD],)))
+            threads[-1].start()
+        for thread in threads:
+            thread.join()
         logger.info(f'{JOB_NAME} successful')
         pass
     except Exception as err:
@@ -80,3 +88,19 @@ def match_users_request():
         CronjobModel.objects.filter(job_name=JOB_NAME).update(status=4, updated_at=timezone.now())
 
         
+def sendEmail(list):
+    for i in range(0, len(list), 2):
+        mess1 = render_to_string('confirm_email.html', {
+            'username': list[i].username,
+            'opponent': list[i+1].username,
+            'link': 'http://localhost:8001/user/matchs',
+            'date_match': list[i].date_match,
+        })
+        mess2 = render_to_string('confirm_email.html', {
+            'username': list[i+1].username,
+            'opponent': list[i].username,
+            'link': 'http://localhost:8001/user/matchs',
+            'date_match': list[i].date_match,
+        })
+        EmailMessage('Confirm request find match', mess1, to=[list[i].email]).send()
+        EmailMessage('Confirm request find match', mess2, to=[list[i+1].email]).send()
