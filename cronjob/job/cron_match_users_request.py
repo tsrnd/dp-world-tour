@@ -59,25 +59,36 @@ def match_users_request():
                 AND a.ranking <= 10)
             OR (MOD(a.max,2) = 1
                 AND a.ranking < a.max)
+            ORDER BY a.date_match
         ''')
         list_id_find_match = []
         arr_match = []
-        for i in range(0, len(find_match_rqs), 2):
+        index_loop = 0
+        custom_find_match = []
+        while index_loop < len(find_match_rqs)-1:
+            if find_match_rqs[index_loop].date_match == find_match_rqs[index_loop+1].date_match:
+                custom_find_match.extend([find_match_rqs[index_loop], find_match_rqs[index_loop+1]])
+                index_loop = index_loop + 2
+            else:
+                index_loop = index_loop + 1
+
+        for i in range(0, len(custom_find_match), 2):
             arr_match.append(Match(
-                date_match=find_match_rqs[i].date_match,
+                date_match=custom_find_match[i].date_match,
                 status='PENDING',
-                find_match_a_id=find_match_rqs[i].find_match_id,
-                find_match_b_id=find_match_rqs[i+1].find_match_id,
+                find_match_a_id=custom_find_match[i].find_match_id,
+                find_match_b_id=custom_find_match[i+1].find_match_id,
             ))
-            list_id_find_match.extend([find_match_rqs[i].find_match_id, find_match_rqs[i+1].find_match_id])
+            list_id_find_match.extend([custom_find_match[i].find_match_id, custom_find_match[i+1].find_match_id])
+        matches = []
         with transaction.atomic():
             FindMatch.objects.filter(pk__in=list_id_find_match).update(status='WAITING', updated_at=timezone.now())
-            Match.objects.bulk_create(arr_match)
+            matches = Match.objects.bulk_create(arr_match)
             CronjobModel.objects.filter(job_name=JOB_NAME).update(status=2, updated_at=timezone.now())
 
         threads = []
-        for k in range(0, len(find_match_rqs), RECORDS_PER_THREAD):
-            threads.append(Thread(target=sendEmail, args=(find_match_rqs[k:k+RECORDS_PER_THREAD],)))
+        for k in range(0, len(custom_find_match), RECORDS_PER_THREAD):
+            threads.append(Thread(target=sendEmail, args=(custom_find_match[k:k+RECORDS_PER_THREAD], matches,)))
             threads[-1].start()
         for thread in threads:
             thread.join()
@@ -88,19 +99,26 @@ def match_users_request():
         CronjobModel.objects.filter(job_name=JOB_NAME).update(status=4, updated_at=timezone.now())
 
         
-def sendEmail(list):
+def sendEmail(list, matches):
     for i in range(0, len(list), 2):
+        match_id = findMatch(list[i].find_match_id, matches)
         mess1 = render_to_string('confirm_email.html', {
             'username': list[i].username,
             'opponent': list[i+1].username,
-            'link': 'http://localhost:8001/user/matchs',
+            'link': 'http://localhost:8001/user/matchs/' + str(match_id),
             'date_match': list[i].date_match,
         })
         mess2 = render_to_string('confirm_email.html', {
             'username': list[i+1].username,
             'opponent': list[i].username,
-            'link': 'http://localhost:8001/user/matchs',
+            'link': 'http://localhost:8001/user/matchs/' + str(match_id),
             'date_match': list[i].date_match,
         })
-        EmailMessage('Confirm request find match', mess1, to=[list[i].email]).send()
-        EmailMessage('Confirm request find match', mess2, to=[list[i+1].email]).send()
+        EmailMessage('Confirm request find match', mess1, list[i+1].email, to=[list[i].email]).send()
+        EmailMessage('Confirm request find match', mess2, list[i].email,to=[list[i+1].email]).send()
+
+def findMatch(find_match_id, matches):
+    for match in matches:
+        if match.find_match_a_id == find_match_id or match.find_match_b_id == find_match_id:
+            return match.id
+    return -1
