@@ -4,6 +4,5 @@ from clients.booking import views
 
 urlpatterns = [
     re_path('list/(?:page-(?P<page>\d+)/)?$',
-            views.my_list_booking, name='list')
-
+            views.my_list_booking, name='booking-list')
 ]
