@@ -4,6 +4,7 @@ from django.db import DatabaseError, transaction
 import logging
 import sys
 from myapp.models.find_matches import FindMatch
+from myapp.models.matches import Match
 from myapp.models.cronjob import CronjobModel
 
 logger = logging.getLogger('cronjob')
@@ -15,7 +16,8 @@ def remove_find_matchs():
         logger.info(f"Start {JOB_NAME}")
         
         with transaction.atomic():
-            FindMatch.objects.filter(date_match__lt=timezone.now()).delete()
+            Match.objects.filter(date_match__lt=timezone.now(), status='PENDING').delete()
+            FindMatch.objects.filter(date_match__lt=timezone.now(), status='PENDING').delete()
             CronjobModel.objects.filter(job_name=JOB_NAME).update(status=2, updated_at=timezone.now())
 
         logger.info(f'{JOB_NAME} successful')

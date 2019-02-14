@@ -71,4 +71,4 @@ services:
       - data:data
       - cache:cache
       - s3:s3
-    command: [ "python", "manage.py", "runserver", "--settings=myproject.settings_myapp", "0.0.0.0:8000" ]
+    command: [ "python", "manage.py", "runserver", "--settings=myproject.settings_cronjob", "0.0.0.0:8000" ]

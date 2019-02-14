@@ -39,7 +39,7 @@ def match_users_request():
             INNER JOIN
                 (SELECT date_match
                 FROM myapp_findmatch
-                WHERE status = 'PD'
+                WHERE status = 'PENDING'
                 GROUP BY date_match
                 HAVING count(date_match) > 1 AND date_match > current_date) AS tmpJoin ON tmpJoin.date_match = myapp_findmatch.date_match
             INNER JOIN
@@ -53,7 +53,7 @@ def match_users_request():
                     FROM myapp_findmatch) AS tmptbl
                 GROUP BY date_match) AS tmpJoin2 ON tmpJoin2.date_match = myapp_findmatch.date_match) AS a
                 INNER JOIN myapp_userteam ON myapp_userteam.team_id = a.team_id
-                    AND myapp_userteam.roll = 'CN'
+                    AND myapp_userteam.roll = 'CAPTION'
                 INNER JOIN auth_user ON auth_user.id = myapp_userteam.user_id
             WHERE (MOD(a.max,2) = 0
                 AND a.ranking <= 10)
@@ -65,13 +65,13 @@ def match_users_request():
         for i in range(0, len(find_match_rqs), 2):
             arr_match.append(Match(
                 date_match=find_match_rqs[i].date_match,
-                status='PD',
+                status='PENDING',
                 find_match_a_id=find_match_rqs[i].find_match_id,
                 find_match_b_id=find_match_rqs[i+1].find_match_id,
             ))
             list_id_find_match.extend([find_match_rqs[i].find_match_id, find_match_rqs[i+1].find_match_id])
         with transaction.atomic():
-            FindMatch.objects.filter(pk__in=list_id_find_match).update(status='WA', updated_at=timezone.now())
+            FindMatch.objects.filter(pk__in=list_id_find_match).update(status='WAITING', updated_at=timezone.now())
             Match.objects.bulk_create(arr_match)
             CronjobModel.objects.filter(job_name=JOB_NAME).update(status=2, updated_at=timezone.now())
 
