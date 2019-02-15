@@ -1,6 +1,7 @@
 import time
 from django.utils import timezone
 from django.db import DatabaseError, transaction
+from django.db.models import Q
 import logging
 import sys
 from myapp.models.find_matches import FindMatch
@@ -16,8 +17,8 @@ def remove_find_matchs():
         logger.info(f"Start {JOB_NAME}")
         
         with transaction.atomic():
-            Match.objects.filter(date_match__lt=timezone.now(), status='PENDING').delete()
-            FindMatch.objects.filter(date_match__lt=timezone.now(), status='PENDING').delete()
+            Match.objects.filter(date_match__lt=timezone.now()).filter(Q(status='WAITING') | Q(status='PENDING')).delete()
+            FindMatch.objects.filter(date_match__lt=timezone.now()).filter(Q(status='WAITING') | Q(status='PENDING')).delete()
             CronjobModel.objects.filter(job_name=JOB_NAME).update(status=2, updated_at=timezone.now())
 
         logger.info(f'{JOB_NAME} successful')
