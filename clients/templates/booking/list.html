@@ -53,7 +53,11 @@
                         <td class="mailbox-date"><a href=""><span style="color:blue">Chi tiết</span></a></td>
                         <td>
                             <div id = {{ booking.id }}>
-                              <button type="button" class="btn btn-danger btn-booking-cancel"><span style="color:white">Huỷ</span></button>
+                                {% if booking.status == 'PENDING' %}
+                                <button type="button" class="btn btn-danger btn-booking-cancel"><span style="color:white">Huỷ</span></button>
+                                {% else %}
+                                <button type="button" class="btn btn-danger btn-booking-cancel" disabled><span style="color:white">Huỷ</span></button>
+                                {% endif %}
                             </div>
                         </td>
                     </tr>

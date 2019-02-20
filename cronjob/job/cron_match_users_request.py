@@ -80,15 +80,14 @@ def match_users_request():
                 find_match_b_id=custom_find_match[i+1].find_match_id,
             ))
             list_id_find_match.extend([custom_find_match[i].find_match_id, custom_find_match[i+1].find_match_id])
-        matches = []
         with transaction.atomic():
             FindMatch.objects.filter(pk__in=list_id_find_match).update(status='WAITING', updated_at=timezone.now())
-            matches = Match.objects.bulk_create(arr_match)
+            Match.objects.bulk_create(arr_match)
             CronjobModel.objects.filter(job_name=JOB_NAME).update(status=2, updated_at=timezone.now())
 
         threads = []
         for k in range(0, len(custom_find_match), RECORDS_PER_THREAD):
-            threads.append(Thread(target=sendEmail, args=(custom_find_match[k:k+RECORDS_PER_THREAD], matches,)))
+            threads.append(Thread(target=sendEmail, args=(custom_find_match[k:k+RECORDS_PER_THREAD],)))
             threads[-1].start()
         for thread in threads:
             thread.join()
@@ -99,26 +98,20 @@ def match_users_request():
         CronjobModel.objects.filter(job_name=JOB_NAME).update(status=4, updated_at=timezone.now())
 
         
-def sendEmail(list, matches):
+def sendEmail(list):
     for i in range(0, len(list), 2):
-        match_id = findMatch(list[i].find_match_id, matches)
         mess1 = render_to_string('confirm_email.html', {
             'username': list[i].username,
             'opponent': list[i+1].username,
-            'link': 'http://localhost:8001/user/matchs/' + str(match_id),
+            'link': 'http://localhost:8001/match/' + str(list[i].find_match_id) + '/detail',
             'date_match': list[i].date_match,
         })
         mess2 = render_to_string('confirm_email.html', {
             'username': list[i+1].username,
             'opponent': list[i].username,
-            'link': 'http://localhost:8001/user/matchs/' + str(match_id),
+            'link': 'http://localhost:8001/match/' + str(list[i+1].find_match_id) + '/detail',
             'date_match': list[i].date_match,
         })
-        EmailMessage('Confirm request find match', mess1, list[i+1].email, to=[list[i].email]).send()
-        EmailMessage('Confirm request find match', mess2, list[i].email,to=[list[i+1].email]).send()
-
-def findMatch(find_match_id, matches):
-    for match in matches:
-        if match.find_match_a_id == find_match_id or match.find_match_b_id == find_match_id:
-            return match.id
-    return -1
+        print("here1ldjsalkdjsalkdjsalkdjsal")
+        EmailMessage('Confirm request find match', mess1, "noreply@worldtour.vn", to=[list[i].email]).send()
+        EmailMessage('Confirm request find match', mess2, "noreply@worldtour.vn",to=[list[i+1].email]).send()

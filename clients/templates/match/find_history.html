@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Find match history {% endblock %}
+{% block style %}
+{% include './find_history_css.html' %}
+{% endblock %}
+{% block pagecontent %}
+
+<div class="notify"></div>
+<!-- Team -->
+<section id="team" class="pb-5">
+    <div class="container">
+        <h5 class="section-title h1">LỊCH SỬ TÌM TRẬN ĐẤU</h5>
+        <!-- Box body-->
+        <div class="table-responsive mailbox-messages">
+            {% if messages %}
+            <ul id="messages">
+                {% for message in messages %}
+                <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <table class="table table-hover table-striped">
+                <tbody>
+                    <tr>
+                        <th>Ngày Thi Đấu</th>
+                        <th>Trạng Thái</th>
+                        <th>Thời Gian Đăng Ký</th>
+                        <th></th>
+                    </tr>
+                    {% for history in histories %}
+                    <tr>
+                        <td class="mailbox-subject">
+                            <b>{{history.date_match}}</b>
+                        </td>
+                        <td class="mailbox-date">{{history.status}}</td>
+                        <td class="mailbox-date">{{history.created_at}}</td>
+                        {% if history.status == "WAITING" %}
+                        <td class="mailbox-date"><a href="{% url 'find-match-detail' history.id %}"><span style="color:blue">Chi tiết</span></a></td>
+                        {% else %}
+                        <td class="mailbox-date"></td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <!-- /.table -->
+        </div>
+        <!-- /.mail-box-messages -->
+    </div>
+</section>
+<!-- Team -->
+{% endblock %}
+{% block js %}
+    {% include './find_history_js.html' %}
+{% endblock %}
