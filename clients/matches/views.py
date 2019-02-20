@@ -39,3 +39,27 @@ def find_match(request):
     messages.add_message(request, messages.ERROR,
                          _('Tìm kiếm trận đấu thất bại.'))
     return render(request, 'match/match.html', {'form': form, 'today': today})
+
+def find_match_history(request):
+    token = request.COOKIES.get('token')
+    if token != None:
+        headers = {'Authorization': 'Bearer %s' % token}
+        r = requests.get('http://localhost:8000/api/match/history', headers=headers)
+        response = r.json()
+        print("response: ", response)
+        return render(request, 'match/find_history.html', {
+            'histories': response,
+        })
+                
+    return render(request, 'authen/login.html')
+
+def find_match_detail(request, id):
+    token = request.COOKIES.get('token')
+    if token != None:
+        headers = {'Authorization': 'Bearer %s' % token}
+        r = requests.get('http://localhost:8000/api/match/' + str(id) + '/detail', headers=headers)
+        response = r.json()
+        print("response: ", response)
+        return render(request, 'match/match_detail.html', {'response': response})
+                
+    return render(request, 'authen/login.html')

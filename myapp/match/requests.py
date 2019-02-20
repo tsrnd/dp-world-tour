@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from myapp.models.matches import Match
 from myapp.models.user_teams import UserTeam
+from myapp.team.serializers import TeamSerializer
 from myapp.models.find_matches import FindMatch
 from datetime import datetime, date
 from django.utils.translation import ugettext_lazy as _
@@ -105,3 +106,29 @@ class MatchAcceptSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance
+
+class FindMatchListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FindMatch
+        ordering = ('created_at',)
+        fields = ['id', 'date_match', 'status', 'team', 'created_at']
+
+class MatchDetailSerializer(serializers.ModelSerializer):
+    team_a = serializers.SerializerMethodField()
+    team_b = serializers.SerializerMethodField()
+    my_status = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Match
+        fields = ['id', 'date_match', 'status', 'team_a', 'team_b', 'created_at', 'my_status']
+
+    def get_team_a(self, obj):
+        return TeamSerializer(obj.find_match_a.team).data
+    def get_team_b(self, obj):
+        return TeamSerializer(obj.find_match_b.team).data
+    def get_my_status(self, obj):
+        team_id = self.context['request'].data['team_id']
+        if obj.find_match_a.team_id == team_id:
+            return obj.find_match_a.status
+        else:
+            return obj.find_match_b.status

@@ -84,8 +84,18 @@
                                     </ul>
                                 </li>
                                 <li><a routerLink="/messenger">Tin Nhắn</a></li>
-                                <li><a href="#">Sân Vận Động</a></li>
-                                <li><a href="{% url 'find-match' %}">Tìm Đối Thủ</a></li>
+                                <li><a href="{% url 'list' %}">Sân Vận Động</a>
+                                    <ul class="as-dropdown">
+                                        <li><a href="{% url 'booking-list' %}">Lịch Sử</a></li>
+                                        <li><a href="{% url 'list' %}">Sân Vận Động</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="{% url 'find-match' %}">Tìm Đối Thủ</a>
+                                    <ul class="as-dropdown">
+                                        <li><a href="{% url 'find-match-history' %}">Lịch Sử</a></li>
+                                        <li><a href="{% url 'find-match' %}">Tìm Đối Thủ</a></li>
+                                    </ul>
+                                </li>
                             </ul>
                         </nav>
                         <!--// Responsive Menu //-->

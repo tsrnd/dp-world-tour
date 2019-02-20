@@ -4,6 +4,10 @@
     Register
 {% endblock %}
 
+{% block style %}
+    {% include './register_css.html' %}
+{% endblock %}
+
 {% block pagecontent %}
 <div class="notify"></div>
 <section class="login-block">
@@ -42,7 +46,7 @@
                 <input type="submit" class="btn btn-login float-right"></input>
               </div>
             </form>
-            <div class="copy-text">Đã có tài khoản? Click vào <a [routerLink]="['/login']">đây</a> để đăng nhập</div>
+            <div class="copy-text">Đã có tài khoản? Click vào <a href="{% url 'login' %}">đây</a> để đăng nhập</div>
             </div>
         <div class="col-md-8 banner-sec">
       <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">              

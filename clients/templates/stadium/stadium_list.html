@@ -75,7 +75,7 @@
             <td class="mailbox-date">{{ objstadium.email }}</td>
             <td class="mailbox-date">{{ objstadium.bank_num }}</td>
             <td class="mailbox-date">{{ objstadium.price }}</td>
-            <td class="mailbox-date"><a href=""><span style="color:blue">Chi tiết</span></a></td>
+            <td class="mailbox-date"><a href="{% url 'booking' objstadium.id %}"><span style="color:blue">Chi tiết</span></a></td>
           </tr>
           {% endfor %}
         </tbody>

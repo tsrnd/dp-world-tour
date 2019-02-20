@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Match {% endblock %}
+{% block style %}
+{% include './match_detail_css.html' %}
+{% endblock %}
+{% block pagecontent %}
+
+<div class="notify"></div>
+<!-- Team -->
+<section id="team" class="pb-5">
+    <div class="container">
+        <h5 class="section-title h1">THÔNG TIN TRẬN ĐẤU</h5>
+        <!-- Box body-->
+        <div class="table-responsive mailbox-messages">
+            {% if messages %}
+            <ul id="messages">
+                {% for message in messages %}
+                <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <div class="ec-nextmatch">
+                <div class="item" *ngFor="let match of matches; let i = index">
+                    <ul class="ec-team-matches" *ngIf="i<1">
+                        <li>
+                            <a href="#"><img src="../../../static/extra-images/next-match-1.png" alt=""> 
+                                <span>{{response.team_a.team_name}}</span>
+                            </a>
+                        </li>
+                        <li><small>Old Trafford</small>
+                            <time class="ec-color" datetime="2008-02-14 20:00">{{ response.date_match }}</time> <small>{{ response.status }}</small></li>
+                        <li>
+                            <a href="#"><img src="../../../static/extra-images/next-match-2.png" alt="">
+                                <span>{{response.team_b.team_name}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <span class="text-center" *ngIf="i<1"><count-down style="margin:auto;" class="text-center" [text]="text" units="Days | Hours | Minutes | Seconds" end="{{match.date_match}}"></count-down></span>
+                    <p class="ec-ticket-button">
+                        {% if response.status == "PENDING" and response.my_status == "WAITING" %}
+                            <button type="button" class="btn btn-info" onclick='acceptInvitation(event, "{{ response.id }}")' id="accept{{response.id}}">Chấp Thuận</button>
+                            <button type="button" class="btn btn-danger" onclick='rejectInvitation(event, "{{ response.id }}")' id="reject{{response.id}}">Từ Chối</button>
+                        {% elif response.status == "PENDING" and response.my_status == "ACCEPTED" %}
+                            <button type="button" class="btn btn-info" disabled>Đã Chấp Thuận</button>
+                        {% else %}
+                            <button type="button" class="btn btn-info" disabled>Đã Huỷ Bỏ</button>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            <!-- /.table -->
+        </div>
+        <!-- /.mail-box-messages -->
+    </div>
+</section>
+<!-- Team -->
+{% endblock %}
+{% block js %}
+    {% include './match_detail_js.html' %}
+{% endblock %}

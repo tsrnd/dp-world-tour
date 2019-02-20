@@ -67,7 +67,7 @@
                                     <h4 class="card-title">{{ team.team_name }}</h4>
                                     <p class="card-text">Worldtour - Climb to top of the world!</p>
                                     {% if team.is_caption %}
-                                        <a href="#" class="btn btn-primary btn-sm">
+                                        <a href="{% url 'invite_member' team.id %}" class="btn btn-primary btn-sm">
                                             <i class="fa fa-plus"></i>
                                         </a>
                                     {% endif %}
@@ -85,7 +85,7 @@
                                         {% endif %}
                                     </h4>
                                     {% if team.is_caption %}
-                                        <a href="#"><i class="btn btn-primary">Mời thành viên</i></a>
+                                        <a href="{% url 'invite_member' team.id %}"><i class="btn btn-primary">Mời thành viên</i></a>
                                     {% endif %}
                                     <p class="card-text">Câu lạc bộ bóng đá {{team.team_name}} (viết tắt: {{team.acronym}}) là một câu lạc bộ bóng đá chuyên nghiệp có trụ sở tại Old Trafford, Greater Machester, Anh. Câu lạc bộ đang chơi tại Giải bóng đá Ngoại hạng Anh. Với biệt danh "Quỷ Đỏ", vào năm 1878 đổi tên thành Manchester United vào năm 1902 và chuyển đến sân vận động hiện tại là sân Old Trafford vào năm 1910.</p>
                                     <ul class="list-inline">
